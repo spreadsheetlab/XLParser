@@ -1,0 +1,5 @@
+# Irony DLLs XLParser depends on
+!Irony/Irony/bin/
+!Irony/Irony/bin/*
+!Irony/Irony/bin/*/*.dll
+!Irony/Irony/bin/*/*.pdb
