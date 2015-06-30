@@ -1,6 +1,15 @@
 ## XLParser
 A C# Excel formula parser
 
+### Quickstart
+
+1. Download the [latest release archive](https://github.com/PerfectXL/XLParser/releases/download/v1.0.0/XLParser.1.0.0.zip)
+2. Extract somewhere convenient
+3. Open the `.exe` in the `Irony.GrammarExplorer` subfolder
+4. Click on the `...` button at the top and select `Add Grammar`
+5. Point to the `XLParser.dll` file in the folder you extracted and click ok
+6. You can now parse formulas and see the trees in the `Test` tab
+
 ### Introduction
 
 XLParser is the reference implementation of the Excel grammar published in the upcoming paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
