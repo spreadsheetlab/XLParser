@@ -140,7 +140,6 @@ namespace XLParser
             var File = new NonTerminal(GrammarNames.File);
             var Formula = new NonTerminal(GrammarNames.Formula);
             var FormulaWithEq = new NonTerminal(GrammarNames.FormulaWithEq);
-            var Function = new NonTerminal(GrammarNames.Function);
             var FunctionCall = new NonTerminal(GrammarNames.FunctionCall);
             var HRange = new NonTerminal(GrammarNames.HorizontalRange);
             var InfixOp = new NonTerminal(GrammarNames.TransientInfixOp);
@@ -154,6 +153,7 @@ namespace XLParser
             var Reference = new NonTerminal(GrammarNames.Reference);
             var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
             var ReferenceItem = new NonTerminal(GrammarNames.TransientReferenceItem);
+            var ReferenceOperation = new NonTerminal(GrammarNames.ReferenceOperation);
             var RefError = new NonTerminal(GrammarNames.RefError);
             var ReservedName = new NonTerminal(GrammarNames.ReservedName);
             var Sheet = new NonTerminal(GrammarNames.Sheet);
@@ -207,13 +207,11 @@ namespace XLParser
             #region Functions
 
             FunctionCall.Rule =
-                  Function + Arguments + CloseParen
+                  ExcelFunction + Arguments + CloseParen
                 | PrefixOp + Formula
                 | Formula + PostfixOp
                 | Formula + InfixOp + Formula
                 ;
-
-            Function.Rule = ExcelFunction | UDFToken;
 
             Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
             //Arguments.Rule = Argument | Argument + comma + Arguments;
@@ -251,15 +249,17 @@ namespace XLParser
             #region References
 
             Reference.Rule = ReferenceItem
-                | Reference + colon + Reference
-                | Reference + intersectop + Reference
-                | OpenParen + Union + CloseParen
+                | ReferenceOperation
                 | OpenParen + Reference + PreferShiftHere() + CloseParen
                 | Prefix + ReferenceItem
-                | Prefix + UDFToken + Arguments + CloseParen
                 | DynamicDataExchange
                 ;
 
+            ReferenceOperation.Rule =
+                  Reference + colon + Reference
+                | Reference + intersectop + Reference
+                | OpenParen + Union + CloseParen
+                ;
             Union.Rule = MakePlusRule(Union, comma, Reference);
 
             ReferenceItem.Rule =
@@ -276,7 +276,9 @@ namespace XLParser
             HRange.Rule = HRangeToken;
 
             ReferenceFunction.Rule =
-                ExcelRefFunctionToken + Arguments + CloseParen;
+                  ExcelRefFunctionToken + Arguments + CloseParen
+                | UDFToken + Arguments + CloseParen
+                ;
 
             QuotedFileSheet.Rule = QuotedFileSheetToken;
             Sheet.Rule = SheetToken;
@@ -770,6 +772,7 @@ namespace XLParser
         public const string Range = "Range";
         public const string Reference = "Reference";
         public const string ReferenceFunction = "ReferenceFunction";
+        public const string ReferenceOperation = "ReferenceOperation";
         public const string RefError = "RefError";
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
