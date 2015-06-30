@@ -1,5 +1,4 @@
-XLParser: Excel formula parser
-==========
+# XLParser: Excel formula parser
 
 XLParser is the reference implementation of the Excel grammar published in the upcoming paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
 
@@ -8,5 +7,11 @@ XLParser  has a 99.99% success rate on the [Enron](http://www.felienne.com/archi
 Note however that XLParser is not very restrictive, and thus might parse formulas that Excel would reject as invalid, keep this in mind when parsing user input with XLParser.
 
 XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/).
+
+
+XLParser is still in the process of being released
+=========
+
+Currently not all source files are available yet, as they are still being cleaned up.
 
 **XLParser will become available in the week of June 29th.** 
