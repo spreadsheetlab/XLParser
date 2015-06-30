@@ -60,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="PrintTests.cs" />
-    <Compile Include="PriorityAndPrecedenceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XLParser\XLParser.csproj">

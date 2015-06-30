@@ -109,7 +109,12 @@ namespace XLParser
         /// Get function/operator depth
         /// </summary>
         /// <param name="operators">If not null, count only specific functions/operators</param>
-        public int OperatorDepth(ParseTreeNode node, ISet<string> operators = null)
+        public int OperatorDepth(ISet<string> operators = null)
+        {
+            return OperatorDepth(Root, operators);
+        }
+
+        private int OperatorDepth(ParseTreeNode node, ISet<string> operators = null)
         {
             // Get the maximum depth of the childnodes
             int depth = node.ChildNodes.Count == 0 ? 0 : node.ChildNodes.Max(n => OperatorDepth(n, operators));
@@ -138,9 +143,9 @@ namespace XLParser
         /// <summary>
         /// Get the conditional complexity of the formula
         /// </summary>
-        public int ConditionalComplexity(ParseTreeNode input)
+        public int ConditionalComplexity()
         {
-            return OperatorDepth(input, conditionalFunctions);
+            return OperatorDepth(Root, conditionalFunctions);
         }
     }
 }
