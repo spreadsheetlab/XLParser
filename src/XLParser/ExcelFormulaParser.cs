@@ -305,9 +305,6 @@ namespace XLParser
             // Switch on nonterminals
             switch (input.Term.Name)
             {
-                case GrammarNames.FormulaWithEq:
-                    return "=" + childs.First();
-
                 case GrammarNames.Formula:
                     // Check if these are brackets, otherwise print first child
                     return IsParentheses(input) ? String.Format("({0})", childs.First()) : childs.First();
@@ -342,7 +339,7 @@ namespace XLParser
 
                     if (IsBinaryOperation(input))
                     {
-                        return String.Format("{0} {1} {2}", childsL[0], childsL[1], childsL[2]);
+                        return String.Format("{0}{1}{2}", childsL[0], childsL[1], childsL[2]);
                     }
 
                     return String.Join("", childsL);
@@ -363,11 +360,12 @@ namespace XLParser
                     return ret;
 
                 case GrammarNames.ArrayFormula:
-                    return "{=" + childs.First() + "}";
+                    return "{=" + childs.ElementAt(1) + "}";
 
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
                 case GrammarNames.DynamicDataExchange:
+                case GrammarNames.FormulaWithEq:
                     return String.Join("", childs);
 
                 // Terms for which we print the childs comma-separated
