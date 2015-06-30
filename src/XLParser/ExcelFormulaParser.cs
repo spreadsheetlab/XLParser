@@ -178,23 +178,27 @@ namespace XLParser
         /// </summary>
         public static string GetFunction(this ParseTreeNode input)
         {
-            if (input.Is(GrammarNames.ReferenceFunction))
+            if (IsIntersection(input))
             {
-                return RemoveFinalSymbol(input.ChildNodes[0].Token.ValueString).ToUpper();
+                return GrammarNames.TokenIntersect;
             }
-            if (input.Is(GrammarNames.FunctionCall))
+            if (IsBinaryOperation(input) || IsUnaryPostfixOperation(input))
             {
-                if (input.ChildNodes[0].Is(GrammarNames.Function))
+                return input.ChildNodes[1].Print();
+            }
+            if (IsUnaryPrefixOperation(input))
+            {
+                return input.ChildNodes[0].Print();
+            }
+            if (input.Is(GrammarNames.ReferenceFunction) || input.Is(GrammarNames.FunctionCall))
+            {
+                return RemoveFinalSymbol(input.ChildNodes[0].Print()).ToUpper();
+            }
+            if (input.Is(GrammarNames.Reference))
+            {
+                if (input.ChildNodes.Count == 3 && input.ChildNodes[2].Is(GrammarNames.Arguments))
                 {
-                    return RemoveFinalSymbol(input.ChildNodes[0].ChildNodes[0].Token.Text).ToUpper();
-                }
-                if (IsBinaryOperation(input) || IsUnaryPostfixOperation(input))
-                {
-                    return input.ChildNodes[1].Token.Terminal.Name;
-                }
-                if (IsUnaryPrefixOperation(input))
-                {
-                    return input.ChildNodes[0].Token.Terminal.Name;
+                    return RemoveFinalSymbol(input.ChildNodes[1].Print()).ToUpper();
                 }
             }
             throw new ArgumentException("Not a function call", "input");
@@ -248,7 +252,9 @@ namespace XLParser
         public static bool IsNamedFunction(this ParseTreeNode input)
         {
             return (input.Is(GrammarNames.FunctionCall) && input.ChildNodes.Exists(pt => pt.Term.Name == GrammarNames.Function))
-                || input.Is(GrammarNames.ReferenceFunction);
+                || input.Is(GrammarNames.ReferenceFunction)
+                // User defined function with prefix
+                || (input.Is(GrammarNames.Reference) && input.ChildNodes.Count == 3 && input.ChildNodes[2].Is(GrammarNames.Arguments));
         }
 
         /// <summary>
@@ -261,9 +267,12 @@ namespace XLParser
                    && input.ChildNodes[1].ChildNodes[0].ChildNodes[0].Is(GrammarNames.Number);
         }
 
-        private static ParseTreeNode Skip(this ParseTreeNode input, Predicate<ParseTreeNode> predicate)
+        /// <summary>
+        /// Go to the first non-formula child node
+        /// </summary>
+        public static ParseTreeNode SkipFormula(this ParseTreeNode input)
         {
-            while (predicate.Invoke(input))
+            while (input.Is(GrammarNames.Formula))
             {
                 input = input.ChildNodes.First();
             }
@@ -271,19 +280,33 @@ namespace XLParser
         }
 
         /// <summary>
-        /// Go to the first non-formula child node
+        /// Go to the first "relevant" child node, i.e. skips wrapper nodes
         /// </summary>
-        public static ParseTreeNode SkipFormula(this ParseTreeNode input)
+        /// <remarks>
+        /// Skips:
+        /// * FormulaWithEq and ArrayFormula nodes
+        /// * Formula nodes
+        /// * Parentheses
+        /// * Reference nodes which are just wrappers
+        /// </remarks>
+        public static ParseTreeNode SkipToRelevant(this ParseTreeNode input)
         {
-            return input.Skip(node => node.Is(GrammarNames.Formula));
-        }
-
-        /// <summary>
-        /// Go to the first non-formula non-parentheses child node
-        /// </summary>
-        public static ParseTreeNode SkipFormulaAndParentheses(this ParseTreeNode input)
-        {
-            return input.Skip(node => node.Is(GrammarNames.Formula) || node.IsParentheses());
+            switch (input.Type())
+            {
+                case GrammarNames.FormulaWithEq:
+                case GrammarNames.ArrayFormula:
+                    return SkipToRelevant(input.ChildNodes[1]);
+                case GrammarNames.Formula:
+                case GrammarNames.Reference:
+                    // This also catches parentheses
+                    if (input.ChildNodes.Count == 1)
+                    {
+                        return SkipToRelevant(input.ChildNodes[0]);
+                    }
+                    goto default;
+                default:
+                    return input;
+            }
         }
 
         /// <summary>

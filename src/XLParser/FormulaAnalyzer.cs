@@ -42,6 +42,12 @@ namespace XLParser
         }
 
         /// <summary>
+        /// Provide formula analysis functions
+        /// </summary>
+        public FormulaAnalyzer(string formula) : this(ExcelFormulaParser.Parse(formula))
+        {}
+
+        /// <summary>
         /// Get all references
         /// </summary>
         public IEnumerable<ParseTreeNode> References()
