@@ -77,7 +77,7 @@ namespace XLParser
             // Excel numbers can be a double, short or signed int. double can fully represent all of these
             return AllNodes
                 .Where(node => node.Is(GrammarNames.Number) || node.IsNumberWithSign())
-                .Select(node => double.Parse(node.Print(), NumberStyles.Float));
+                .Select(node => double.Parse(node.Print(), NumberStyles.Float, CultureInfo.InvariantCulture));
         }
 
         /// <summary>
