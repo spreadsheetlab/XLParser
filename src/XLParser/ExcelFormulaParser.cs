@@ -367,8 +367,7 @@ namespace XLParser
                         if (input.IsIntersection())
                         {
                             format = "{0} {2}";
-                        }
-                        if (input.IsBinaryReferenceOperation())
+                        }else if (input.IsBinaryReferenceOperation())
                         {
                             format = "{0}{1}{2}";
                         }
