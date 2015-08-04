@@ -53,11 +53,18 @@ namespace XLParser.Tests
             {
                 Assert.IsTrue(condition.Invoke(p.SkipToRelevant()), "condition failed for input '{0}'", input);
             }
+            // Also do a print test for every parse
+            PrintTests.test(formula: input, parsed: p);
         }
 
         private void test(IEnumerable<string> inputs, Predicate<ParseTreeNode> condition = null)
         {
-            foreach (string input in inputs) test(input, condition);
+            foreach (string input in inputs)
+               test(input, condition);
+        }
+
+        private void test(params string[] inputs) {
+            foreach (string input in inputs) test(input);
         }
 
         
@@ -81,6 +88,8 @@ namespace XLParser.Tests
             test("DAYS360(1)", node => node.IsFunction() && node.GetFunction() == "DAYS360");
             test("SUM(1)", node => node.IsFunction() && node.GetFunction() == "SUM");
             test("INDEX(1)", node => node.IsFunction() && node.GetFunction() == "INDEX");
+            test("IF(1)", node => node.IsFunction() && node.GetFunction() == "IF");
+            test("MYUSERDEFINEDFUNCTION()", node => node.IsFunction() && node.GetFunction() == "MYUSERDEFINEDFUNCTION");
         }
 
         [TestMethod]
@@ -92,7 +101,7 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExternalUserDefinedFunction()
         {
-            test("[1]!myFunction()", node => node.IsFunction() && node.GetFunction() == "MYFUNCTION");
+            test("[1]!myFunction()", node => node.IsFunction() && node.GetFunction() == "[1]!MYFUNCTION");
         }
 
         [TestMethod]
@@ -627,6 +636,11 @@ namespace XLParser.Tests
         public void PercentIsFunction()
         {
             test("1%", node => node.IsFunction() && node.GetFunction() == "%");
+        }
+
+        public void FunctionsAsRefExpressions()
+        {
+            test("IF(TRUE,A1,A2):B5", "INDEX():B5", "MyUDFunction:B5", "Sheet!MyUDFunction:B5");
         }
     }
 }
