@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace XLParser
 {
-    [Language("Excel Formulas", "1.1.0", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.1.1", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         public ExcelFormulaGrammar() : base(false)
@@ -338,8 +338,9 @@ namespace XLParser
             RegisterOperators(Precedence.Multiplication, Associativity.Left, mulop, divop);
             RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop);
             RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop);
-            RegisterOperators(Precedence.Reference, Associativity.Left, intersectop, colon);
-            RegisterOperators(Precedence.Reference, Associativity.Left, comma);
+            RegisterOperators(Precedence.Union, Associativity.Left, comma);
+            RegisterOperators(Precedence.Intersection, Associativity.Left, intersectop);
+            RegisterOperators(Precedence.Range, Associativity.Left, colon);
 
             //RegisterOperators(Precedence.ParameterSeparator, comma);
 
@@ -359,7 +360,10 @@ namespace XLParser
             public const int Exponentiation = 5;
             public const int UnaryPostFix = 6;
             public const int UnaryPreFix = 7;
-            public const int Reference = 8;
+            //public const int Reference = 8;
+            public const int Union = 9;
+            public const int Intersection = 10;
+            public const int Range = 11;
         }
 
         // Terminal priorities, indicates to lexer which token it should pick when multiple tokens can match
