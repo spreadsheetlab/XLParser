@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace XLParser
 {
-    [Language("Excel Formulas", "1.0.0", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.1.0", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         public ExcelFormulaGrammar() : base(false)
@@ -64,7 +64,7 @@ namespace XLParser
             var ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(");
             ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
             
-            var ExcelConditionalRefFunctionToken = new new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(");
+            var ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(");
             ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
 
             var ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + String.Join("|", excelFunctionList)  +")\\(");
@@ -156,17 +156,17 @@ namespace XLParser
             var PrefixOp = new NonTerminal(GrammarNames.TransientPrefixOp);
             var QuotedFileSheet = new NonTerminal(GrammarNames.QuotedFileSheet);
             var Reference = new NonTerminal(GrammarNames.Reference);
-            var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
+            //var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
             var ReferenceItem = new NonTerminal(GrammarNames.TransientReferenceItem);
-            var ReferenceOperation = new NonTerminal(GrammarNames.ReferenceOperation);
+            var ReferenceFunctionCall = new NonTerminal(GrammarNames.ReferenceFunctionCall);
             var RefError = new NonTerminal(GrammarNames.RefError);
             var RefFunctionName = new NonTerminal(GrammarNames.RefFunctionName);
-            var RefFunctionType = new NonTerminal(GrammarNames.TransientRefFunctionType);
             var ReservedName = new NonTerminal(GrammarNames.ReservedName);
             var Sheet = new NonTerminal(GrammarNames.Sheet);
             var Start = new NonTerminal(GrammarNames.TransientStart);
             var Text = new NonTerminal(GrammarNames.Text);
             var UDFName = new NonTerminal(GrammarNames.UDFName);
+            var UDFunctionCall = new NonTerminal(GrammarNames.UDFunctionCall);
             var Union = new NonTerminal(GrammarNames.Union);
             var VRange = new NonTerminal(GrammarNames.VerticalRange);
             #endregion
@@ -221,7 +221,7 @@ namespace XLParser
                 | Formula + InfixOp + Formula
                 ;
                 
-            FunctionName.Rule = ExcelFunction
+            FunctionName.Rule = ExcelFunction;
 
             Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
             //Arguments.Rule = Argument | Argument + comma + Arguments;
@@ -259,43 +259,41 @@ namespace XLParser
             #region References
 
             Reference.Rule = ReferenceItem
-                | ReferenceOperation
+                | ReferenceFunctionCall
                 | OpenParen + Reference + PreferShiftHere() + CloseParen
                 | Prefix + ReferenceItem
                 | DynamicDataExchange
                 ;
 
-            ReferenceOperation.Rule =
+            ReferenceFunctionCall.Rule =
                   Reference + colon + Reference
                 | Reference + intersectop + Reference
                 | OpenParen + Union + CloseParen
+                | RefFunctionName + Arguments + CloseParen
+                //| ConditionalRefFunctionName + Arguments + CloseParen
                 ;
+
+            RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
+
             Union.Rule = MakePlusRule(Union, comma, Reference);
 
             ReferenceItem.Rule =
                 Cell
                 | NamedRange
-                | ReferenceFunction
                 | VRange
                 | HRange
                 | RefError
+                | UDFunctionCall
                 ;
             MarkTransient(ReferenceItem);
 
+            UDFunctionCall.Rule = UDFName + Arguments + CloseParen;
+            UDFName.Rule = UDFToken;
+
             VRange.Rule = VRangeToken;
             HRange.Rule = HRangeToken;
-
-            ReferenceFunction.Rule = RefFunctionType + Arguments + CloseParen;
-                
-            var RefFunctionType.Rule = UDFName
-                | RefFunctionName
-                | ConditionalRefFunctionName
-                ;
-            MarkTransient(RefFuncionType);
-                
-            UDFName.Rule = UDFToken;
-            RefFunctionName.Rule = ExcelRefFunctionToken;
-            ConditionalRefFunctionName = ExcelConditionalRefFunctionToken;
+            
+            //ConditionalRefFunctionName.Rule = ExcelConditionalRefFunctionToken;
 
             QuotedFileSheet.Rule = QuotedFileSheetToken;
             Sheet.Rule = SheetToken;
@@ -440,7 +438,7 @@ namespace XLParser
             "CHIDIST",
             "CHIINV",
             "CHITEST",
-            "CHOOSE",
+            //"CHOOSE",
             "CLEAN",
             "CODE",
             "COLUMN",
@@ -545,7 +543,7 @@ namespace XLParser
             "HOUR",
             "HYPERLINK",
             "HYPGEOMDIST",
-            "IF",
+            //"IF",
             "ISBLANK",
             "IFERROR",
             "IMABS",
@@ -769,6 +767,7 @@ namespace XLParser
         public const string ArrayRows = "ArrayRows";
         public const string Bool = "Bool";
         public const string Cell = "Cell";
+        public const string ConditionalRefFunctionName = "ConditionalRefFunctionName";
         public const string Constant = "Constant";
         public const string ConstantArray = "ConstantArray";
         public const string DynamicDataExchange = "DynamicDataExchange";
@@ -778,8 +777,8 @@ namespace XLParser
         public const string File = "File";
         public const string Formula = "Formula";
         public const string FormulaWithEq = "FormulaWithEq";
-        public const string Function = "Function";
         public const string FunctionCall = "FunctionCall";
+        public const string FunctionName = "FunctionName";
         public const string HorizontalRange = "HRange";
         public const string MultipleSheets = "MultipleSheets";
         public const string NamedRange = "NamedRange";
@@ -788,12 +787,15 @@ namespace XLParser
         public const string QuotedFileSheet = "QuotedFileSheet";
         public const string Range = "Range";
         public const string Reference = "Reference";
-        public const string ReferenceFunction = "ReferenceFunction";
-        public const string ReferenceOperation = "ReferenceOperation";
+        //public const string ReferenceFunction = "ReferenceFunction";
+        public const string ReferenceFunctionCall = "ReferenceFunctionCall";
         public const string RefError = "RefError";
+        public const string RefFunctionName = "RefFunctionName";
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
         public const string Text = "Text";
+        public const string UDFName = "UDFName";
+        public const string UDFunctionCall = "UDFunctionCall";
         public const string Union = "Union";
         public const string VerticalRange = "VRange";
         #endregion
@@ -804,7 +806,6 @@ namespace XLParser
         public const string TransientPostfixOp = "PostfixOp";
         public const string TransientPrefixOp = "PrefixOp";
         public const string TransientReferenceItem = "ReferenceItem";
-        public const string TransientRefFunctionType = "RefFunctionType";
         #endregion
 
         #region Terminals
@@ -828,6 +829,7 @@ namespace XLParser
         public const string TokenSheet = "SheetNameToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
+        public const string TokenUnionOperator = ",";
         public const string TokenVRange = "VRangeToken";
 
         #endregion

@@ -118,9 +118,11 @@ namespace XLParser
         /// </summary>
         public static Boolean IsFunction(this ParseTreeNode input)
         {
-            return IsNamedFunction(input)
-                || IsBinaryOperation(input)
-                || IsUnaryOperation(input)
+            return input.Is(GrammarNames.FunctionCall)
+                || input.Is(GrammarNames.ReferenceFunctionCall)
+                || input.Is(GrammarNames.UDFunctionCall)
+                // This gives potential problems/duplication on external UDF's, but they are so rare that I think this is acceptable
+                || (input.Is(GrammarNames.Reference) && input.ChildNodes.Count == 2 && input.ChildNodes[1].IsFunction())
                 ;
         }
 
@@ -142,9 +144,14 @@ namespace XLParser
 
         public static bool IsBinaryOperation(this ParseTreeNode input)
         {
-            return (input.Is(GrammarNames.FunctionCall) || input.Is(GrammarNames.Reference))
+            return input.IsFunction()
                    && input.ChildNodes.Count() == 3
                    && input.ChildNodes[1].Term.Flags.HasFlag(TermFlags.IsOperator);
+        }
+
+        public static bool IsBinaryReferenceOperation(this ParseTreeNode input)
+        {
+            return input.IsBinaryOperation() && input.Is(GrammarNames.ReferenceFunctionCall);
         }
 
         public static bool IsUnaryOperation(this ParseTreeNode input)
@@ -154,14 +161,14 @@ namespace XLParser
 
         public static bool IsUnaryPrefixOperation(this ParseTreeNode input)
         {
-            return input.Is(GrammarNames.FunctionCall)
+            return input.IsFunction()
                    && input.ChildNodes.Count() == 2
                    && input.ChildNodes[0].Term.Flags.HasFlag(TermFlags.IsOperator);
         }
 
         public static bool IsUnaryPostfixOperation(this ParseTreeNode input)
         {
-            return input.Is(GrammarNames.FunctionCall)
+            return input.IsFunction()
                    && input.ChildNodes.Count() == 2
                    && input.ChildNodes[1].Term.Flags.HasFlag(TermFlags.IsOperator);
 
@@ -178,29 +185,31 @@ namespace XLParser
         /// </summary>
         public static string GetFunction(this ParseTreeNode input)
         {
-            if (IsIntersection(input))
+            if (input.IsIntersection())
             {
                 return GrammarNames.TokenIntersect;
             }
-            if (IsBinaryOperation(input) || IsUnaryPostfixOperation(input))
+            if (input.IsUnion())
+            {
+                return GrammarNames.TokenUnionOperator;
+            }
+            if (input.IsBinaryOperation() || input.IsUnaryPostfixOperation())
             {
                 return input.ChildNodes[1].Print();
             }
-            if (IsUnaryPrefixOperation(input))
+            if (input.IsUnaryPrefixOperation())
             {
                 return input.ChildNodes[0].Print();
             }
-            if (input.Is(GrammarNames.ReferenceFunction) || input.Is(GrammarNames.FunctionCall))
+            if (input.IsNamedFunction())
             {
                 return RemoveFinalSymbol(input.ChildNodes[0].Print()).ToUpper();
             }
-            if (input.Is(GrammarNames.Reference))
+            if (input.IsExternalUDFunction())
             {
-                if (input.ChildNodes.Count == 3 && input.ChildNodes[2].Is(GrammarNames.Arguments))
-                {
-                    return RemoveFinalSymbol(input.ChildNodes[1].Print()).ToUpper();
-                }
+                return String.Format("{0}{1}", input.ChildNodes[0].Print(), GetFunction(input.ChildNodes[1]));
             }
+
             throw new ArgumentException("Not a function call", "input");
         }
 
@@ -217,7 +226,7 @@ namespace XLParser
         /// </summary>
         public static bool IsBuiltinFunction(this ParseTreeNode node)
         {
-            return node.IsFunction() && (node.Is(GrammarNames.ExcelFunction) || node.Is(GrammarNames.ReferenceFunction));
+            return node.IsFunction() && (node.ChildNodes[0].Is(GrammarNames.ExcelFunction) || node.ChildNodes[0].Is(GrammarNames.RefFunctionName));
         }
 
         /// <summary>
@@ -237,13 +246,18 @@ namespace XLParser
         }
 
         /// <summary>
-        /// Check if a reference node is a union
+        /// Whether or not this node represents an union
         /// </summary>
         public static bool IsUnion(this ParseTreeNode input)
         {
-            return input.Is(GrammarNames.Reference)
-                && input.ChildNodes.Count == 1
-                && input.ChildNodes[0].Is(GrammarNames.Union);
+            try
+            {
+                return input.Is(GrammarNames.ReferenceFunctionCall) && input.ChildNodes[0].Is(GrammarNames.Union);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -251,10 +265,14 @@ namespace XLParser
         /// </summary>
         public static bool IsNamedFunction(this ParseTreeNode input)
         {
-            return (input.Is(GrammarNames.FunctionCall) && input.ChildNodes.Exists(pt => pt.Term.Name == GrammarNames.Function))
-                || input.Is(GrammarNames.ReferenceFunction)
-                // User defined function with prefix
-                || (input.Is(GrammarNames.Reference) && input.ChildNodes.Count == 3 && input.ChildNodes[2].Is(GrammarNames.Arguments));
+            return (input.Is(GrammarNames.FunctionCall) && input.ChildNodes[0].Is(GrammarNames.FunctionName))
+                || (input.Is(GrammarNames.ReferenceFunctionCall) && input.ChildNodes[0].Is(GrammarNames.RefFunctionName))
+                || input.Is(GrammarNames.UDFunctionCall);
+        }
+
+        public static bool IsExternalUDFunction(this ParseTreeNode input)
+        {
+            return input.Is(GrammarNames.Reference) && input.ChildNodes.Count == 2 && input.ChildNodes[1].IsNamedFunction();
         }
 
         /// <summary>
@@ -333,23 +351,45 @@ namespace XLParser
                     return IsParentheses(input) ? String.Format("({0})", childs.First()) : childs.First();
 
                 case GrammarNames.FunctionCall:
-                    if (IsNamedFunction(input))
-                    {
-                        return String.Join("", childs) + ")";
-                    }
-
+                case GrammarNames.ReferenceFunctionCall:
+                case GrammarNames.UDFunctionCall:
                     childsL = childs.ToList();
 
-                    if (IsBinaryOperation(input))
+                    if (input.IsNamedFunction())
                     {
-                        return String.Format("{0} {1} {2}", childsL[0], childsL[1], childsL[2]);
+                        return String.Join("", childsL) + ")";
                     }
 
-                    // Unary function
-                    return String.Join("", childsL);
+                    if (input.IsBinaryOperation())
+                    {
+                        // format string for "normal" binary operation
+                        string format = "{0} {1} {2}";
+                        if (input.IsIntersection())
+                        {
+                            format = "{0} {2}";
+                        }
+                        if (input.IsBinaryReferenceOperation())
+                        {
+                            format = "{0}{1}{2}";
+                        }
+                        
+                        return String.Format(format, childsL[0], childsL[1], childsL[2]);
+                    }
+
+                    if (input.IsUnion())
+                    {
+                        return String.Format("({0})", String.Join(",", childsL));
+                    }
+
+                    if (input.IsUnaryOperation())
+                    {
+                        return String.Join("", childsL);
+                    }
+
+                    throw new ArgumentException("Unknown function type.");
 
                 case GrammarNames.Reference:
-                    if (IsParentheses(input) || IsUnion(input))
+                    /*if (IsParentheses(input) || IsUnion(input))
                     {
                         return String.Format("({0})", childs.First());
                     }
@@ -363,12 +403,13 @@ namespace XLParser
                     if (IsBinaryOperation(input))
                     {
                         return String.Format("{0}{1}{2}", childsL[0], childsL[1], childsL[2]);
+                    }*/
+                    if (IsParentheses(input))
+                    {
+                        return String.Format("({0})", childs.First());
                     }
 
-                    return String.Join("", childsL);
-
-                case GrammarNames.ReferenceFunction:
-                    return String.Join("", childs) + ")";
+                    return String.Join("", childs);
 
                 case GrammarNames.File:
                     return String.Format("[{0}]", childs.First());
@@ -385,9 +426,12 @@ namespace XLParser
                 case GrammarNames.ArrayFormula:
                     return "{=" + childs.ElementAt(1) + "}";
 
+                case GrammarNames.DynamicDataExchange:
+                    childsL = childs.ToList();
+                    return String.Format("{0}!{1}", childsL[0], childsL[1]);
+
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
-                case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                     return String.Join("", childs);
 
