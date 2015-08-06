@@ -1,5 +1,12 @@
 ## XLParser
-A C# Excel formula parser
+A C# Excel formula parser with the following properties:
+
+* **High compatiblity**<br/>
+  XLParser has been tested on over a million real-world formulas and has a 99.9% succesful parse rate.
+* **Compact parse trees**<br/>
+  XLParser was designed for and is used in research of Excel spreadsheets and refactoring, all of which are easier if parse trees are smaller
+* **Compact grammar**<br />
+  [Our grammar](https://github.com/PerfectXL/XLParser/blob/master/src/XLParser/ExcelFormulaGrammar.cs) contains less than 100 tokens and production rules, and is thus easy to implement in another language or parser generator.
 
 ### Quickstart
 
