@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace XLParser
 {
-    [Language("Excel Formulas", "1.0.0", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.1.0", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         public ExcelFormulaGrammar() : base(false)
@@ -62,6 +62,9 @@ namespace XLParser
             UDFToken.Priority = TerminalPriority.UDF;
 
             var ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(");
+            ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
+            
+            var ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(");
             ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
 
             var ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + String.Join("|", excelFunctionList)  +")\\(");
@@ -132,6 +135,7 @@ namespace XLParser
             var ArrayRows = new NonTerminal(GrammarNames.ArrayRows);
             var Bool = new NonTerminal(GrammarNames.Bool);
             var Cell = new NonTerminal(GrammarNames.Cell);
+            var ConditionalRefFunctionName = new NonTerminal(GrammarNames.ConditionalRefFunctionName);
             var Constant = new NonTerminal(GrammarNames.Constant);
             var ConstantArray = new NonTerminal(GrammarNames.ConstantArray);
             var DynamicDataExchange = new NonTerminal(GrammarNames.DynamicDataExchange);
@@ -140,8 +144,8 @@ namespace XLParser
             var File = new NonTerminal(GrammarNames.File);
             var Formula = new NonTerminal(GrammarNames.Formula);
             var FormulaWithEq = new NonTerminal(GrammarNames.FormulaWithEq);
-            var Function = new NonTerminal(GrammarNames.Function);
             var FunctionCall = new NonTerminal(GrammarNames.FunctionCall);
+            var FunctionName = new NonTerminal(GrammarNames.FunctionName);
             var HRange = new NonTerminal(GrammarNames.HorizontalRange);
             var InfixOp = new NonTerminal(GrammarNames.TransientInfixOp);
             var MultipleSheets = new NonTerminal(GrammarNames.MultipleSheets);
@@ -152,13 +156,17 @@ namespace XLParser
             var PrefixOp = new NonTerminal(GrammarNames.TransientPrefixOp);
             var QuotedFileSheet = new NonTerminal(GrammarNames.QuotedFileSheet);
             var Reference = new NonTerminal(GrammarNames.Reference);
-            var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
+            //var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
             var ReferenceItem = new NonTerminal(GrammarNames.TransientReferenceItem);
+            var ReferenceFunctionCall = new NonTerminal(GrammarNames.ReferenceFunctionCall);
             var RefError = new NonTerminal(GrammarNames.RefError);
+            var RefFunctionName = new NonTerminal(GrammarNames.RefFunctionName);
             var ReservedName = new NonTerminal(GrammarNames.ReservedName);
             var Sheet = new NonTerminal(GrammarNames.Sheet);
             var Start = new NonTerminal(GrammarNames.TransientStart);
             var Text = new NonTerminal(GrammarNames.Text);
+            var UDFName = new NonTerminal(GrammarNames.UDFName);
+            var UDFunctionCall = new NonTerminal(GrammarNames.UDFunctionCall);
             var Union = new NonTerminal(GrammarNames.Union);
             var VRange = new NonTerminal(GrammarNames.VerticalRange);
             #endregion
@@ -207,13 +215,13 @@ namespace XLParser
             #region Functions
 
             FunctionCall.Rule =
-                  Function + Arguments + CloseParen
+                  FunctionName + Arguments + CloseParen
                 | PrefixOp + Formula
                 | Formula + PostfixOp
                 | Formula + InfixOp + Formula
                 ;
-
-            Function.Rule = ExcelFunction | UDFToken;
+                
+            FunctionName.Rule = ExcelFunction;
 
             Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
             //Arguments.Rule = Argument | Argument + comma + Arguments;
@@ -251,32 +259,41 @@ namespace XLParser
             #region References
 
             Reference.Rule = ReferenceItem
-                | Reference + colon + Reference
-                | Reference + intersectop + Reference
-                | OpenParen + Union + CloseParen
+                | ReferenceFunctionCall
                 | OpenParen + Reference + PreferShiftHere() + CloseParen
                 | Prefix + ReferenceItem
-                | Prefix + UDFToken + Arguments + CloseParen
                 | DynamicDataExchange
                 ;
+
+            ReferenceFunctionCall.Rule =
+                  Reference + colon + Reference
+                | Reference + intersectop + Reference
+                | OpenParen + Union + CloseParen
+                | RefFunctionName + Arguments + CloseParen
+                //| ConditionalRefFunctionName + Arguments + CloseParen
+                ;
+
+            RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
 
             Union.Rule = MakePlusRule(Union, comma, Reference);
 
             ReferenceItem.Rule =
                 Cell
                 | NamedRange
-                | ReferenceFunction
                 | VRange
                 | HRange
                 | RefError
+                | UDFunctionCall
                 ;
             MarkTransient(ReferenceItem);
 
+            UDFunctionCall.Rule = UDFName + Arguments + CloseParen;
+            UDFName.Rule = UDFToken;
+
             VRange.Rule = VRangeToken;
             HRange.Rule = HRangeToken;
-
-            ReferenceFunction.Rule =
-                ExcelRefFunctionToken + Arguments + CloseParen;
+            
+            //ConditionalRefFunctionName.Rule = ExcelConditionalRefFunctionToken;
 
             QuotedFileSheet.Rule = QuotedFileSheetToken;
             Sheet.Rule = SheetToken;
@@ -421,7 +438,7 @@ namespace XLParser
             "CHIDIST",
             "CHIINV",
             "CHITEST",
-            "CHOOSE",
+            //"CHOOSE",
             "CLEAN",
             "CODE",
             "COLUMN",
@@ -526,7 +543,7 @@ namespace XLParser
             "HOUR",
             "HYPERLINK",
             "HYPGEOMDIST",
-            "IF",
+            //"IF",
             "ISBLANK",
             "IFERROR",
             "IMABS",
@@ -750,6 +767,7 @@ namespace XLParser
         public const string ArrayRows = "ArrayRows";
         public const string Bool = "Bool";
         public const string Cell = "Cell";
+        public const string ConditionalRefFunctionName = "ConditionalRefFunctionName";
         public const string Constant = "Constant";
         public const string ConstantArray = "ConstantArray";
         public const string DynamicDataExchange = "DynamicDataExchange";
@@ -759,8 +777,8 @@ namespace XLParser
         public const string File = "File";
         public const string Formula = "Formula";
         public const string FormulaWithEq = "FormulaWithEq";
-        public const string Function = "Function";
         public const string FunctionCall = "FunctionCall";
+        public const string FunctionName = "FunctionName";
         public const string HorizontalRange = "HRange";
         public const string MultipleSheets = "MultipleSheets";
         public const string NamedRange = "NamedRange";
@@ -769,11 +787,15 @@ namespace XLParser
         public const string QuotedFileSheet = "QuotedFileSheet";
         public const string Range = "Range";
         public const string Reference = "Reference";
-        public const string ReferenceFunction = "ReferenceFunction";
+        //public const string ReferenceFunction = "ReferenceFunction";
+        public const string ReferenceFunctionCall = "ReferenceFunctionCall";
         public const string RefError = "RefError";
+        public const string RefFunctionName = "RefFunctionName";
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
         public const string Text = "Text";
+        public const string UDFName = "UDFName";
+        public const string UDFunctionCall = "UDFunctionCall";
         public const string Union = "Union";
         public const string VerticalRange = "VRange";
         #endregion
@@ -793,6 +815,7 @@ namespace XLParser
         public const string TokenEmptyArgument = "EmptyArgumentToken";
         public const string TokenError = "ErrorToken";
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
+        public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
         public const string TokenFileSheetQuoted = "FileSheetQuotedToken";
         public const string TokenHRange = "HRangeToken";
@@ -806,6 +829,7 @@ namespace XLParser
         public const string TokenSheet = "SheetNameToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
+        public const string TokenUnionOperator = ",";
         public const string TokenVRange = "VRangeToken";
 
         #endregion

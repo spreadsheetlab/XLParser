@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.RegularExpressions;
 using XLParser;
+using Irony.Parsing;
 
 namespace XLParser.Tests
 {
@@ -168,16 +169,26 @@ namespace XLParser.Tests
             }
         }
 
-        private static void test(string formula, bool ignorewhitespace = true)
+        internal static void test(string formula, bool ignorewhitespace = true, ParseTreeNode parsed = null)
         {
-            var printed = ExcelFormulaParser.Parse(formula).Print();
-            if (ignorewhitespace)
+            if (parsed == null)
             {
-                formula = formula.Replace(" ", "");
-                printed = printed.Replace(" ", "");
+                parsed = ExcelFormulaParser.Parse(formula);
             }
-            Assert.AreEqual(formula, printed);
+            try
+            {
+                var printed = parsed.Print();
+                if (ignorewhitespace)
+                {
+                    formula = formula.Replace(" ", "");
+                    printed = printed.Replace(" ", "");
+                }
+                Assert.AreEqual(formula, printed, "Printed parsed formula differs from original.\nOriginal: '{0}'\nPrinted: '{1}'", formula, printed);
+            }
+            catch (ArgumentException e)
+            {
+                Assert.Fail("Parse Tree contains a node for which the Print function is not defined.\n{0}", e.Message);
+            }
         }
-
     }
 }
