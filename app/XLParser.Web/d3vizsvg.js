@@ -90,11 +90,9 @@ function update(source) {
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("g")
         .attr("class", "node")
-        //.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         })
-    //.on("click", function(d) { toggle(d); update(d); });
 
     nodeEnter.append("circle")
         //.attr("r", 1e-6)
@@ -104,22 +102,14 @@ function update(source) {
 
     nodeEnter.append("text")
         //.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-        .attr("y", function (d) { return d.children || d._children ? -18 : 18; })
-        .attr("dy", ".35em")
-        //.attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-        //.attr("text-anchor", function (d) { return d.children || d._children ? "middle" : "bottom"; })
+        .attr("y", function (d) {
+            // Put nodes without children (terminals) below, nodes with (nonterminals) above
+            return d.children || d._children ? -20 : 20;
+        })
+        .attr("dy", ".31em")
         .attr("text-anchor", "middle")
         .text(function (d) { return d.name; })
         .style("fill-opacity", 1);
-
-    nodeEnter.append("text")
-          .attr("y", function (d) {
-              return d.children || d._children ? -18 : 18;
-          })
-          .attr("dy", ".35em")
-          .attr("text-anchor", "middle")
-          .text(function (d) { return d.name; })
-          .style("fill-opacity", 1);
 
     // Declare the links…
     var link = vis.selectAll("path.link")
@@ -205,6 +195,6 @@ var svgcss = ".node circle {\n"+
 "}\n"+
 "path.link {\n"+
 "    fill: none;\n"+
-"    stroke: #bbb;\n"+
+"    stroke: #cfcfcf;\n"+
 "    stroke-width: 1.5px;\n"+
 "}";
