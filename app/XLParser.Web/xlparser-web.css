@@ -1,10 +1,15 @@
-﻿body {
-    padding-left: 25px;
-    padding-top: 10px;
+﻿html, body {
+    margin: 0;
+    height: 100%;
+}
 
-    background: #fcfcfc;
+body {
+    background-color: #f1f1f1;
     font-size: 14px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
+
+    display: flex;
+    flex-flow: column;
 }
 
 .node circle {
@@ -20,7 +25,7 @@
 
 path.link {
   fill: none;
-  stroke: #ccc;
+  stroke: #bbb;
   stroke-width: 1.5px;
 }
 
@@ -32,7 +37,7 @@ path.link {
     background-color: transparent;
     color: black;
     width: 65em;
-    height: 5em;
+    height: 15em;
 }
 
 #errorformulainput {
@@ -45,4 +50,29 @@ path.link {
     margin-bottom: 10px;
     color: black;
     width: 62em;
+}
+
+#borderwrapper {
+    border: 12px solid #217346;
+    border-bottom-width: 6px;
+    border-top-width: 14px;
+
+    padding-left: 75px;
+    padding-top: 35px;
+    padding-right: 75px;
+    padding-bottom: 25px;
+
+    flex: 0 1 auto;
+}
+#borderwrapper2 {
+    border: 12px solid #217346;
+    border-top-width: 6px;
+    border-bottom-width: 14px;
+
+    padding-left: 75px;
+    padding-top: 10px;
+    padding-right: 75px;
+    padding-bottom: 35px;
+    
+    flex: 1 1 auto;
 }
