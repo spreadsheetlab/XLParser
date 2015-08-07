@@ -67,7 +67,7 @@ namespace XLParser.Web
             {
                 root = ExcelFormulaParser.Parse(formula);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 // Parse error, return 422 - Unprocessable Entity
                 ctx.Response.StatusCode = 422;
