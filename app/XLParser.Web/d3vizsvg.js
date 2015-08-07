@@ -25,21 +25,35 @@ function newTree(formula) {
             //console.log(json);
             var w = Math.max(tw * 75, width);
             var h = Math.max(10 + th * 60, height);
+            var imgw = w + margin.right + margin.left;
+            var imgh = h + margin.top + margin.bottom;
 
             tree = d3.layout.tree().size([w, h]);
             i = 0;
 
             d3.select("#d3viz").html("");
 
-            vis = d3.select("#d3viz")
+            var svg = d3.select("#d3viz")
             .append("svg")
-            .attr("width", w + margin.right + margin.left)
-            .attr("height", h + margin.top + margin.bottom)
-            .append("g")
+            .attr("id", "dynamicSVGParsetree")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .attr("width", imgw)
+            .attr("height", imgh)
+            ;
+
+            svg.append("style")
+                .attr("type", "text/css")
+                //.text("<![CDATA[\n" + svgcss + "\n]]>");
+                .text(svgcss);
+
+            vis = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             root = json;
             update(root);
+
+            generateImageData(imgw, imgh);
         } else {
             json = JSON.parse(request.response);
             var msg = "<strong>Error:</strong> <code>" + json.error + "</code><br />";
@@ -135,3 +149,48 @@ function treeHeight(node) {
     }
     return max + 1;
 }
+
+// From: http://techslides.com/save-svg-as-an-image
+function generateImageData(imgw, imgh) {
+    var html = d3.select("#dynamicSVGParsetree")
+          .node().parentNode.innerHTML;
+
+    //console.log(html);
+    var svgsrc = 'data:image/svg+xml;base64,' + btoa(html);
+    //var img = '<img src="' + imgsrc + '">';
+    //d3.select("#imgdata").html(img);
+    var imgdatasvg = document.getElementById('imgdatasvg')
+    imgdatasvg.href = svgsrc;
+    imgdatasvg.download = "parsetree.svg";
+
+    var image = new Image;
+    image.src = svgsrc;
+    image.onload = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = imgw;
+        canvas.height = imgh;
+        var canvasctx = canvas.getContext("2d");
+        canvasctx.drawImage(image, 0, 0);
+        var pngsrc = canvas.toDataURL("image/png");
+        
+        var imgdatapng = document.getElementById('imgdatapng');
+        imgdatapng.href = pngsrc;
+        imgdatapng.download = "parsetree.png";
+    }
+
+};
+
+var svgcss = ".node circle {\n"+
+"    cursor: pointer;\n"+
+"    fill: #fff;\n"+
+"    stroke: steelblue;\n"+
+"    stroke-width: 1.5px;\n"+
+"}\n"+
+".node text {\n"+
+"   font-size: 14px;\n"+
+"}\n"+
+"path.link {\n"+
+"    fill: none;\n"+
+"    stroke: #bbb;\n"+
+"    stroke-width: 1.5px;\n"+
+"}";

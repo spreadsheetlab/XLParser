@@ -12,7 +12,7 @@ body {
     flex-flow: column;
 }
 
-.node circle {
+/*.node circle {
   cursor: pointer;
   fill: #fff;
   stroke: steelblue;
@@ -27,7 +27,7 @@ path.link {
   fill: none;
   stroke: #bbb;
   stroke-width: 1.5px;
-}
+}*/
 
 #errormessages {
     font-family: "Courier New", monospace;
@@ -75,4 +75,8 @@ path.link {
     padding-bottom: 35px;
     
     flex: 1 1 auto;
+}
+
+#imgdata {
+    display: none;
 }

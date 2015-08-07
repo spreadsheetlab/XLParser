@@ -37,9 +37,10 @@
     </div>
     <div id="borderwrapper2">
         <!-- Based on https://mbostock.github.io/d3/talk/20111018/tree.html and https://gist.github.com/d3noob/8326869-->
-        <p>Parse Tree:</p>
+        <p>Parse Tree (<a id="imgdatasvg">SVG</a>, <a id="imgdatapng">PNG</a>):</p>
         <div id="d3viz">
         </div>
     </div>
+    <div id="imgdata"></div>
 </body>
 </html>
