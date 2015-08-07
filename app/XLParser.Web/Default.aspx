@@ -4,8 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8"/>
     <title>XLParser web demo</title>
     <link rel="stylesheet" href="xlparser-web.css" type="text/css" />
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
 </head>
 <body>
     <h2>XLParser web demo</h2>
