@@ -69,7 +69,7 @@ function newTree(formula) {
 }
 
 newTree(default_formula);
-d3.select('#formulainput').attr("placeholder", default_formula);
+d3.select('#formulainput').attr("value", default_formula);
 
 
 function update(source) {

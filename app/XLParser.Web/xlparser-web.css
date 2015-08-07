@@ -12,7 +12,9 @@ body {
     flex-flow: column;
 }
 
-/*.node circle {
+/* This is now defined in the javascript file, otherwise downloaded image would miss these styles*/
+/*    
+.node circle {
   cursor: pointer;
   fill: #fff;
   stroke: steelblue;
@@ -29,6 +31,12 @@ path.link {
   stroke-width: 1.5px;
 }*/
 
+#formulainput, #errorformulainput, #errormessages {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
 #errormessages {
     font-family: "Courier New", monospace;
     font-size: 12px;
@@ -44,7 +52,6 @@ path.link {
     font-family: "Courier New", monospace;
     font-size: 12px;
     border: 1px solid #999999;
-    padding-left: 5px;
     background-color: transparent;
     margin-top: 10px;
     margin-bottom: 10px;
