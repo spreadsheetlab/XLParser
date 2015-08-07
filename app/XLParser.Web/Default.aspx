@@ -36,6 +36,14 @@
         </div>
     </div>
     <div id="borderwrapper2">
+        <script type="text/javascript">
+            var ua = window.navigator.userAgent;
+            if (ua.indexOf("MSIE ") > 0 // IE 10-
+             || ua.indexOf('Trident/') > 0) // // IE 11
+            {
+                document.write("<em>Note: image downloading does not work properly in Internet Explorer 11 and lower.</em><br />");
+            }
+        </script>
         <!-- Based on https://mbostock.github.io/d3/talk/20111018/tree.html and https://gist.github.com/d3noob/8326869-->
         <p>Parse Tree (<a id="imgdatasvg">SVG</a>, <a id="imgdatapng">PNG</a>):</p>
         <div id="d3viz">

@@ -160,22 +160,36 @@ function generateImageData(imgw, imgh) {
     //var img = '<img src="' + imgsrc + '">';
     //d3.select("#imgdata").html(img);
     var imgdatasvg = document.getElementById('imgdatasvg')
+    imgdatasvg.setAttribute('crossOrigin', 'anonymous');
     imgdatasvg.href = svgsrc;
     imgdatasvg.download = "parsetree.svg";
 
     var image = new Image;
     image.src = svgsrc;
     image.onload = function () {
-        var canvas = document.createElement("canvas");
-        canvas.width = imgw;
-        canvas.height = imgh;
-        var canvasctx = canvas.getContext("2d");
-        canvasctx.drawImage(image, 0, 0);
-        var pngsrc = canvas.toDataURL("image/png");
-        
         var imgdatapng = document.getElementById('imgdatapng');
-        imgdatapng.href = pngsrc;
-        imgdatapng.download = "parsetree.png";
+        try {
+            var canvas = document.createElement("canvas");
+            canvas.width = imgw;
+            canvas.height = imgh;
+            canvas.style.backgroundColor = "white";
+            var canvasctx = canvas.getContext("2d");
+            canvasctx.drawImage(image, 0, 0);
+            var pngsrc = canvas.toDataURL("image/png");
+            
+            imgdatapng.href = pngsrc;
+            imgdatapng.download = "parsetree.png";
+        }
+        catch(e) {
+            imgdatapng.href = "javascript: void(0)";
+            imgdatapng.addEventListener('click', function() { 
+                alert("An error occured while creating PNG.\n\n" +
+                    "If you are using Internet Explorer 10 or 11, this page doesn't have enough privileges to allow PNG creation. Increase trust level for this page.\n\n" +
+                    "Are you using an older browser? If so try a newer one.\n\n" +
+                    "Confirmed to work in Firefox 39 and Chrome 44.");
+                return false;
+            });
+        }
     }
 
 };
