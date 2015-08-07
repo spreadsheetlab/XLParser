@@ -15,7 +15,7 @@ var vis;
 
 function newTree(formula) {
 
-    d3.json("Parse.json?formula=" + encodeURI(formula), function (request, json) {
+    d3.json("Parse.json?formula=" + encodeURIComponent(formula), function (request, json) {
         //console.log(json)
         //console.log(request)
         if (json !== undefined) {
