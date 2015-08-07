@@ -13,7 +13,7 @@ namespace XLParser.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ParseOutputTreeCollapseButton.Click += (s, ie) => { ParseOutputTree.CollapseAll(); };
+            /*ParseOutputTreeCollapseButton.Click += (s, ie) => { ParseOutputTree.CollapseAll(); };
             ParseOutputTreeExpandButton.Click += (s, ie) => { ParseOutputTree.ExpandAll(); };
             
             ParseOutputTree.Nodes.Clear();
@@ -28,9 +28,10 @@ namespace XLParser.Web
 
                 // Styling
                 ParseOutputTree.LeafNodeStyle.Font.Name = "monospace";
-            }
+            }*/
         }
 
+        /*
         private static TreeNode convert(ParseTreeNode node)
         {
             var tvnode = new TreeNode();
@@ -63,7 +64,7 @@ namespace XLParser.Web
                 // Only print the name of non-terminals
                 return node.Type();
             }
-        }
+        }*/
 
         /// Whether or not to Expand a node type by default
         private static readonly ISet<string> showExpanded = new HashSet<string>()

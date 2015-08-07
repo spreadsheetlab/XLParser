@@ -71,7 +71,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="d3vizsvg.js" />
     <Content Include="Default.aspx" />
+    <Content Include="img\texture-noise.png" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>

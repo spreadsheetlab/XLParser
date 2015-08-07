@@ -1,18 +1,25 @@
 ﻿body {
     padding-left: 25px;
     padding-top: 10px;
-    font-family: sans-serif;
+
+    background: #fcfcfc;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
-#ParseOutput {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    display: inline-block;
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }
 
-#ParseOutputTree {
-    margin-top: 5px;
-    padding: 25px;
-    padding-right: 35px;
-    border: 2px solid black;
+.node text {
+  font-size: 14px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
 }

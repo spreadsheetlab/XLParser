@@ -1,37 +1,27 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="XLParser.Web.Default" %>
-
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
     <meta charset="utf-8"/>
     <title>XLParser web demo</title>
     <link rel="stylesheet" href="xlparser-web.css" type="text/css" />
     <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
     <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="https://mbostock.github.io/d3/talk/20111018/d3/d3.js"></script> 
+    <script src="https://mbostock.github.io/d3/talk/20111018/d3/d3.layout.js"></script> -->
+    <script src="d3vizsvg.js" type="text/javascript" defer></script>
 </head>
 <body>
     <h2>XLParser web demo</h2>
-    <form id="form1" runat="server">
-        <div>
-            <asp:Label runat="server" text="Formula:"></asp:Label>
-            <asp:TextBox runat="server" id="FormulaInput" Text="SUM(B5,2)" Columns="100" /> <br/>
-            <asp:Button runat="server" id="ParseButton" text="Parse" />
-        </div>
-        
-        <div id="ParseOutput">
-            <asp:Button runat="server" ID="ParseOutputTreeExpandButton" Text="Expand all"/>
-            <asp:Button runat="server" ID="ParseOutputTreeCollapseButton" Text="Collapse all"/>
-            <asp:TreeView runat="server" id="ParseOutputTree"
-                LeafNodeStyle-Font-Name="monospace"
-                >
-            </asp:TreeView>
-        </div>
-    </form>
+    
+    <p>
+    Formula: <input type="text" size="100" id="formulainput"/> <br/> <br />
+    <button>Parse</button>
+    </p>
     
     <div id="bugreport">
         <br/>
-        <a href="javascript:;" onclick=" javascript:document.getElementById('bug_explanation').style.display = 'block';" style="color: black; font-weight: bold;">Found a bug?</a> <br/> <br/>
+        <a href="javascript:;" onclick=" javascript: if(document.getElementById('bug_explanation').style.display !== 'block') {document.getElementById('bug_explanation').style.display = 'block'} else {document.getElementById('bug_explanation').style.display = 'none'};" style="color: black; font-weight: bold;">Found a bug?</a> <br/> <br/>
         <div id="bug_explanation" style="display: none;">
             Great! <a href="https://github.com/PerfectXL/XLParser/issues">Please report it as a Github issue!</a> <br/> <br/>
 
@@ -47,7 +37,12 @@
         </div>
     </div>
     <div>
-        
+
+    <!-- Based on https://mbostock.github.io/d3/talk/20111018/tree.html and https://gist.github.com/d3noob/8326869-->
+    <p>Parse Tree:</p>
+    <div id="d3viz">
+    </div>
+ 
     </div>
 </body>
 </html>
