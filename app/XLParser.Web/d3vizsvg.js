@@ -185,7 +185,6 @@ function generateImageData(imgw, imgh) {
 };
 
 var svgcss = ".node circle {\n"+
-"    cursor: pointer;\n"+
 "    fill: #fff;\n"+
 "    stroke: steelblue;\n"+
 "    stroke-width: 1.5px;\n"+

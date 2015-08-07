@@ -15,7 +15,6 @@ body {
 /* This is now defined in the javascript file, otherwise downloaded image would miss these styles*/
 /*    
 .node circle {
-  cursor: pointer;
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;
