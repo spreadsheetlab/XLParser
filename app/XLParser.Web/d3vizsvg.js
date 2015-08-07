@@ -1,4 +1,6 @@
-﻿var margin = { top: 20, right: 20, bottom: 20, left: 20 },
+﻿var default_formula = "SUM(B5,2)";
+
+var margin = { top: 20, right: 20, bottom: 20, left: 20 },
         width = 500 - margin.right - margin.left,
         height = 500 - margin.top - margin.bottom;
 
@@ -13,36 +15,47 @@ var vis;
 
 function newTree(formula) {
 
-    d3.json("Parse.json?formula=" + encodeURI(formula), function (json) {
-        var tw = treeWidth(json);
-        var th = treeHeight(json);
-        console.log("W: " + tw + " H: " + th);
-        console.log(json);
-        var w = Math.max(tw*75, width);
-        var h = Math.max(10+th*60, height);
+    d3.json("Parse.json?formula=" + encodeURI(formula), function (request, json) {
+        //console.log(json)
+        //console.log(request)
+        if (json !== undefined) {
+            var tw = treeWidth(json);
+            var th = treeHeight(json);
+            //console.log("W: " + tw + " H: " + th);
+            //console.log(json);
+            var w = Math.max(tw * 75, width);
+            var h = Math.max(10 + th * 60, height);
 
-        tree = d3.layout.tree().size([w, h]);
-        i = 0;
+            tree = d3.layout.tree().size([w, h]);
+            i = 0;
 
-        if (vis != undefined) {
-            vis.remove();
+            d3.select("#d3viz").html("");
+
+            vis = d3.select("#d3viz")
+            .append("svg")
+            .attr("width", w + margin.right + margin.left)
+            .attr("height", h + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            root = json;
+            update(root);
+        } else {
+            json = JSON.parse(request.response);
+            var msg = "<strong>Error:</strong> <code>" + json.error + "</code><br />";
+            // Convert to entities to prevent XSS
+            msg += "Input: <input id='errorformulainput' disabled value='" + json.formula.replace(/./gm, function (s) { return "&#" + s.charCodeAt(0) + ";"; }) + "'/><br />";
+            if (json.messages !== undefined) {
+                msg += "<textarea disabled id='errormessages'>" + json.messages + '</textarea>';
+            }
+            d3.select("#d3viz")
+            .html(msg);
         }
-
-        vis = d3.select("#d3viz")
-        .append("svg")
-        .attr("width", w + margin.right + margin.left)
-        .attr("height", h + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        root = json;
-        update(root);
     });
 }
 
-//newTree("1+1");
-//newTree("SUM(1-1-1-1,2)");
-newTree("BLAH(1-1-1-1,2)");
+newTree(default_formula);
+d3.select('#formulainput').attr("placeholder", default_formula);
 
 
 function update(source) {

@@ -37,7 +37,7 @@ namespace XLParser.Web
 
             // check file extention for format
             var format = (System.IO.Path.GetExtension(context.Request.FilePath) ?? ".json").Substring(1);
-            string formula = context.Request.Params["formula"];
+            string formula = context.Request.Unvalidated["formula"];
             switch (format)
             {
                 case "json":
@@ -75,7 +75,8 @@ namespace XLParser.Web
                 w(JsonConvert.SerializeObject(new
                 {
                     error = "Parse error",
-                    messages = r.ParserMessages.Select(m => String.Format("{0} at {1}: {2}", m.Level, m.Location, m.Message))
+                    messages = r.ParserMessages.Select(m => String.Format("{0} at {1}: {2}", m.Level, m.Location, m.Message)),
+                    formula = formula
                 }));
                 ctx.Response.End();
                 return;

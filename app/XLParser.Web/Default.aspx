@@ -5,18 +5,16 @@
     <meta charset="utf-8"/>
     <title>XLParser web demo</title>
     <link rel="stylesheet" href="xlparser-web.css" type="text/css" />
-    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
-    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
-    <!--<script src="https://mbostock.github.io/d3/talk/20111018/d3/d3.js"></script> 
-    <script src="https://mbostock.github.io/d3/talk/20111018/d3/d3.layout.js"></script> -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>-->
     <script src="d3vizsvg.js" type="text/javascript" defer></script>
 </head>
 <body>
     <h2>XLParser web demo</h2>
     
     <p>
-    Formula: <input type="text" size="100" id="formulainput"/> <br/> <br />
-    <button>Parse</button>
+    Formula: <input type="text" size="100" id="formulainput" /> <br/> <br />
+    <button onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
     </p>
     
     <div id="bugreport">

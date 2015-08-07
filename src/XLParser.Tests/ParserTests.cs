@@ -638,9 +638,16 @@ namespace XLParser.Tests
             test("1%", node => node.IsFunction() && node.GetFunction() == "%");
         }
 
+        [TestMethod]
         public void FunctionsAsRefExpressions()
         {
             test("IF(TRUE,A1,A2):B5", "INDEX():B5", "MyUDFunction:B5", "Sheet!MyUDFunction:B5");
+        }
+
+        [TestMethod]
+        public void Bug()
+        {
+            test("SUM(B5,2)");
         }
     }
 }
