@@ -1,0 +1,18 @@
+﻿body {
+    padding-left: 25px;
+    padding-top: 10px;
+    font-family: sans-serif;
+}
+
+#ParseOutput {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: inline-block;
+}
+
+#ParseOutputTree {
+    margin-top: 5px;
+    padding: 25px;
+    padding-right: 35px;
+    border: 2px solid black;
+}
