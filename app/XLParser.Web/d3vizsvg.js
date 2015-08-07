@@ -189,7 +189,8 @@ var svgcss = ".node circle {\n"+
 "    stroke: steelblue;\n"+
 "    stroke-width: 1.5px;\n"+
 "}\n"+
-".node text {\n"+
+".node text {\n" +
+"   font-family: 'Helvetica Neue', Helvetica, sans-serif;"+
 "   font-size: 14px;\n"+
 "}\n"+
 "path.link {\n"+
