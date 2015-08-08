@@ -14,8 +14,10 @@ var diagonal = d3.svg.diagonal()
 var vis;
 
 function newTree(formula) {
+    var encodedFormula = encodeURIComponent(formula);
+    var url = "Parse.json?formula=" + encodedFormula
 
-    d3.json("Parse.json?formula=" + encodeURIComponent(formula), function (request, json) {
+    d3.json(url, function (request, json) {
         //console.log(json)
         //console.log(request)
         if (json !== undefined) {
@@ -66,6 +68,16 @@ function newTree(formula) {
             .html(msg);
         }
     });
+
+    if (ga !== undefined) {
+        ga('send', 'pageview', url);
+        var imgdatasvg = $('#imgdatasvg');
+        imgdatasvg.off('click');
+        imgdatasvg.on('click', function () { ga('send', 'pageview', 'parsetree.svg?formula=' + encodedFormula); })
+        var imgdatapng = $('#imgdatapng');
+        imgdatapng.off('click');
+        imgdatapng.on('click', function () { ga('send', 'pageview', 'parsetree.png?formula=' + encodedFormula); })
+    }
 }
 
 newTree(default_formula);
@@ -149,15 +161,15 @@ function generateImageData(imgw, imgh) {
     var svgsrc = 'data:image/svg+xml;base64,' + btoa(html);
     //var img = '<img src="' + imgsrc + '">';
     //d3.select("#imgdata").html(img);
-    var imgdatasvg = document.getElementById('imgdatasvg')
-    imgdatasvg.setAttribute('crossOrigin', 'anonymous');
-    imgdatasvg.href = svgsrc;
-    imgdatasvg.download = "parsetree.svg";
+    var imgdatasvg = $('#imgdatasvg')
+    imgdatasvg.attr('crossOrigin', 'anonymous');
+    imgdatasvg.attr('href', svgsrc);
+    imgdatasvg.attr('download', "parsetree.svg");
 
     var image = new Image;
     image.src = svgsrc;
     image.onload = function () {
-        var imgdatapng = document.getElementById('imgdatapng');
+        var imgdatapng = $('#imgdatapng');
         try {
             var canvas = document.createElement("canvas");
             canvas.width = imgw;
@@ -167,12 +179,13 @@ function generateImageData(imgw, imgh) {
             canvasctx.drawImage(image, 0, 0);
             var pngsrc = canvas.toDataURL("image/png");
             
-            imgdatapng.href = pngsrc;
-            imgdatapng.download = "parsetree.png";
+            imgdatapng.attr('href', pngsrc);
+            imgdatapng.attr('download', "parsetree.png");
         }
         catch(e) {
-            imgdatapng.href = "javascript: void(0)";
-            imgdatapng.addEventListener('click', function() { 
+            imgdatapng.attr('href', "javascript: void(0)");
+            imgdatapng.off('click');
+            imgdatapng.on('click', function() { 
                 alert("An error occured while creating PNG.\n\n" +
                     "If you are using Internet Explorer 10 or 11, this page doesn't have enough privileges to allow PNG creation. Increase trust level for this page.\n\n" +
                     "Are you using an older browser? If so try a newer one.\n\n" +
