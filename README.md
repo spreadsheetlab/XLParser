@@ -21,7 +21,7 @@ You can parse formulas and view parse trees in the [**online demo**](https://xlp
 5. Point to the `XLParser.dll` file in the folder you extracted and click ok
 6. You can now parse formulas and see the trees in the `Test` tab
 
-### Introduction
+### Background
 
 XLParser is the reference implementation of the Excel grammar published in the upcoming paper ["A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by Efthimia Aivaloglou, David Hoepelman and Felienne Hermans](http://figshare.com/articles/A_Grammar_for_Spreadsheet_Formulas_Evaluated_on_Two_Large_Datasets/1488646).
 
