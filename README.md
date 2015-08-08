@@ -10,6 +10,10 @@ A C# Excel formula parser with the following properties:
 
 ### Quickstart
 
+You can parse formulas and view parse trees in the [**online demo**](https://xlparser.azurewebsites.net/).
+
+**or**
+
 1. Download the [latest release](https://github.com/PerfectXL/XLParser/releases/download/v1.0.0/XLParser.1.0.0.zip)
 2. Extract somewhere convenient
 3. Open `Irony.GrammarExplorer.exe` in the `Irony.GrammarExplorer` subfolder
