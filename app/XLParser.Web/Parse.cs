@@ -34,6 +34,8 @@ namespace XLParser.Web
                 context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(5));
                 context.Response.Cache.SetMaxAge(new TimeSpan(0, 0, 5));
             }
+            // We want to actually give meaningful HTTP error codes and not have IIS interfere
+            context.Response.TrySkipIisCustomErrors = true;
 
             // check file extention for format
             var format = (System.IO.Path.GetExtension(context.Request.FilePath) ?? ".json").Substring(1);
