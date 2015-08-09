@@ -13,14 +13,17 @@ var diagonal = d3.svg.diagonal()
 
 var vis;
 
+// Replace the existing parse tree image with a new one
 function newTree(formula) {
     var encodedFormula = encodeURIComponent(formula);
     var url = "Parse.json?formula=" + encodedFormula
 
+    // Request the JSON parse tree
     d3.json(url, function (request, json) {
         //console.log(json)
         //console.log(request)
         if (json !== undefined) {
+            // Calculate the needed width and height for the image
             var tw = treeWidth(json);
             var th = treeHeight(json);
             //console.log("W: " + tw + " H: " + th);
@@ -30,6 +33,7 @@ function newTree(formula) {
             var imgw = w + margin.right + margin.left;
             var imgh = h + margin.top + margin.bottom;
 
+            // create a tree and its container
             tree = d3.layout.tree().size([w, h]);
             i = 0;
 
@@ -52,9 +56,11 @@ function newTree(formula) {
             vis = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            // Creat the tree nodes
             root = json;
             update(root);
 
+            // Create downloadable images
             generateImageData(imgw, imgh);
         } else {
             json = JSON.parse(request.response);
@@ -80,10 +86,11 @@ function newTree(formula) {
     }
 }
 
+// Set the parse tree image to the default formula and enter it in the formula input field
 newTree(default_formula);
 d3.select('#formulainput').attr("value", default_formula);
 
-
+// Create nodes in the parse tree
 function update(source) {
 
     // Compute the new tree layout.
@@ -134,15 +141,18 @@ function update(source) {
     // Transition nodes to their new position.
 }
 
+// Get the approximate width of the tree, for the purpose of the image
 function treeWidth(node) {
     if (node.children == undefined) return 1;
     var sum = 0;
+    // Add the width of all children
     for (var i = 0; i < node.children.length; i++) {
         sum += treeWidth(node.children[i]);
     }
     return sum;
 }
 
+// Get the maximum depth of the tree
 function treeHeight(node) {
     if (node.children == undefined) return 1;
     var max = 0;
@@ -152,33 +162,38 @@ function treeHeight(node) {
     return max + 1;
 }
 
+// Create a downloadable SVG and PNG image from the dynamic SVG parse tree image
 // From: http://techslides.com/save-svg-as-an-image
 function generateImageData(imgw, imgh) {
     var html = d3.select("#dynamicSVGParsetree")
           .node().parentNode.innerHTML;
 
     //console.log(html);
+    // Encode the SVG data as base64 and put it in a data: link
     var svgsrc = 'data:image/svg+xml;base64,' + btoa(html);
-    //var img = '<img src="' + imgsrc + '">';
-    //d3.select("#imgdata").html(img);
     var imgdatasvg = $('#imgdatasvg')
     imgdatasvg.attr('crossOrigin', 'anonymous');
     imgdatasvg.attr('href', svgsrc);
     imgdatasvg.attr('download', "parsetree.svg");
 
+    // Create a new image object from the SVG
     var image = new Image;
     image.src = svgsrc;
     image.onload = function () {
+        // Once the image is loaded
         var imgdatapng = $('#imgdatapng');
         try {
+            // Create a canvas element and fill it with the SVG image
             var canvas = document.createElement("canvas");
             canvas.width = imgw;
             canvas.height = imgh;
             canvas.style.backgroundColor = "white";
             var canvasctx = canvas.getContext("2d");
             canvasctx.drawImage(image, 0, 0);
+            // Get the base64 encoded data URL for a PNG image from the canvas
             var pngsrc = canvas.toDataURL("image/png");
             
+            // Put it in a link
             imgdatapng.attr('href', pngsrc);
             imgdatapng.attr('download', "parsetree.png");
         }
@@ -187,7 +202,7 @@ function generateImageData(imgw, imgh) {
             imgdatapng.off('click');
             imgdatapng.on('click', function() { 
                 alert("An error occured while creating PNG.\n\n" +
-                    "If you are using Internet Explorer 10 or 11, this page doesn't have enough privileges to allow PNG creation. Increase trust level for this page.\n\n" +
+                    "If you are using a modern browser? This page might not have enough privileges to allow PNG creation. Increase trust level for this page.\n\n" +
                     "Are you using an older browser? If so try a newer one.\n\n" +
                     "Confirmed to work in Firefox 39 and Chrome 44.");
                 return false;
