@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace XLParser
 {
-    [Language("Excel Formulas", "1.1.1", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.1.2", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         public ExcelFormulaGrammar() : base(false)
@@ -65,7 +65,7 @@ namespace XLParser
             ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
             
             var ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(");
-            ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
+            ExcelConditionalRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
 
             var ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + String.Join("|", excelFunctionList)  +")\\(");
             ExcelFunction.Priority = TerminalPriority.ExcelFunction;
