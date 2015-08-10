@@ -36,6 +36,12 @@ path.link {
     padding-bottom: 2px;
 }
 
+#formulainput, #errorformulainput {
+    min-width: 25em;
+    min-height: 1em;
+    resize: both;
+}
+
 #errormessages {
     font-family: "Courier New", monospace;
     font-size: 12px;
@@ -48,14 +54,14 @@ path.link {
 }
 
 #errorformulainput {
-    font-family: "Courier New", monospace;
+    /*font-family: "Courier New", monospace;
     font-size: 12px;
-    border: 1px solid #999999;
+    border: 1px solid #999999;*/
     background-color: transparent;
     margin-top: 10px;
     margin-bottom: 10px;
     color: black;
-    width: 62em;
+    /*width: 62em;*/
 }
 
 #borderwrapper {
@@ -63,14 +69,15 @@ path.link {
     border-bottom-width: 6px;
     border-top-width: 14px;
 
-    padding-left: 75px;
-    padding-top: 35px;
-    padding-right: 75px;
-    padding-bottom: 25px;
-
     flex: 0 1 auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 #borderwrapper2 {
+    clear: both;
+
     border: 12px solid #217346;
     border-top-width: 6px;
     border-bottom-width: 14px;
@@ -83,6 +90,32 @@ path.link {
     flex: 1 1 auto;
 }
 
-#imgdata {
-    display: none;
+#leftoflogos {
+    padding-left: 75px;
+    padding-top: 35px;
+    padding-right: 75px;
+    padding-bottom: 25px;
+
+    flex-grow: 1;
+    align-items: stretch;
+    border-right: 12px solid #217346;
+}
+
+#logos {
+    
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 35px;
+    height: 100%;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
+#logos img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.clear {
+    clear: both;
 }

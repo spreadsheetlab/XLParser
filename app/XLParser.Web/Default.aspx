@@ -12,29 +12,37 @@
 </head>
 <body>
     <div id="borderwrapper">
-        <h2>XLParser web demo</h2>
+        <div id="leftoflogos">
+            <h2>XLParser web demo</h2>
     
-        <p>
-            Formula: <input type="text" size="100" id="formulainput" /> <br/> <br />
-            <button onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
-        </p>
+            <p>
+                Formula: <br/><textarea cols="25" rows="1" id="formulainput"></textarea> <br/> <br />
+                <button onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
+            </p>
     
-        <div id="bugreport">
-            <a href="javascript:;" onclick=" javascript: if(document.getElementById('bug_explanation').style.display !== 'block') {document.getElementById('bug_explanation').style.display = 'block'} else {document.getElementById('bug_explanation').style.display = 'none'};" style="color: black; font-weight: bold;">Found a bug?</a> <br/> <br/>
-            <div id="bug_explanation" style="display: none;">
-                Great! <a href="https://github.com/PerfectXL/XLParser/issues">Please report it as a Github issue!</a> <br/> <br/>
+            <div id="bugreport">
+                <a href="javascript:;" onclick=" javascript: if(document.getElementById('bug_explanation').style.display !== 'block') {document.getElementById('bug_explanation').style.display = 'block'} else {document.getElementById('bug_explanation').style.display = 'none'};" style="color: black; font-weight: bold;">Found a bug?</a> <br/> <br/>
+                <div id="bug_explanation" style="display: none;">
+                    Great! <a href="https://github.com/PerfectXL/XLParser/issues">Please report it as a Github issue!</a> <br/> <br/>
 
-                If the bug is with a specific formula/excel file, please include that too.<br/>
-                Generally bugs in XLParser are one of the following, please include this type in the report:<br/>
-                <ul>
-                    <li>The parser can't parse a formula that Excel accepts</li>
-                    <li>The parser parses a formula that Excel doesn't accept.</li>
-                    <li>The parser interprets a formula wrong, that is it produces a parse tree that doesn't correspond with how Excel behaves.</li>
-                    <li>There is a "normal" bug in the code around the core parser.</li>
-                </ul>
+                    If the bug is with a specific formula/excel file, please include that too.<br/>
+                    Generally bugs in XLParser are one of the following, please include this type in the report:<br/>
+                    <ul>
+                        <li>The parser can't parse a formula that Excel accepts</li>
+                        <li>The parser parses a formula that Excel doesn't accept.</li>
+                        <li>The parser interprets a formula wrong, that is it produces a parse tree that doesn't correspond with how Excel behaves.</li>
+                        <li>There is a "normal" bug in the code around the core parser.</li>
+                    </ul>
             
+                </div>
             </div>
         </div>
+        
+        <div id="logos">
+            <a href="https://tudelft.nl"><img src="img/logo-tudelft.png" alt="TU Delft logo"/></a><br/>
+            <a href="http://spreadsheetlab.org/"><img src="img/logo-spreadsheet-lab.png" alt="Spreadsheet lab logo"/></a><br/>
+            <a href="http://www.infotron.nl/"><img src="img/logo-infotron.png" alt="Infotron logo"/></a>
+        </div> 
     </div>
     <div id="borderwrapper2">
         <script type="text/javascript">

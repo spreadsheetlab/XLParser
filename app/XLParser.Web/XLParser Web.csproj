@@ -75,6 +75,9 @@
   <ItemGroup>
     <Content Include="d3vizsvg.js" />
     <Content Include="Default.aspx" />
+    <Content Include="img\logo-infotron.png" />
+    <Content Include="img\logo-spreadsheet-lab.png" />
+    <Content Include="img\logo-tudelft.png" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>
@@ -98,6 +101,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

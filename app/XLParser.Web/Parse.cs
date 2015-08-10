@@ -77,8 +77,16 @@ namespace XLParser.Web
                 w(JsonConvert.SerializeObject(new
                 {
                     error = "Parse error",
-                    messages = r.ParserMessages.Select(m => String.Format("{0} at {1}: {2}", m.Level, m.Location, m.Message)),
-                    formula = formula
+                    formula = formula,
+                    message = r.ParserMessages.Select(m => new
+                    {
+                        level = m.Level.ToString(),
+                        line = m.Location.Line+1,
+                        column = m.Location.Column+1,
+                        msg = m.Message
+                        //String.Format("{0} at {1}: {2}", m.Level, m.Location, m.Message)
+                    }).FirstOrDefault()
+                    
                 }));
                 ctx.Response.End();
                 return;

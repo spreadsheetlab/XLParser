@@ -16,7 +16,7 @@ var vis;
 // Replace the existing parse tree image with a new one
 function newTree(formula) {
     var encodedFormula = encodeURIComponent(formula);
-    var url = "Parse.json?formula=" + encodedFormula
+    var url = "Parse.json?formula=" + encodedFormula;
 
     // Request the JSON parse tree
     d3.json(url, function (request, json) {
@@ -64,11 +64,15 @@ function newTree(formula) {
             generateImageData(imgw, imgh);
         } else {
             json = JSON.parse(request.response);
-            var msg = "<strong>Error:</strong> <code>" + json.error + "</code><br />";
+            var msg = "<code>" + json.error;
+            if (json.message !== undefined) {
+                msg += " at line " + json.message.line + " column " + json.message.column;
+            }
+            msg += "</code><br /> <br />";
             // Convert to entities to prevent XSS
-            msg += "Input: <input id='errorformulainput' disabled value='" + json.formula.replace(/./gm, function (s) { return "&#" + s.charCodeAt(0) + ";"; }) + "'/><br />";
-            if (json.messages !== undefined) {
-                msg += "<textarea disabled id='errormessages'>" + json.messages + '</textarea>';
+            msg += "Input:<br /><textarea colw='50' rows='1' id='errorformulainput' disabled>" + json.formula.replace(/./gm, function (s) { return "&#" + s.charCodeAt(0) + ";"; }) + "</textarea><br />";
+            if (json.message !== undefined) {
+                msg += "<textarea disabled id='errormessages'>" + json.message.level + " at position " + json.message.line + ":" + json.message.column + "\n" + json.message.msg + '</textarea>';
             }
             d3.select("#d3viz")
             .html(msg);
@@ -88,7 +92,7 @@ function newTree(formula) {
 
 // Set the parse tree image to the default formula and enter it in the formula input field
 newTree(default_formula);
-d3.select('#formulainput').attr("value", default_formula);
+d3.select('#formulainput').text(default_formula);
 
 // Create nodes in the parse tree
 function update(source) {
