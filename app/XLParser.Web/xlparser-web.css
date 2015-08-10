@@ -1,0 +1,121 @@
+﻿html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    background-color: #f1f1f1;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+
+    display: flex;
+    flex-flow: column;
+}
+
+/* This is now defined in the javascript file, otherwise downloaded image would miss these styles*/
+/*    
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 14px;
+}
+
+path.link {
+  fill: none;
+  stroke: #bbb;
+  stroke-width: 1.5px;
+}*/
+
+#formulainput, #errorformulainput, #errormessages {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#formulainput, #errorformulainput {
+    min-width: 25em;
+    min-height: 1em;
+    resize: both;
+}
+
+#errormessages {
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    border: 1px solid #999999;
+    padding: 5px;
+    background-color: transparent;
+    color: black;
+    width: 65em;
+    height: 15em;
+}
+
+#errorformulainput {
+    /*font-family: "Courier New", monospace;
+    font-size: 12px;
+    border: 1px solid #999999;*/
+    background-color: transparent;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: black;
+    /*width: 62em;*/
+}
+
+#borderwrapper {
+    border: 12px solid #217346;
+    border-bottom-width: 6px;
+    border-top-width: 14px;
+
+    flex: 0 1 auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+#borderwrapper2 {
+    clear: both;
+
+    border: 12px solid #217346;
+    border-top-width: 6px;
+    border-bottom-width: 14px;
+
+    padding-left: 75px;
+    padding-top: 10px;
+    padding-right: 75px;
+    padding-bottom: 35px;
+    
+    flex: 1 1 auto;
+}
+
+#leftoflogos {
+    padding-left: 75px;
+    padding-top: 35px;
+    padding-right: 75px;
+    padding-bottom: 25px;
+
+    flex-grow: 1;
+    align-items: stretch;
+    border-right: 12px solid #217346;
+}
+
+#logos {
+    
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 35px;
+    height: 100%;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
+#logos img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.clear {
+    clear: both;
+}
