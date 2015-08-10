@@ -135,7 +135,6 @@ namespace XLParser
             var ArrayRows = new NonTerminal(GrammarNames.ArrayRows);
             var Bool = new NonTerminal(GrammarNames.Bool);
             var Cell = new NonTerminal(GrammarNames.Cell);
-            var ConditionalRefFunctionName = new NonTerminal(GrammarNames.ConditionalRefFunctionName);
             var Constant = new NonTerminal(GrammarNames.Constant);
             var ConstantArray = new NonTerminal(GrammarNames.ConstantArray);
             var DynamicDataExchange = new NonTerminal(GrammarNames.DynamicDataExchange);
@@ -771,7 +770,6 @@ namespace XLParser
         public const string ArrayRows = "ArrayRows";
         public const string Bool = "Bool";
         public const string Cell = "Cell";
-        public const string ConditionalRefFunctionName = "ConditionalRefFunctionName";
         public const string Constant = "Constant";
         public const string ConstantArray = "ConstantArray";
         public const string DynamicDataExchange = "DynamicDataExchange";
