@@ -122,6 +122,19 @@ namespace XLParser.Tests
         }
         #endregion
 
+        #region References()
+
+        [TestMethod]
+        public void OnlyDirectReferences()
+        {
+            // Make sure A1:A10 isn't returned as "A1:A10", "A1" and "A10"
+            var fa = new FormulaAnalyzer("SUM(A1:A10)");
+            var references = fa.References().ToList();
+            Assert.AreEqual(1, references.Count());
+            CollectionAssert.Contains(references.Select(ExcelFormulaParser.Print).ToList(), "A1:A10");
+        }
+        #endregion
+
         #region Depth() and ConditionalComplexity()
 
         [TestMethod]

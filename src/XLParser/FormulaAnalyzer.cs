@@ -48,11 +48,14 @@ namespace XLParser
         {}
 
         /// <summary>
-        /// Get all references
+        /// Get all references that aren't part of another reference expression
         /// </summary>
         public IEnumerable<ParseTreeNode> References()
         {
-            return ExcelFormulaParser.AllNodes(AllNodes, GrammarNames.Reference);
+            return ExcelFormulaParser
+                .AllNodes(AllNodes, GrammarNames.Formula)
+                .Where(node => node.ChildNodes.Count == 1 && node.ChildNodes[0].Is(GrammarNames.Reference))
+                .Select(node => node.ChildNodes[0]);
         }
 
         public IEnumerable<string> Functions()
