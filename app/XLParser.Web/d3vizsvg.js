@@ -131,7 +131,7 @@ function update(source) {
         })
         .attr("dy", ".31em")
         .attr("text-anchor", "middle")
-        .text(function (d) { return d.name; })
+        .text(function (d) { return d.name.replace("\n", "\\n"); })
         .style("fill-opacity", 1);
 
     // Declare the links…
