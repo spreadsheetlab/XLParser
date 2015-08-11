@@ -14,7 +14,7 @@ You can parse formulas and view parse trees in the [**online demo**](https://xlp
 
 **or**
 
-1. Download the [latest release](https://github.com/PerfectXL/XLParser/releases/download/v1.0.0/XLParser.1.0.0.zip)
+1. Download the [latest release](https://github.com/PerfectXL/XLParser/releases/latest)
 2. Extract somewhere convenient
 3. Open `Irony.GrammarExplorer.exe` in the `Irony.GrammarExplorer` subfolder
 4. Click on the `...` button at the top and select `Add Grammar`
@@ -31,17 +31,12 @@ Note however that XLParser is not very restrictive, and thus might parse formula
 
 XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/).
 
-### License
-
-All files of XLParser are released under the Mozilla Public License 2.0.
-
-Roughly this means that you can make any alterations you like and can use this library in any project, even closed-source and statically linked, as long as you publish any modifications to the library.
-
-### How to build
+## Using XLParser
+### Building
 
 Open the `XLParser.sln` file in `src/` in Visual Studio 2013 or higher and press build. The dependencies are already included in compiled form in this repository.
 
-### How to use in your project
+### Using in your project
 
 The `ExcelFormulaParser` class is your main entry point. You can parse a formula through `ExcelFormulaParser.Parse("yourformula")`.
 
@@ -49,7 +44,7 @@ The `ExcelFormulaParser` class is your main entry point. You can parse a formula
 
 `FormulaAnalyzer` contains some example functionality for analyzing the parse tree.
 
-### How to debug or experiment
+### Debugging
 
 Irony, the parser framework XLParser uses, includes a tool called the "grammar explorer". This is a great way to play around with the grammar and parse trees.
 To use this tool, you first need to build it once by opening the Irony solution (`lib/Irony/Irony_All.2012.sln`) and building it with release configuration. After that you can use the binary in `lib/Irony/Irony.GrammarExplorer/bin/Release/Irony.GrammarExplorer.exe`.
@@ -57,3 +52,13 @@ To use this tool, you first need to build it once by opening the Irony solution 
 To load the XLParser grammar, first make sure you have built XLParser. Then open the GrammarExplorer and add the grammar (`...` button) from `src/XLParser/bin/Debug/XLParser.dll`.
 
 In Visual Studio you can see the printed version of any node during debugging by adding `yournode.Print(),ac` in the watch window.
+
+### Documentation
+
+See the paper and [the API documentation](https://perfectxl.github.io/XLParser/api/namespace_x_l_parser.html).
+
+### License
+
+All files of XLParser are released under the Mozilla Public License 2.0.
+
+Roughly this means that you can make any alterations you like and can use this library in any project, even closed-source and statically linked, as long as you publish any modifications to the library.
