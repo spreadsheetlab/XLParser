@@ -6,6 +6,7 @@ Reference implementation of the Excel grammar published in the upcoming paper "A
 
 Fixed [#1](https://github.com/PerfectXL/XLParser/issues/1), [#2](https://github.com/PerfectXL/XLParser/issues/2), [#4](https://github.com/PerfectXL/XLParser/issues/4).
 
+* Added a web demo in app/XLParser.Web which generates parse tree images
 * All UDF's now use the same nonterminal
 * Non-Prefixed UDFs can now be part of a reference expression
 * IF and CHOOSE functions can now be part of a reference expression
