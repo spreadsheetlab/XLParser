@@ -13,7 +13,7 @@
 <body>
     <div id="borderwrapper">
         <div id="leftoflogos">
-            <h2>XLParser web demo</h2>
+            <h2><a href="https://github.com/PerfectXL/XLParser">XLParser</a> web demo</h2>
     
             <p>
                 Formula: <br/><textarea cols="25" rows="1" id="formulainput"></textarea> <br/> <br />

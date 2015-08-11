@@ -119,3 +119,7 @@ path.link {
 .clear {
     clear: both;
 }
+
+h2 a {
+    text-decoration: none;
+}
