@@ -67,7 +67,7 @@ namespace XLParser.Web
             ParseTreeNode root;
             try
             {
-                root = ExcelFormulaParser.Parse(formula);
+                root = XLParser.ExcelFormulaParser.Parse(formula);
             }
             catch (ArgumentException)
             {

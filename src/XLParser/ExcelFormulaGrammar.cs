@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace XLParser
 {
+    /// <summary>
+    /// Contains the XLParser grammar
+    /// </summary>
     [Language("Excel Formulas", "1.1.2", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
