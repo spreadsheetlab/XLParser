@@ -1,4 +1,3 @@
-formula
 MIN(Metrics!E$2:E$4499)
 MIN(Regions!C$2:C$4499)
 "QUARTILE(Metrics!E$2:E$4499,1)"
