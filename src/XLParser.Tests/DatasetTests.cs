@@ -16,7 +16,7 @@ namespace XLParser.Tests
     {
         public TestContext TestContext { get; set; }
 
-        private const int MaxParseErrors = 1000;
+        private const int MaxParseErrors = 10;
 
         [TestMethod]
         [TestCategory("Slow")]
