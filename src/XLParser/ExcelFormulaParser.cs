@@ -15,9 +15,17 @@ namespace XLParser
     public static class ExcelFormulaParser
     {
         /// <summary>
-        /// Singleton parser instance
+        /// Thread-local singleton parser instance
         /// </summary>
-        private readonly static Parser p = new Parser(new ExcelFormulaGrammar());
+        [ThreadStatic] private static Parser _p;
+
+        /// <summary>
+        /// Thread-safe parser
+        /// </summary>
+        private static Parser p
+        {
+            get { return _p ?? (_p = new Parser(new ExcelFormulaGrammar())); }
+        }
 
         /// <summary>
         /// Parse a formula, return the the tree's root node
