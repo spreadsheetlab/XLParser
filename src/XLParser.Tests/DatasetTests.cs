@@ -37,22 +37,16 @@ namespace XLParser.Tests
 
         private void parseCSVDataSet(string filename, string knownfailsfile = null)
         {
-            ISet<string> knownfails = new HashSet<string>();
-            if (knownfailsfile != null)
-            {
-                knownfails = new HashSet<string>(File.ReadLines(knownfailsfile).Select(unQuote));
-            }
+            ISet<string> knownfails = new HashSet<string>(readFormulaCSV(knownfailsfile));
             int parseErrors = 0;
             var LOCK = new object();
-            Parallel.ForEach(File.ReadLines(filename), (line, control, linenr) =>
+            Parallel.ForEach(readFormulaCSV(filename), (formula, control, linenr) =>
             {
                 if (parseErrors > MaxParseErrors)
                 {
                     control.Stop();
                     return;
                 }
-                if (line == "") return;
-                string formula = unQuote(line);
                 try
                 {
                     ExcelFormulaParser.Parse(formula);
@@ -72,9 +66,18 @@ namespace XLParser.Tests
             if (parseErrors > 0) Assert.Fail("Parse Errors on file " + filename);
         }
 
+        private static IEnumerable<string> readFormulaCSV(string f)
+        {
+            if (f == null) return Enumerable.Empty<string>();
+            return File.ReadLines(f)
+                .Where(line => line != "")
+                .Select(unQuote)
+                ;
+        }
+
         private static string unQuote(string line)
         {
-            return line[0] == '"' ?
+            return line.Length > 0 && line[0] == '"' ?
                     line.Substring(1, line.Length - 2).Replace("\"\"", "\"")
                   : line;
         }
