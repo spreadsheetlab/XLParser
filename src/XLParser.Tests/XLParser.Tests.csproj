@@ -70,16 +70,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\enron_formulas.csv">
+    <None Include="data\enron\formulas.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="data\enron_knownfails.csv">
+    <None Include="data\enron\knownfails.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="data\euses_formulas.csv">
+    <None Include="data\euses\formulas.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="data\euses_knownfails.csv">
+    <None Include="data\euses\knownfails.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

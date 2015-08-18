@@ -24,15 +24,16 @@ namespace XLParser.Tests
         //[Ignore]
         public void EnronFormulasParseTest()
         {
-            parseCSVDataSet("data/enron_formulas.csv", "data/enron_knownfails.csv");
+            parseCSVDataSet("data/enron/formulas.csv", "data/enron/knownfails.csv");
         }
 
+        [TestMethod]
         [TestCategory("Slow")]
         // Uncomment this to execute the test
         //[Ignore]
         public void EusesFormulasParseTest()
         {
-            parseCSVDataSet("data/euses_formulas.csv", "data/enron_knownfails.csv");
+            parseCSVDataSet("data/euses/formulas.csv", "data/enron/knownfails.csv");
         }
 
         private void parseCSVDataSet(string filename, string knownfailsfile = null)
