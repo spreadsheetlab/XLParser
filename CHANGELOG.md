@@ -1,8 +1,16 @@
 # Changelog
 
-## 1.1.2
+## 1.1.3
 
 Reference implementation of the Excel grammar published in the upcoming paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
+
+* Added all formulas from EUSES and Enron datasets and tests to check if they all parse
+* Made parser thread safe
+* Fixed [#9](https://github.com/PerfectXL/XLParser/issues/9): some tokens which would not accept all unicode characters (like UDF) now do so
+* `'Sheet1:Sheet5'` will now correctly parse as `MULTIPLESHEETS` instead of a single sheet
+
+
+## 1.1.2
 
 Fixed [#1](https://github.com/PerfectXL/XLParser/issues/1), [#2](https://github.com/PerfectXL/XLParser/issues/2), [#4](https://github.com/PerfectXL/XLParser/issues/4).
 
