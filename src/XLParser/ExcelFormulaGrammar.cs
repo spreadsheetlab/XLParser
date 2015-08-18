@@ -95,7 +95,7 @@ namespace XLParser
             var NamedRangeCombinationToken = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex);
             NamedRangeCombinationToken.Priority = TerminalPriority.NamedRangeCombination;
 
-            const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, :";
+            const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
             const string notSheetNameChars = @"'*\[\]\\:/?";
             //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
             //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
