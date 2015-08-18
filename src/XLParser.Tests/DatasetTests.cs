@@ -33,7 +33,7 @@ namespace XLParser.Tests
         //[Ignore]
         public void EusesFormulasParseTest()
         {
-            parseCSVDataSet("data/euses/formulas.csv", "data/enron/knownfails.csv");
+            parseCSVDataSet("data/euses/formulas.csv", "data/euses/knownfails.csv");
         }
 
         private void parseCSVDataSet(string filename, string knownfailsfile = null)
@@ -41,6 +41,7 @@ namespace XLParser.Tests
             ISet<string> knownfails = new HashSet<string>(readFormulaCSV(knownfailsfile));
             int parseErrors = 0;
             var LOCK = new object();
+
             Parallel.ForEach(readFormulaCSV(filename), (formula, control, linenr) =>
             {
                 if (parseErrors > MaxParseErrors)
@@ -70,6 +71,7 @@ namespace XLParser.Tests
         private static IEnumerable<string> readFormulaCSV(string f)
         {
             if (f == null) return Enumerable.Empty<string>();
+            // using ReadAllLines instead of ReadLines shaves about 10s of the enron test, so it's worth the memory usage.
             return File.ReadLines(f)
                 .Where(line => line != "")
                 .Select(unQuote)
