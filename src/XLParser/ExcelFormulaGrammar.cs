@@ -7,7 +7,7 @@ namespace XLParser
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.1.2", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.1.3", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         public ExcelFormulaGrammar() : base(false)
@@ -61,7 +61,7 @@ namespace XLParser
 
             #region Functions
 
-            var UDFToken = new RegexBasedTerminal(GrammarNames.TokenUDF, "(_xll\\.)?[a-zA-Z0-9_.]+\\(");
+            var UDFToken = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(");
             UDFToken.Priority = TerminalPriority.UDF;
 
             var ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(");
@@ -95,26 +95,33 @@ namespace XLParser
             var NamedRangeCombinationToken = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex);
             NamedRangeCombinationToken.Priority = TerminalPriority.NamedRangeCombination;
 
-            const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
-            const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
+            const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
+            const string notSheetNameChars = @"'*\[\]\\:/?";
+            //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
+            //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
+            const string normalSheetName = "[^" + notSheetNameChars + mustBeQuotedInSheetName + "]+";
+            const string quotedSheetName = "([^" + notSheetNameChars +  "]|'')+";
+            const string sheetRegEx = "((" + normalSheetName + ")|('" + quotedSheetName + "'))!";
 
             var SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx);
             SheetToken.Priority = TerminalPriority.SheetToken;
 
-            const string firstSheetName = "[a-zA-Z0-9]+:";
-            var MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, firstSheetName + sheetRegEx);
+            var multiSheetRegex = String.Format("(({0}:{0})|('{1}:{1}'))!", normalSheetName, quotedSheetName);
+            var MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex);
             MultipleSheetsToken.Priority = TerminalPriority.MultipleSheetsToken;
 
             var FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+");
             FileToken.Priority = TerminalPriority.FileToken;;
 
-            var QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, @"'\[\d+\]([" + singleQuotedContent + @"]|'')+'!");
+            const string quotedFileSheetRegex = @"'\[\d+\]" + quotedSheetName + "'!";
+            
+            var QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex);
             QuotedFileSheetToken.Priority = TerminalPriority.QuotedFileToken;
 
             var ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+");
             ReservedNameToken.Priority = TerminalPriority.ReservedName;
 
-            var DDEToken = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([\[\]" + singleQuotedContent + @"]|'')+'");
+            var DDEToken = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
 
             #endregion
 
