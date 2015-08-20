@@ -10,7 +10,7 @@ A C# Excel formula parser with the following properties:
 
 ### Quickstart
 
-You can parse formulas and view parse trees in the [**online demo**](https://xlparser.azurewebsites.net/).
+You can parse formulas and view parse trees in the [**online demo**](http://xlparser.perfectxl.nl/demo).
 
 **or**
 
