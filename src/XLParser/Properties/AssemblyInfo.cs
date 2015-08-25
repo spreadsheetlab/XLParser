@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("XLParser")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A parser for Excel formulas")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("TU Delft, Infotron")]
 [assembly: AssemblyProduct("XLParser")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,10 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+
+// Free form tag, use the version tag from git
+[assembly: AssemblyInformationalVersion("1.1.3")]
+// This is what other developers reference. As such this should change at breaking changes, but not otherwise
+[assembly: AssemblyVersion("1.1.0.0")]
+// Unique id, automatically generated from build when using major.minor.*
+[assembly: AssemblyFileVersion("1.1.*")]
