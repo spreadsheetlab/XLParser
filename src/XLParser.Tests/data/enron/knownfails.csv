@@ -25,4 +25,3 @@ VLOOKUP(F2,PJM Monthly Summary 2000 08 V.1!$R$6:$S$1411,2,FALSE)
 VLOOKUP(F18,PJM Monthly Summary 2000 08 V.1!$R$20:$S$1359,2,FALSE)
 -NOX, Regi
 -_SO2, Regi
-
