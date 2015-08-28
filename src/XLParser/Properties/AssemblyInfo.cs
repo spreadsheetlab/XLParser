@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("XLParser")]
 [assembly: AssemblyDescription("A parser for Excel formulas")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TU Delft, Infotron")]
+[assembly: AssemblyCompany("TU Delft Spreadsheet Lab, Infotron")]
 [assembly: AssemblyProduct("XLParser")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
