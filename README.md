@@ -32,11 +32,14 @@ Note however that XLParser is not very restrictive, and thus might parse formula
 XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/).
 
 ## Using XLParser
+
 ### Building
 
 Open the `XLParser.sln` file in `src/` in Visual Studio 2013 or higher and press build. The dependencies are already included in compiled form in this repository.
 
 ### Using in your project
+
+The easiest way to add the dependency to your project is with [NuGet](https://www.nuget.org/packages/XLParser/)
 
 The `ExcelFormulaParser` class is your main entry point. You can parse a formula through `ExcelFormulaParser.Parse("yourformula")`.
 
