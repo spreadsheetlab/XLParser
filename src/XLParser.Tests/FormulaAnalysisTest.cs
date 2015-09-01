@@ -130,8 +130,10 @@ namespace XLParser.Tests
             // Make sure A1:A10 isn't returned as "A1:A10", "A1" and "A10"
             var fa = new FormulaAnalyzer("SUM(A1:A10)");
             var references = fa.References().ToList();
-            Assert.AreEqual(1, references.Count());
-            CollectionAssert.Contains(references.Select(ExcelFormulaParser.Print).ToList(), "A1:A10");
+            CollectionAssert.AreEqual(references.Select(ExcelFormulaParser.Print).ToList(), new [] { "A1:A10" });
+            fa = new FormulaAnalyzer("(A1)+2");
+            references = fa.References().ToList();
+            CollectionAssert.AreEqual(references.Select(ExcelFormulaParser.Print).ToList(), new [] {"A1" });
         }
         #endregion
 
@@ -152,6 +154,17 @@ namespace XLParser.Tests
             Assert.AreEqual(fa1.ConditionalComplexity(), 0);
             var fa2 = new FormulaAnalyzer("IF(TRUE,IF(FALSE,1,0),0)");
             Assert.AreEqual(fa2.ConditionalComplexity(), 2);
+        }
+        #endregion
+
+        #region Constants()
+
+        [TestMethod]
+        public void TestConstants()
+        {
+            var fa = new FormulaAnalyzer("1*3-8-(-9)+VLOOKUP($A:$B,5,10)&\"ABC\"+TRUE*-3");
+            var constants = fa.Constants().ToList();
+            CollectionAssert.AreEqual(new[] { "1", "3", "8", "-9", "5", "10", "\"ABC\"", "TRUE", "-3"}, constants);
         }
         #endregion
     }

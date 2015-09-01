@@ -71,15 +71,25 @@ namespace XLParser.Tests
         [TestMethod]
         public void BinaryOperators()
         {
-            test(new [] {"A1*5", "1+1", "1-1", "1/1", "1^1", "1&1", "A1:A1", "A1 A1"},
-                ExcelFormulaParser.IsBinaryOperation);    
+            test(new [] {"A1*5", "1+1", "1-1", "1/1", "1^1", "1&1"},
+                n=> n.IsBinaryOperation() && n.IsOperation() && n.IsBinaryNonReferenceOperation());
+            test(new[] { "A1:A1", "A1 A1" },
+                n => n.IsBinaryOperation() && n.IsOperation() && n.IsBinaryReferenceOperation());
         }
 
         [TestMethod] 
         public void UnaryOperators()
         {
             test(new [] {"+A5", "-1", "1%"},
-            ExcelFormulaParser.IsUnaryOperation);
+            n=> n.IsUnaryOperation() && n.IsOperation());
+            test("-1", node => node.GetFunction() == "-");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void NotAFunction()
+        {
+            test("1", node=>node.GetFunction()=="No function here");
         }
 
         [TestMethod]
@@ -88,7 +98,7 @@ namespace XLParser.Tests
             test("DAYS360(1)", node => node.IsFunction() && node.GetFunction() == "DAYS360" && node.IsBuiltinFunction());
             test("SUM(1)", node => node.IsFunction() && node.GetFunction() == "SUM" && node.IsBuiltinFunction());
             test("INDEX(1)", node => node.IsFunction() && node.GetFunction() == "INDEX" && node.IsBuiltinFunction());
-            test("IF(1)", node => node.IsFunction() && node.GetFunction() == "IF" && node.IsBuiltinFunction());
+            test("IF(1)", node => node.IsFunction() && node.GetFunction() == "IF" && node.MatchFunction("IF") && node.IsBuiltinFunction());
             test("MYUSERDEFINEDFUNCTION()", node => node.IsFunction() && node.GetFunction() == "MYUSERDEFINEDFUNCTION");
         }
 
@@ -241,8 +251,8 @@ namespace XLParser.Tests
         [TestMethod]
         public void Union()
         {
-            test("LARGE((F38,C38),1)");
-            test("LARGE((2:2,C38,$A$1:A6),1)");   
+            test("LARGE((F38,C38),1)", node => node.ChildNodes[1].GetFunction() == ",");
+            test("LARGE((2:2,C38,$A$1:A6),1)", node => node.ChildNodes[1].GetFunction() == ",");   
         }
 
         [TestMethod]
@@ -648,6 +658,18 @@ namespace XLParser.Tests
         public void Bug()
         {
             test("SUM(B5,2)");
+        }
+
+        [TestMethod]
+        public void TestIsParentheses()
+        {
+            // Can't use test() for this one, since test() invokes skipFormula()
+            Assert.IsTrue(ExcelFormulaParser.Parse("(1)").IsParentheses());
+            Assert.IsTrue(ExcelFormulaParser.Parse("(A1)").ChildNodes[0].IsParentheses());
+            // Make sure unions aren't recognized as parentheses
+            var union = ExcelFormulaParser.Parse("(A1,A2)");
+            Assert.IsFalse(union.IsParentheses());
+            Assert.IsFalse(union.ChildNodes[0].IsParentheses());
         }
     }
 }

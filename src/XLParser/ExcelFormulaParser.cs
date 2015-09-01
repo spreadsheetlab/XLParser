@@ -61,10 +61,11 @@ namespace XLParser
         }
 
         /// <summary>
-        /// All non-terminal nodes in depth-first pre-order
+        /// Non-terminal nodes in depth-first pre-order, with a conditional stop
         /// </summary>
+        /// <param name="stopAt">Don't process the children of a node matching this predicate</param>
         // inspiration taken from https://irony.codeplex.com/discussions/213938
-        public static IEnumerable<ParseTreeNode> AllNodes(this ParseTreeNode root)
+        public static IEnumerable<ParseTreeNode> AllNodesConditional(this ParseTreeNode root, Predicate<ParseTreeNode> stopAt = null)
         {
             var stack = new Stack<ParseTreeNode>();
             stack.Push(root);
@@ -74,6 +75,9 @@ namespace XLParser
                 var node = stack.Pop();
                 yield return node;
 
+                // Check if we don't want to process the children of this node
+                if (stopAt != null && stopAt(node)) continue;
+
                 var children = node.ChildNodes;
                 // Push children on in reverse order so that they will
                 // be evaluated left -> right when popped.
@@ -82,6 +86,14 @@ namespace XLParser
                     stack.Push(children[i]);
                 }
             }
+        }
+
+        /// <summary>
+        /// All non-terminal nodes in depth-first pre-order
+        /// </summary>
+        public static IEnumerable<ParseTreeNode> AllNodes(this ParseTreeNode root)
+        {
+            return AllNodesConditional(root);
         }
 
         /// <summary>
@@ -157,6 +169,11 @@ namespace XLParser
                    && input.ChildNodes[1].Term.Flags.HasFlag(TermFlags.IsOperator);
         }
 
+        public static bool IsBinaryNonReferenceOperation(this ParseTreeNode input)
+        {
+            return input.IsBinaryOperation() && input.Is(GrammarNames.FunctionCall);
+        }
+
         public static bool IsBinaryReferenceOperation(this ParseTreeNode input)
         {
             return input.IsBinaryOperation() && input.Is(GrammarNames.ReferenceFunctionCall);
@@ -177,7 +194,7 @@ namespace XLParser
         public static bool IsUnaryPostfixOperation(this ParseTreeNode input)
         {
             return input.IsFunction()
-                   && input.ChildNodes.Count() == 2
+                   && input.ChildNodes.Count == 2
                    && input.ChildNodes[1].Term.Flags.HasFlag(TermFlags.IsOperator);
 
         }
@@ -243,15 +260,8 @@ namespace XLParser
         /// </summary>
         public static bool IsIntersection(this ParseTreeNode input)
         {
-            try
-            {
-                return IsBinaryOperation(input) &&
+            return IsBinaryOperation(input) &&
                        input.ChildNodes[1].Token.Terminal.Name == GrammarNames.TokenIntersect;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -259,14 +269,9 @@ namespace XLParser
         /// </summary>
         public static bool IsUnion(this ParseTreeNode input)
         {
-            try
-            {
-                return input.Is(GrammarNames.ReferenceFunctionCall) && input.ChildNodes[0].Is(GrammarNames.Union);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return input.Is(GrammarNames.ReferenceFunctionCall)
+                && input.ChildNodes.Count == 1
+                && input.ChildNodes[0].Is(GrammarNames.Union);
         }
 
         /// <summary>
@@ -279,9 +284,9 @@ namespace XLParser
                 || input.Is(GrammarNames.UDFunctionCall);
         }
 
-        public static bool IsOperator(this ParseTreeNode input)
+        public static bool IsOperation(this ParseTreeNode input)
         {
-            return input.IsBinaryOperation() || input.IsBinaryReferenceOperation() || input.IsUnaryOperation();
+            return input.IsBinaryOperation() || input.IsUnaryOperation();
         }
 
         public static bool IsExternalUDFunction(this ParseTreeNode input)

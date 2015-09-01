@@ -52,10 +52,10 @@ namespace XLParser
         /// </summary>
         public IEnumerable<ParseTreeNode> References()
         {
-            return ExcelFormulaParser
-                .AllNodes(AllNodes, GrammarNames.Formula)
-                .Where(node => node.ChildNodes.Count == 1 && node.ChildNodes[0].Is(GrammarNames.Reference))
-                .Select(node => node.ChildNodes[0]);
+            return Root.AllNodesConditional(node => node.Is(GrammarNames.Reference))
+                .Where(node => node.Is(GrammarNames.Reference))
+                .Select(node => node.SkipToRelevant())
+                ;
         }
 
         public IEnumerable<string> Functions()
@@ -67,7 +67,7 @@ namespace XLParser
 
         public IEnumerable<string> Constants()
         {
-            return AllNodes
+            return Root.AllNodesConditional(ExcelFormulaParser.IsNumberWithSign)
                 .Where(node => node.Is(GrammarNames.Constant) || node.IsNumberWithSign())
                 .Select(ExcelFormulaParser.Print);
         } 
@@ -78,7 +78,7 @@ namespace XLParser
         public IEnumerable<double> Numbers()
         {
             // Excel numbers can be a double, short or signed int. double can fully represent all of these
-            return AllNodes
+            return Root.AllNodesConditional(ExcelFormulaParser.IsNumberWithSign)
                 .Where(node => node.Is(GrammarNames.Number) || node.IsNumberWithSign())
                 .Select(node => double.Parse(node.Print(), NumberStyles.Float, CultureInfo.InvariantCulture));
         }

@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormulaAnalysisTest.cs" />
-    <Compile Include="ParserUtilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="PrintTests.cs" />
