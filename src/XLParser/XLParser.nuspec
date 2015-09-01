@@ -15,7 +15,7 @@
     The produced parse trees are compact and suitable for further analysis or manipulation.
     XLParser has a 99.9% compatibility rate tested with over a million real-world formulas.
     </summary>
-    <tags>parsing excel grammar</tags>
+    <tags>parser parsing excel formula</tags>
     <dependencies>
       <dependency id="Irony" version="0.9.0" />
     </dependencies>
