@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.4
+
+* Added some missing methods that test for specific types of operators
+* Added tests and fixes if necessary for methods that were missing tests
+
 ## 1.1.3
 
 Reference implementation of the Excel grammar published in the upcoming paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.

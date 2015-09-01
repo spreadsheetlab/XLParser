@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 // Free form tag, use the version tag from git
-[assembly: AssemblyInformationalVersion("1.1.3")]
+[assembly: AssemblyInformationalVersion("1.1.4")]
 // This is what other developers reference. As such this should change at breaking changes, but not otherwise
 [assembly: AssemblyVersion("1.1.0.0")]
 // Unique id, automatically generated from build when using major.minor.*
