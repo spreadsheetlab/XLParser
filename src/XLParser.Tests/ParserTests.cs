@@ -85,10 +85,10 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExcelFunction()
         {
-            test("DAYS360(1)", node => node.IsFunction() && node.GetFunction() == "DAYS360");
-            test("SUM(1)", node => node.IsFunction() && node.GetFunction() == "SUM");
-            test("INDEX(1)", node => node.IsFunction() && node.GetFunction() == "INDEX");
-            test("IF(1)", node => node.IsFunction() && node.GetFunction() == "IF");
+            test("DAYS360(1)", node => node.IsFunction() && node.GetFunction() == "DAYS360" && node.IsBuiltinFunction());
+            test("SUM(1)", node => node.IsFunction() && node.GetFunction() == "SUM" && node.IsBuiltinFunction());
+            test("INDEX(1)", node => node.IsFunction() && node.GetFunction() == "INDEX" && node.IsBuiltinFunction());
+            test("IF(1)", node => node.IsFunction() && node.GetFunction() == "IF" && node.IsBuiltinFunction());
             test("MYUSERDEFINEDFUNCTION()", node => node.IsFunction() && node.GetFunction() == "MYUSERDEFINEDFUNCTION");
         }
 

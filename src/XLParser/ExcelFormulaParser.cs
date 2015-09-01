@@ -279,6 +279,11 @@ namespace XLParser
                 || input.Is(GrammarNames.UDFunctionCall);
         }
 
+        public static bool IsOperator(this ParseTreeNode input)
+        {
+            return input.IsBinaryOperation() || input.IsBinaryReferenceOperation() || input.IsUnaryOperation();
+        }
+
         public static bool IsExternalUDFunction(this ParseTreeNode input)
         {
             return input.Is(GrammarNames.Reference) && input.ChildNodes.Count == 2 && input.ChildNodes[1].IsNamedFunction();
