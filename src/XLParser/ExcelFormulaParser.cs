@@ -234,7 +234,8 @@ namespace XLParser
         /// </summary>
         public static bool IsBuiltinFunction(this ParseTreeNode node)
         {
-            return node.IsFunction() && (node.ChildNodes[0].Is(GrammarNames.ExcelFunction) || node.ChildNodes[0].Is(GrammarNames.RefFunctionName));
+            return node.IsFunction() &&
+                (node.ChildNodes[0].Is(GrammarNames.FunctionName) || node.ChildNodes[0].Is(GrammarNames.RefFunctionName));
         }
 
         /// <summary>
