@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2
+
+Fixes [#17](https://github.com/PerfectXL/XLParser/issues/17), [#19](https://github.com/PerfectXL/XLParser/issues/3)
+
+* Made it easier to modify the grammar in your own class by extending the grammar class
+* Can now parse non-numeric filenames (`=[file]Sheet!A1`)
+
 ## 1.1.4
 
 * Added some missing methods that test for specific types of operators
