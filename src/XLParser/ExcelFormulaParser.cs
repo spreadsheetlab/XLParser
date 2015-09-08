@@ -22,10 +22,7 @@ namespace XLParser
         /// <summary>
         /// Thread-safe parser
         /// </summary>
-        private static Parser p
-        {
-            get { return _p ?? (_p = new Parser(new ExcelFormulaGrammar())); }
-        }
+        private static Parser p => _p ?? (_p = new Parser(new ExcelFormulaGrammar()));
 
         /// <summary>
         /// Parse a formula, return the the tree's root node
