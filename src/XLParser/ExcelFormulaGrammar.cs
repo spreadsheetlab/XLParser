@@ -1,187 +1,195 @@
 ﻿using Irony.Parsing;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace XLParser
 {
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.1.3", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.2.0", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
+        #region 1-Terminals
+        #region Symbols and operators
+        public Terminal comma => ToTerm(",");
+        public Terminal colon => ToTerm(":");
+        public Terminal semicolon => ToTerm(";");
+        public Terminal OpenParen => ToTerm("(");
+        public Terminal CloseParen => ToTerm(")");
+        public Terminal CloseSquareParen => ToTerm("]");
+        public Terminal OpenSquareParen => ToTerm("[");
+        public Terminal exclamationMark => ToTerm("!");
+        public Terminal CloseCurlyParen => ToTerm("}");
+        public Terminal OpenCurlyParen => ToTerm("{");
+
+        public Terminal mulop => ToTerm("*");
+        public Terminal plusop => ToTerm("+");
+        public Terminal divop => ToTerm("/");
+        public Terminal minop => ToTerm("-");
+        public Terminal concatop => ToTerm("&");
+        public Terminal expop => ToTerm("^");
+
+        // Intersect op is a single space, which cannot be parsed normally so we need an ImpliedSymbolTerminal
+        // Attention: ImpliedSymbolTerminal seems to break if you assign it a priority, and it's default priority is low
+        public Terminal intersectop { get; } = new ImpliedSymbolTerminal(GrammarNames.TokenIntersect);
+
+        public Terminal percentop => ToTerm("%");
+
+        public Terminal gtop => ToTerm(">");
+        public Terminal eqop => ToTerm("=");
+        public Terminal ltop => ToTerm("<");
+        public Terminal neqop => ToTerm("<>");
+        public Terminal gteop => ToTerm(">=");
+        public Terminal lteop => ToTerm("<=");
+        #endregion
+
+        #region Literals
+        public Terminal BoolToken { get; } = new RegexBasedTerminal(GrammarNames.TokenBool, "TRUE|FALSE")
+        {
+            Priority = TerminalPriority.Bool
+        };
+
+        public Terminal NumberToken { get; } = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None)
+        {
+            DefaultIntTypes = new[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt }
+        };
+
+        public Terminal TextToken { get; } = new StringLiteral(GrammarNames.TokenText, "\"",
+            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak);
+
+        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A");
+        public Terminal RefErrorToken => ToTerm("#REF!", GrammarNames.TokenRefError);
+
+        #endregion
+
+        #region Functions
+
+        public Terminal UDFToken = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(")
+        { Priority = TerminalPriority.UDF };
+
+        public Terminal ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
+        { Priority = TerminalPriority.ExcelRefFunction };
+
+        public Terminal ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(")
+        { Priority = TerminalPriority.ExcelRefFunction };
+
+        public Terminal ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction,  "(" + string.Join("|", excelFunctionList) + ")\\(")
+        { Priority = TerminalPriority.ExcelFunction };
+
+        // Using this instead of Empty allows a more accurate trees
+        public Terminal EmptyArgumentToken = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument);
+
+        #endregion
+
+        #region References and names
+
+        public Terminal VRangeToken = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?[A-Z]{1,4}:[$]?[A-Z]{1,4}");
+        public Terminal HRangeToken = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
+
+        const string CellTokenRegex = "[$]?[A-Z]{1,4}[$]?[1-9][0-9]*";
+        public Terminal CellToken = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
+        { Priority = TerminalPriority.CellToken };
+
+        const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
+        public Terminal NamedRangeToken = new RegexBasedTerminal(GrammarNames.TokenNamedRange, NamedRangeRegex)
+        { Priority = TerminalPriority.NamedRange };
+
+        // To prevent e.g. "A1A1" being parsed as 2 celltokens
+        public Terminal NamedRangeCombinationToken = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
+        { Priority = TerminalPriority.NamedRangeCombination };
+
+        private static readonly string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
+        private static readonly string notSheetNameChars = @"'*\[\]\\:/?";
+        //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
+        //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
+        private static readonly string normalSheetName = $"[^{notSheetNameChars}{mustBeQuotedInSheetName}]+";
+        private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')+";
+        private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
+
+        public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx)
+        { Priority = TerminalPriority.SheetToken };
+
+        private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
+        public Terminal MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
+        { Priority = TerminalPriority.MultipleSheetsToken };
+
+        public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+")
+        { Priority = TerminalPriority.FileToken };
+
+        private static readonly string quotedFileSheetRegex = @"'\[\d+\]" + quotedSheetName + "'!";
+
+        public Terminal QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex)
+        { Priority = TerminalPriority.QuotedFileToken };
+
+        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
+        { Priority = TerminalPriority.ReservedName };
+
+        public Terminal DDEToken = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
+
+        #endregion
+
+        #endregion
+
+        #region 2-NonTerminals
+        // Most nonterminals are first defined here, so they can be used anywhere in the rules
+        // Otherwise you can only use nonterminals that have been defined previously
+
+        public NonTerminal Argument{ get; } = new NonTerminal(GrammarNames.Argument);
+        public NonTerminal Arguments{ get; } = new NonTerminal(GrammarNames.Arguments);
+        public NonTerminal ArrayColumns{ get; } = new NonTerminal(GrammarNames.ArrayColumns);
+        public NonTerminal ArrayConstant{ get; } = new NonTerminal(GrammarNames.ArrayConstant);
+        public NonTerminal ArrayFormula{ get; } = new NonTerminal(GrammarNames.ArrayFormula);
+        public NonTerminal ArrayRows{ get; } = new NonTerminal(GrammarNames.ArrayRows);
+        public NonTerminal Bool{ get; } = new NonTerminal(GrammarNames.Bool);
+        public NonTerminal Cell{ get; } = new NonTerminal(GrammarNames.Cell);
+        public NonTerminal Constant{ get; } = new NonTerminal(GrammarNames.Constant);
+        public NonTerminal ConstantArray{ get; } = new NonTerminal(GrammarNames.ConstantArray);
+        public NonTerminal DynamicDataExchange{ get; } = new NonTerminal(GrammarNames.DynamicDataExchange);
+        public NonTerminal EmptyArgument{ get; } = new NonTerminal(GrammarNames.EmptyArgument);
+        public NonTerminal Error{ get; } = new NonTerminal(GrammarNames.Error);
+        public NonTerminal File{ get; } = new NonTerminal(GrammarNames.File);
+        public NonTerminal Formula{ get; } = new NonTerminal(GrammarNames.Formula);
+        public NonTerminal FormulaWithEq{ get; } = new NonTerminal(GrammarNames.FormulaWithEq);
+        public NonTerminal FunctionCall{ get; } = new NonTerminal(GrammarNames.FunctionCall);
+        public NonTerminal FunctionName{ get; } = new NonTerminal(GrammarNames.FunctionName);
+        public NonTerminal HRange{ get; } = new NonTerminal(GrammarNames.HorizontalRange);
+        public NonTerminal InfixOp{ get; } = new NonTerminal(GrammarNames.TransientInfixOp);
+        public NonTerminal MultipleSheets{ get; } = new NonTerminal(GrammarNames.MultipleSheets);
+        public NonTerminal NamedRange{ get; } = new NonTerminal(GrammarNames.NamedRange);
+        public NonTerminal Number{ get; } = new NonTerminal(GrammarNames.Number);
+        public NonTerminal PostfixOp{ get; } = new NonTerminal(GrammarNames.TransientPostfixOp);
+        public NonTerminal Prefix{ get; } = new NonTerminal(GrammarNames.Prefix);
+        public NonTerminal PrefixOp{ get; } = new NonTerminal(GrammarNames.TransientPrefixOp);
+        public NonTerminal QuotedFileSheet{ get; } = new NonTerminal(GrammarNames.QuotedFileSheet);
+        public NonTerminal Reference{ get; } = new NonTerminal(GrammarNames.Reference);
+        //public NonTerminal ReferenceFunction{ get; } = new NonTerminal(GrammarNames.ReferenceFunction);
+        public NonTerminal ReferenceItem{ get; } = new NonTerminal(GrammarNames.TransientReferenceItem);
+        public NonTerminal ReferenceFunctionCall{ get; } = new NonTerminal(GrammarNames.ReferenceFunctionCall);
+        public NonTerminal RefError{ get; } = new NonTerminal(GrammarNames.RefError);
+        public NonTerminal RefFunctionName{ get; } = new NonTerminal(GrammarNames.RefFunctionName);
+        public NonTerminal ReservedName{ get; } = new NonTerminal(GrammarNames.ReservedName);
+        public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
+        public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
+        public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
+        public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
+        public NonTerminal UDFunctionCall{ get; } = new NonTerminal(GrammarNames.UDFunctionCall);
+        public NonTerminal Union{ get; } = new NonTerminal(GrammarNames.Union);
+        public NonTerminal VRange{ get; } = new NonTerminal(GrammarNames.VerticalRange);
+        #endregion
+
         public ExcelFormulaGrammar() : base(false)
         {
-            #region 1-Terminals
-
-            #region Symbols and operators
-            var comma = ToTerm(",");
-            var colon = ToTerm(":");
-            var semicolon = ToTerm(";");
-            var OpenParen = ToTerm("(");
-            var CloseParen = ToTerm(")");
-            var CloseSquareParen = ToTerm("]");
-            var OpenSquareParen = ToTerm("[");
-            var exclamationMark = ToTerm("!");
-            var CloseCurlyParen = ToTerm("}");
-            var OpenCurlyParen = ToTerm("{");
-
-            var mulop = ToTerm("*");
-            var plusop = ToTerm("+");
-            var divop = ToTerm("/");
-            var minop = ToTerm("-");
-            var concatop = ToTerm("&");
-            var expop = ToTerm("^");
-            // Intersect op is a single space, which cannot be parsed normally so we need an ImpliedSymbolTerminal
-            // Attention: ImpliedSymbolTerminal seems to break if you assign it a priority, and it's default priority is low
-            var intersectop = new ImpliedSymbolTerminal(GrammarNames.TokenIntersect);
-
-            var percentop = ToTerm("%");
-
-            var gtop = ToTerm(">");
-            var eqop = ToTerm("=");
-            var ltop = ToTerm("<");
-            var neqop = ToTerm("<>");
-            var gteop = ToTerm(">=");
-            var lteop = ToTerm("<=");
-            #endregion
-
-            #region Literals
-            var BoolToken = new RegexBasedTerminal(GrammarNames.TokenBool, "TRUE|FALSE");
-            BoolToken.Priority = TerminalPriority.Bool;
-
-            var NumberToken = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None);
-            NumberToken.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt };
-
-            var TextToken = new StringLiteral(GrammarNames.TokenText, "\"", StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak);
-
-            var ErrorToken = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A");
-            var RefErrorToken = ToTerm("#REF!", GrammarNames.TokenRefError);
-            #endregion
-
-            #region Functions
-
-            var UDFToken = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(");
-            UDFToken.Priority = TerminalPriority.UDF;
-
-            var ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(");
-            ExcelRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
             
-            var ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(");
-            ExcelConditionalRefFunctionToken.Priority = TerminalPriority.ExcelRefFunction;
-
-            var ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + String.Join("|", excelFunctionList)  +")\\(");
-            ExcelFunction.Priority = TerminalPriority.ExcelFunction;
-
-            // Using this instead of Empty allows a more accurate trees
-            var EmptyArgumentToken = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument);
-
-            #endregion
-
-            #region References and names
-
-            var VRangeToken = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?[A-Z]{1,4}:[$]?[A-Z]{1,4}");
-            var HRangeToken = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
-            
-            const string CellTokenRegex = "[$]?[A-Z]{1,4}[$]?[1-9][0-9]*";
-            var CellToken = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex);
-            CellToken.Priority = TerminalPriority.CellToken;
-
-            const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
-            var NamedRangeToken = new RegexBasedTerminal(GrammarNames.TokenNamedRange, NamedRangeRegex);
-            NamedRangeToken.Priority = TerminalPriority.NamedRange;
-
-            // To prevent e.g. "A1A1" being parsed as 2 celltokens
-            var NamedRangeCombinationToken = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex);
-            NamedRangeCombinationToken.Priority = TerminalPriority.NamedRangeCombination;
-
-            const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
-            const string notSheetNameChars = @"'*\[\]\\:/?";
-            //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
-            //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
-            const string normalSheetName = "[^" + notSheetNameChars + mustBeQuotedInSheetName + "]+";
-            const string quotedSheetName = "([^" + notSheetNameChars +  "]|'')+";
-            const string sheetRegEx = "((" + normalSheetName + ")|('" + quotedSheetName + "'))!";
-
-            var SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx);
-            SheetToken.Priority = TerminalPriority.SheetToken;
-
-            var multiSheetRegex = String.Format("(({0}:{0})|('{1}:{1}'))!", normalSheetName, quotedSheetName);
-            var MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex);
-            MultipleSheetsToken.Priority = TerminalPriority.MultipleSheetsToken;
-
-            var FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+");
-            FileToken.Priority = TerminalPriority.FileToken;;
-
-            const string quotedFileSheetRegex = @"'\[\d+\]" + quotedSheetName + "'!";
-            
-            var QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex);
-            QuotedFileSheetToken.Priority = TerminalPriority.QuotedFileToken;
-
-            var ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+");
-            ReservedNameToken.Priority = TerminalPriority.ReservedName;
-
-            var DDEToken = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
-
-            #endregion
-
             #region Punctuation
             MarkPunctuation(exclamationMark);
             MarkPunctuation(OpenParen, CloseParen);
             MarkPunctuation(OpenSquareParen, CloseSquareParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
             #endregion
-            #endregion
-
-            #region 2-NonTerminals
-            // Most nonterminals are first defined here, so they can be used anywhere in the rules
-            // Otherwise you can only use nonterminals that have been defined previously
-
-            var Argument = new NonTerminal(GrammarNames.Argument);
-            var Arguments = new NonTerminal(GrammarNames.Arguments);
-            var ArrayColumns = new NonTerminal(GrammarNames.ArrayColumns);
-            var ArrayConstant = new NonTerminal(GrammarNames.ArrayConstant);
-            var ArrayFormula = new NonTerminal(GrammarNames.ArrayFormula);
-            var ArrayRows = new NonTerminal(GrammarNames.ArrayRows);
-            var Bool = new NonTerminal(GrammarNames.Bool);
-            var Cell = new NonTerminal(GrammarNames.Cell);
-            var Constant = new NonTerminal(GrammarNames.Constant);
-            var ConstantArray = new NonTerminal(GrammarNames.ConstantArray);
-            var DynamicDataExchange = new NonTerminal(GrammarNames.DynamicDataExchange);
-            var EmptyArgument = new NonTerminal(GrammarNames.EmptyArgument);
-            var Error = new NonTerminal(GrammarNames.Error);
-            var File = new NonTerminal(GrammarNames.File);
-            var Formula = new NonTerminal(GrammarNames.Formula);
-            var FormulaWithEq = new NonTerminal(GrammarNames.FormulaWithEq);
-            var FunctionCall = new NonTerminal(GrammarNames.FunctionCall);
-            var FunctionName = new NonTerminal(GrammarNames.FunctionName);
-            var HRange = new NonTerminal(GrammarNames.HorizontalRange);
-            var InfixOp = new NonTerminal(GrammarNames.TransientInfixOp);
-            var MultipleSheets = new NonTerminal(GrammarNames.MultipleSheets);
-            var NamedRange = new NonTerminal(GrammarNames.NamedRange);
-            var Number = new NonTerminal(GrammarNames.Number);
-            var PostfixOp = new NonTerminal(GrammarNames.TransientPostfixOp);
-            var Prefix = new NonTerminal(GrammarNames.Prefix);
-            var PrefixOp = new NonTerminal(GrammarNames.TransientPrefixOp);
-            var QuotedFileSheet = new NonTerminal(GrammarNames.QuotedFileSheet);
-            var Reference = new NonTerminal(GrammarNames.Reference);
-            //var ReferenceFunction = new NonTerminal(GrammarNames.ReferenceFunction);
-            var ReferenceItem = new NonTerminal(GrammarNames.TransientReferenceItem);
-            var ReferenceFunctionCall = new NonTerminal(GrammarNames.ReferenceFunctionCall);
-            var RefError = new NonTerminal(GrammarNames.RefError);
-            var RefFunctionName = new NonTerminal(GrammarNames.RefFunctionName);
-            var ReservedName = new NonTerminal(GrammarNames.ReservedName);
-            var Sheet = new NonTerminal(GrammarNames.Sheet);
-            var Start = new NonTerminal(GrammarNames.TransientStart);
-            var Text = new NonTerminal(GrammarNames.Text);
-            var UDFName = new NonTerminal(GrammarNames.UDFName);
-            var UDFunctionCall = new NonTerminal(GrammarNames.UDFunctionCall);
-            var Union = new NonTerminal(GrammarNames.Union);
-            var VRange = new NonTerminal(GrammarNames.VerticalRange);
-            #endregion
-
-
-            #region 3-Rules
+            
+            #region Rules
 
             #region Base rules
             Root = Start;
@@ -356,6 +364,8 @@ namespace XLParser
             #endregion
         }
 
+        
+
         #region Precedence and Priority constants
         // Source: https://support.office.com/en-us/article/Calculation-operators-and-precedence-48be406d-4975-4d31-b2b8-7af9e0e2878a
         // Could also be an enum, but this way you don't need int casts
@@ -410,7 +420,7 @@ namespace XLParser
         #endregion
 
         #region Excel function list
-        private static readonly IList<string> excelFunctionList = new List<String>
+        private static readonly IList<string> excelFunctionList = new List<string>
         {
             "ABS",
             "ACCRINT",
