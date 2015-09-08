@@ -232,10 +232,10 @@ namespace XLParser
             }
             if (input.IsExternalUDFunction())
             {
-                return String.Format("{0}{1}", input.ChildNodes[0].Print(), GetFunction(input.ChildNodes[1]));
+                return $"{input.ChildNodes[0].Print()}{GetFunction(input.ChildNodes[1])}";
             }
 
-            throw new ArgumentException("Not a function call", "input");
+            throw new ArgumentException("Not a function call", nameof(input));
         }
 
         /// <summary>
@@ -328,21 +328,30 @@ namespace XLParser
         /// </remarks>
         public static ParseTreeNode SkipToRelevant(this ParseTreeNode input)
         {
-            switch (input.Type())
+            while (true)
             {
-                case GrammarNames.FormulaWithEq:
-                case GrammarNames.ArrayFormula:
-                    return SkipToRelevant(input.ChildNodes[1]);
-                case GrammarNames.Formula:
-                case GrammarNames.Reference:
-                    // This also catches parentheses
-                    if (input.ChildNodes.Count == 1)
-                    {
-                        return SkipToRelevant(input.ChildNodes[0]);
-                    }
-                    goto default;
-                default:
-                    return input;
+                switch (input.Type())
+                {
+                    case GrammarNames.FormulaWithEq:
+                    case GrammarNames.ArrayFormula:
+                        input = input.ChildNodes[1];
+                        break;
+                    case GrammarNames.Argument:
+                    case GrammarNames.Formula:
+                    case GrammarNames.Reference:
+                        // This also catches parentheses
+                        if (input.ChildNodes.Count == 1)
+                        {
+                            input = input.ChildNodes[0];
+                        }
+                        else
+                        {
+                            return input;
+                        }
+                        break;
+                    default:
+                        return input;
+                }
             }
         }
 
