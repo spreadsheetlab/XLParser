@@ -22,10 +22,7 @@ namespace XLParser
         /// <summary>
         /// Thread-safe parser
         /// </summary>
-        private static Parser p
-        {
-            get { return _p ?? (_p = new Parser(new ExcelFormulaGrammar())); }
-        }
+        private static Parser p => _p ?? (_p = new Parser(new ExcelFormulaGrammar()));
 
         /// <summary>
         /// Parse a formula, return the the tree's root node
@@ -232,18 +229,59 @@ namespace XLParser
             }
             if (input.IsExternalUDFunction())
             {
-                return String.Format("{0}{1}", input.ChildNodes[0].Print(), GetFunction(input.ChildNodes[1]));
+                return $"{input.ChildNodes[0].Print()}{GetFunction(input.ChildNodes[1])}";
             }
 
-            throw new ArgumentException("Not a function call", "input");
+            throw new ArgumentException("Not a function call", nameof(input));
         }
 
         /// <summary>
         /// Check if this node is a specific function
         /// </summary>
-        public static bool MatchFunction(this ParseTreeNode input, String functionName)
+        public static bool MatchFunction(this ParseTreeNode input, string functionName)
         {
             return IsFunction(input) && GetFunction(input) == functionName;
+        }
+
+        /// <summary>
+        /// Get all the arguments of a function or operation
+        /// </summary>
+        public static IEnumerable<ParseTreeNode> GetFunctionArguments(this ParseTreeNode input)
+        {
+            if (input.IsNamedFunction())
+            {
+                return input
+                    .ChildNodes[1] // "Arguments" nonterminal
+                    .ChildNodes    // "Argument" nonterminals
+                    .Select(node => node.ChildNodes[0])
+                    ;
+            }
+            if (input.IsBinaryOperation())
+            {
+                return new[] {input.ChildNodes[0], input.ChildNodes[2]};
+            }
+            if (input.IsUnaryPrefixOperation())
+            {
+                return new[] {input.ChildNodes[1]};
+            }
+            if (input.IsUnaryPostfixOperation())
+            {
+                return new[] {input.ChildNodes[0]};
+            }
+            if (input.IsUnion())
+            {
+                return input.ChildNodes[0].ChildNodes;
+            }
+            if (input.IsExternalUDFunction())
+            {
+                return input // Reference
+                    .ChildNodes[1] // UDFunctionCall
+                    .ChildNodes[1] // Arguments
+                    .ChildNodes // Argument nonterminals
+                    .Select(node => node.ChildNodes[0])
+                    ;
+            }
+            throw new ArgumentException("Not a function call", nameof(input));
         }
 
         /// <summary>
@@ -328,21 +366,30 @@ namespace XLParser
         /// </remarks>
         public static ParseTreeNode SkipToRelevant(this ParseTreeNode input)
         {
-            switch (input.Type())
+            while (true)
             {
-                case GrammarNames.FormulaWithEq:
-                case GrammarNames.ArrayFormula:
-                    return SkipToRelevant(input.ChildNodes[1]);
-                case GrammarNames.Formula:
-                case GrammarNames.Reference:
-                    // This also catches parentheses
-                    if (input.ChildNodes.Count == 1)
-                    {
-                        return SkipToRelevant(input.ChildNodes[0]);
-                    }
-                    goto default;
-                default:
-                    return input;
+                switch (input.Type())
+                {
+                    case GrammarNames.FormulaWithEq:
+                    case GrammarNames.ArrayFormula:
+                        input = input.ChildNodes[1];
+                        break;
+                    case GrammarNames.Argument:
+                    case GrammarNames.Formula:
+                    case GrammarNames.Reference:
+                        // This also catches parentheses
+                        if (input.ChildNodes.Count == 1)
+                        {
+                            input = input.ChildNodes[0];
+                        }
+                        else
+                        {
+                            return input;
+                        }
+                        break;
+                    default:
+                        return input;
+                }
             }
         }
 

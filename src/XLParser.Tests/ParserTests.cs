@@ -251,8 +251,8 @@ namespace XLParser.Tests
         [TestMethod]
         public void Union()
         {
-            test("LARGE((F38,C38),1)", node => node.ChildNodes[1].GetFunction() == ",");
-            test("LARGE((2:2,C38,$A$1:A6),1)", node => node.ChildNodes[1].GetFunction() == ",");   
+            test("LARGE((F38,C38),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant().GetFunction() == ",");
+            test("LARGE((2:2,C38,$A$1:A6),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant().GetFunction() == ",");   
         }
 
         [TestMethod]

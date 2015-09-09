@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://www.mozilla.org/MPL/2.0/index.txt</licenseUrl>
+    <licenseUrl>http://mozilla.org/MPL/2.0/</licenseUrl>
     <projectUrl>https://github.com/PerfectXL/XLParser</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
