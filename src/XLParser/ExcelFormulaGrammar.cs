@@ -66,38 +66,38 @@ namespace XLParser
 
         #region Functions
 
-        public Terminal UDFToken = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(")
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(")
         { Priority = TerminalPriority.UDF };
 
-        public Terminal ExcelRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
+        public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
         { Priority = TerminalPriority.ExcelRefFunction };
 
-        public Terminal ExcelConditionalRefFunctionToken = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(")
+        public Terminal ExcelConditionalRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(")
         { Priority = TerminalPriority.ExcelRefFunction };
 
-        public Terminal ExcelFunction = new RegexBasedTerminal(GrammarNames.ExcelFunction,  "(" + string.Join("|", excelFunctionList) + ")\\(")
+        public Terminal ExcelFunction { get; } = new RegexBasedTerminal(GrammarNames.ExcelFunction,  "(" + string.Join("|", excelFunctionList) + ")\\(")
         { Priority = TerminalPriority.ExcelFunction };
 
         // Using this instead of Empty allows a more accurate trees
-        public Terminal EmptyArgumentToken = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument);
+        public Terminal EmptyArgumentToken { get; } = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument);
 
         #endregion
 
         #region References and names
 
-        public Terminal VRangeToken = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?[A-Z]{1,4}:[$]?[A-Z]{1,4}");
-        public Terminal HRangeToken = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
+        public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?[A-Z]{1,4}:[$]?[A-Z]{1,4}");
+        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
 
-        const string CellTokenRegex = "[$]?[A-Z]{1,4}[$]?[1-9][0-9]*";
-        public Terminal CellToken = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
+        private const string CellTokenRegex = "[$]?[A-Z]{1,4}[$]?[1-9][0-9]*";
+        public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
         { Priority = TerminalPriority.CellToken };
 
-        const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
-        public Terminal NamedRangeToken = new RegexBasedTerminal(GrammarNames.TokenNamedRange, NamedRangeRegex)
+        private const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
+        public Terminal NamedRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRange, NamedRangeRegex)
         { Priority = TerminalPriority.NamedRange };
 
         // To prevent e.g. "A1A1" being parsed as 2 celltokens
-        public Terminal NamedRangeCombinationToken = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
         { Priority = TerminalPriority.NamedRangeCombination };
 
         private static readonly string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
@@ -108,25 +108,25 @@ namespace XLParser
         private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')+";
         private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
 
-        public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx)
+        public Terminal SheetToken { get; } = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx)
         { Priority = TerminalPriority.SheetToken };
 
         private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
-        public Terminal MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
+        public Terminal MultipleSheetsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
-        public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+")
+        public Terminal FileToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+")
         { Priority = TerminalPriority.FileToken };
 
         private static readonly string quotedFileSheetRegex = @"'\[\d+\]" + quotedSheetName + "'!";
 
-        public Terminal QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex)
+        public Terminal QuotedFileSheetToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex)
         { Priority = TerminalPriority.QuotedFileToken };
 
-        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
+        public Terminal ReservedNameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
         { Priority = TerminalPriority.ReservedName };
 
-        public Terminal DDEToken = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
+        public Terminal DDEToken { get; } = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
 
         #endregion
 
@@ -245,7 +245,7 @@ namespace XLParser
 
             EmptyArgument.Rule = EmptyArgumentToken;
             Argument.Rule = Formula | EmptyArgument;
-            //MarkTransient(Argument);
+            MarkTransient(Argument);
 
             PrefixOp.Rule =
                 ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop

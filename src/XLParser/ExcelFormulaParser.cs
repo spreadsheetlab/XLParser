@@ -238,9 +238,50 @@ namespace XLParser
         /// <summary>
         /// Check if this node is a specific function
         /// </summary>
-        public static bool MatchFunction(this ParseTreeNode input, String functionName)
+        public static bool MatchFunction(this ParseTreeNode input, string functionName)
         {
             return IsFunction(input) && GetFunction(input) == functionName;
+        }
+
+        /// <summary>
+        /// Get all the arguments of a function or operation
+        /// </summary>
+        public static IEnumerable<ParseTreeNode> GetFunctionArguments(this ParseTreeNode input)
+        {
+            if (input.IsNamedFunction())
+            {
+                return input
+                    .ChildNodes[1] // "Arguments" nonterminal
+                    .ChildNodes    // "Argument" nonterminals
+                    .Select(node => node.ChildNodes[0])
+                    ;
+            }
+            if (input.IsBinaryOperation())
+            {
+                return new[] {input.ChildNodes[0], input.ChildNodes[2]};
+            }
+            if (input.IsUnaryPrefixOperation())
+            {
+                return new[] {input.ChildNodes[1]};
+            }
+            if (input.IsUnaryPostfixOperation())
+            {
+                return new[] {input.ChildNodes[0]};
+            }
+            if (input.IsUnion())
+            {
+                return input.ChildNodes[0].ChildNodes;
+            }
+            if (input.IsExternalUDFunction())
+            {
+                return input // Reference
+                    .ChildNodes[1] // UDFunctionCall
+                    .ChildNodes[1] // Arguments
+                    .ChildNodes // Argument nonterminals
+                    .Select(node => node.ChildNodes[0])
+                    ;
+            }
+            throw new ArgumentException("Not a function call", nameof(input));
         }
 
         /// <summary>
