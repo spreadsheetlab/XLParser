@@ -407,14 +407,14 @@ namespace XLParser
             // (Lazy) enumerable for printed childs
             var childs = input.ChildNodes.Select(Print);
             // Concrete list when needed
-            List<String> childsL;
+            List<string> childsL;
 
             // Switch on nonterminals
             switch (input.Term.Name)
             {
                 case GrammarNames.Formula:
                     // Check if these are brackets, otherwise print first child
-                    return IsParentheses(input) ? String.Format("({0})", childs.First()) : childs.First();
+                    return IsParentheses(input) ? $"({childs.First()})" : childs.First();
 
                 case GrammarNames.FunctionCall:
                 case GrammarNames.ReferenceFunctionCall:
@@ -423,7 +423,7 @@ namespace XLParser
 
                     if (input.IsNamedFunction())
                     {
-                        return String.Join("", childsL) + ")";
+                        return string.Join("", childsL) + ")";
                     }
 
                     if (input.IsBinaryOperation())
@@ -437,50 +437,32 @@ namespace XLParser
                         {
                             format = "{0}{1}{2}";
                         }
-                        
-                        return String.Format(format, childsL[0], childsL[1], childsL[2]);
+
+                        return string.Format(format, childsL[0], childsL[1], childsL[2]);
                     }
 
                     if (input.IsUnion())
                     {
-                        return String.Format("({0})", String.Join(",", childsL));
+                        return $"({string.Join(",", childsL)})";
                     }
 
                     if (input.IsUnaryOperation())
                     {
-                        return String.Join("", childsL);
+                        return string.Join("", childsL);
                     }
 
                     throw new ArgumentException("Unknown function type.");
 
                 case GrammarNames.Reference:
-                    /*if (IsParentheses(input) || IsUnion(input))
-                    {
-                        return String.Format("({0})", childs.First());
-                    }
-
-                    childsL = childs.ToList();
-                    if (IsIntersection(input))
-                    {
-                        return String.Format("{0} {1}", childsL[0], childsL[2]);
-                    }
-
-                    if (IsBinaryOperation(input))
-                    {
-                        return String.Format("{0}{1}{2}", childsL[0], childsL[1], childsL[2]);
-                    }*/
                     if (IsParentheses(input))
                     {
-                        return String.Format("({0})", childs.First());
+                        return $"({childs.First()})";
                     }
 
-                    return String.Join("", childs);
-
-                case GrammarNames.File:
-                    return String.Format("[{0}]", childs.First());
+                    return string.Join("", childs);
 
                 case GrammarNames.Prefix:
-                    var ret = String.Join("", childs);
+                    var ret = string.Join("", childs);
                     // The exclamation mark token is not included in the parse tree, so we have to add that if it's a single file
                     if (input.ChildNodes.Count == 1 && input.ChildNodes[0].Is(GrammarNames.File))
                     {
@@ -493,25 +475,25 @@ namespace XLParser
 
                 case GrammarNames.DynamicDataExchange:
                     childsL = childs.ToList();
-                    return String.Format("{0}!{1}", childsL[0], childsL[1]);
+                    return $"{childsL[0]}!{childsL[1]}";
 
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
                 case GrammarNames.FormulaWithEq:
-                    return String.Join("", childs);
+                case GrammarNames.File:
+                    return string.Join("", childs);
 
                 // Terms for which we print the childs comma-separated
                 case GrammarNames.Arguments:
                 case GrammarNames.ArrayRows:
                 case GrammarNames.Union:
-                    return String.Join(",", childs);
+                    return string.Join(",", childs);
 
                 case GrammarNames.ArrayColumns:
-                    return String.Join(";", childs);
+                    return string.Join(";", childs);
 
                 case GrammarNames.ConstantArray:
-                    return String.Format("{{{0}}}", childs.First());
-
+                    return $"{{{childs.First()}}}";
 
                 default:
                     // If it is not defined above and the number of childs is exactly one, we want to just print the first child
@@ -519,7 +501,7 @@ namespace XLParser
                     {
                         return childs.First();
                     }
-                    throw new ArgumentException(String.Format("Could not print node of type '{0}'.\nThis probably means the excel grammar was modified without the print function being modified", input.Term.Name));
+                    throw new ArgumentException($"Could not print node of type '{input.Term.Name}'.\nThis probably means the excel grammar was modified without the print function being modified");
             }
         }
     }
