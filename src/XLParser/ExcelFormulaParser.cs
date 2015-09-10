@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using Irony.Parsing;
 
 namespace XLParser
@@ -107,11 +109,17 @@ namespace XLParser
         }
 
         /// <summary>
-        /// Whether this tree contains any nodes of a type
+        /// Get the parent node of a node
         /// </summary>
-        public static bool Contains(this ParseTreeNode root, string type)
+        /// <remarks>
+        /// This is an expensive operation, as the whole tree will be searched through
+        /// </remarks>
+        public static ParseTreeNode Parent(this ParseTreeNode child, ParseTreeNode treeRoot)
         {
-            return root.AllNodes(type).Any();
+            var parent = treeRoot.AllNodes()
+                .FirstOrDefault(node => node.ChildNodes.Any(c => c == child));
+            if(parent == null) throw new ArgumentException("Child is not part of the tree", nameof(child));
+            return parent;
         }
 
         /// <summary>
@@ -340,6 +348,78 @@ namespace XLParser
             return IsUnaryPrefixOperation(input)
                    && input.ChildNodes[1].ChildNodes[0].Is(GrammarNames.Constant)
                    && input.ChildNodes[1].ChildNodes[0].ChildNodes[0].Is(GrammarNames.Number);
+        }
+
+        public static PrefixInfo GetPrefixInfo(this ParseTreeNode prefix)
+        {
+            if(prefix.Type() != GrammarNames.Prefix) throw new ArgumentException("Not a prefix", nameof(prefix));
+
+            string filePath = null;
+            int? fileNumber = null;
+            string fileName = null;
+            string sheetName = null;
+            string multipleSheets = null;
+
+            // Token number we're processing
+            int cur = 0;
+
+            // Check for quotes
+            bool quoted = prefix.ChildNodes[cur].Is("'");
+            if (quoted) cur++;
+            
+            // Check and process file
+            if (prefix.ChildNodes[cur].Is(GrammarNames.File))
+            {
+                var file = prefix.ChildNodes[cur];
+
+                if (file.ChildNodes[0].Is(GrammarNames.TokenFileNameNumeric))
+                {
+                    int n;
+                    int.TryParse(Substr(file.ChildNodes[0].Print(), 1, 1), out n);
+                    fileNumber = n;
+                    if (fileNumber == 0) fileNumber = null;
+                }
+                else
+                {
+                    var icur = 0;
+                    if (file.ChildNodes[icur].Is(GrammarNames.TokenFilePathWindows))
+                    {
+                        filePath = file.ChildNodes[icur].Print();
+                        icur++;
+                    }
+                    fileName = Substr(file.ChildNodes[icur].Print(), 1, 1);
+                }
+
+                cur++;
+            }
+
+            if (prefix.ChildNodes[cur].Is(GrammarNames.TokenSheet))
+            {
+                sheetName = Substr(prefix.ChildNodes[cur].Print(), 1);
+            }
+            else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenSheetQuoted))
+            {
+                // remove quote and !
+                sheetName = Substr(prefix.ChildNodes[cur].Print(), 2);
+            }
+            else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenMultipleSheets))
+            {
+                multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
+            }
+
+            return new PrefixInfo(
+                sheetName,
+                fileNumber,
+                fileName,
+                filePath,
+                multipleSheets,
+                quoted
+                );
+        }
+
+        private static string Substr(string s, int removeLast = 0, int removeFirst = 0)
+        {
+            return s.Substring(removeFirst, s.Length-removeLast-removeFirst);
         }
 
         /// <summary>

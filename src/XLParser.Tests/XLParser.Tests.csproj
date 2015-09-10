@@ -64,6 +64,7 @@
     <Compile Include="ParserTests.cs" />
     <Compile Include="PrintTests.cs" />
     <Compile Include="DatasetTests.cs" />
+    <Compile Include="PrefixInfoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XLParser\XLParser.csproj">

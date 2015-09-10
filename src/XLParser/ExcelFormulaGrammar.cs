@@ -120,7 +120,7 @@ namespace XLParser
         public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, $"{normalSheetName}!")
         { Priority = TerminalPriority.SheetToken };
 
-        public Terminal SheetQuotedToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, $"{quotedSheetName}'!")
+        public Terminal SheetQuotedToken = new RegexBasedTerminal(GrammarNames.TokenSheetQuoted, $"{quotedSheetName}'!")
         { Priority = TerminalPriority.SheetQuotedToken };
 
         private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
@@ -134,9 +134,6 @@ namespace XLParser
         private const string fileNameRegex = @"\[[^<>:""/\|?*\[\]]+\]";
         public Terminal FileNameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameString, fileNameRegex)
         { Priority = TerminalPriority.FileName };
-
-        public Terminal QuotedFileSheetToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, $"'({filePathRegex})?{fileNameRegex}{quotedSheetName}'!")
-        { Priority = TerminalPriority.QuotedFileToken };
 
         public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
         { Priority = TerminalPriority.ReservedName };
@@ -173,7 +170,6 @@ namespace XLParser
         public NonTerminal FunctionName{ get; } = new NonTerminal(GrammarNames.FunctionName);
         public NonTerminal HRange{ get; } = new NonTerminal(GrammarNames.HorizontalRange);
         public NonTerminal InfixOp{ get; } = new NonTerminal(GrammarNames.TransientInfixOp);
-        public NonTerminal MultipleSheets{ get; } = new NonTerminal(GrammarNames.MultipleSheets);
         public NonTerminal NamedRange{ get; } = new NonTerminal(GrammarNames.NamedRange);
         public NonTerminal Number{ get; } = new NonTerminal(GrammarNames.Number);
         public NonTerminal PostfixOp{ get; } = new NonTerminal(GrammarNames.TransientPostfixOp);
@@ -326,8 +322,6 @@ namespace XLParser
 
             VRange.Rule = VRangeToken;
             HRange.Rule = HRangeToken;
-            
-            MultipleSheets.Rule = MultipleSheetsToken;
 
             Cell.Rule = CellToken;
 
@@ -345,8 +339,8 @@ namespace XLParser
                 | File + SheetToken
                 | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
-                | MultipleSheets
-                | File + MultipleSheets
+                | MultipleSheetsToken
+                | File + MultipleSheetsToken
                 ;
 
             #endregion
@@ -476,7 +470,6 @@ namespace XLParser
         public const string FunctionCall = "FunctionCall";
         public const string FunctionName = "FunctionName";
         public const string HorizontalRange = "HRange";
-        public const string MultipleSheets = "MultipleSheets";
         public const string NamedRange = "NamedRange";
         public const string Number = "Number";
         public const string Prefix = "Prefix";
@@ -510,11 +503,9 @@ namespace XLParser
         public const string TokenError = "ErrorToken";
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
         public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
-        public const string TokenFile = "FileToken";
         public const string TokenFilePathWindows = "FilePathWindowsToken";
         public const string TokenFileNameString = "FileNameStringToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
-        public const string TokenFileSheetQuoted = "FileSheetQuotedToken";
         public const string TokenHRange = "HRangeToken";
         public const string TokenIntersect = "INTERSECT";
         public const string TokenMultipleSheets = "MultipleSheetsToken";
@@ -525,6 +516,7 @@ namespace XLParser
         public const string TokenReservedName = "ReservedNameToken";
         public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
+        public const string TokenSheetQuoted = "SheetNameQuotedToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
