@@ -473,12 +473,9 @@ namespace XLParser
                 case GrammarNames.ArrayFormula:
                     return "{=" + childs.ElementAt(1) + "}";
 
-                case GrammarNames.DynamicDataExchange:
-                    childsL = childs.ToList();
-                    return $"{childsL[0]}!{childsL[1]}";
-
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
+                case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                 case GrammarNames.File:
                     return string.Join("", childs);

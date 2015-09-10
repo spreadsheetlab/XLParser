@@ -25,6 +25,7 @@ namespace XLParser
         public Terminal exclamationMark => ToTerm("!");
         public Terminal CloseCurlyParen => ToTerm("}");
         public Terminal OpenCurlyParen => ToTerm("{");
+        public Terminal QuoteS => ToTerm("'");
 
         public Terminal mulop => ToTerm("*");
         public Terminal plusop => ToTerm("+");
@@ -114,10 +115,13 @@ namespace XLParser
         //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
         private static readonly string normalSheetName = $"[^{notSheetNameChars}{mustBeQuotedInSheetName}]+";
         private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')+";
-        private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
+        //private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
 
-        public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx)
+        public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, $"{normalSheetName}!")
         { Priority = TerminalPriority.SheetToken };
+
+        public Terminal SheetQuotedToken = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, $"{quotedSheetName}'!")
+        { Priority = TerminalPriority.SheetQuotedToken };
 
         private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
         public Terminal MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
@@ -196,10 +200,10 @@ namespace XLParser
         {
             
             #region Punctuation
-            MarkPunctuation(exclamationMark);
             MarkPunctuation(OpenParen, CloseParen);
             MarkPunctuation(OpenSquareParen, CloseSquareParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
+            //exclamationMark.SetFlag(TermFlags.IsDelimiter);
             #endregion
             
             #region Rules
@@ -322,9 +326,7 @@ namespace XLParser
 
             VRange.Rule = VRangeToken;
             HRange.Rule = HRangeToken;
-
-            QuotedFileSheet.Rule = QuotedFileSheetToken;
-            Sheet.Rule = SheetToken;
+            
             MultipleSheets.Rule = MultipleSheetsToken;
 
             Cell.Rule = CellToken;
@@ -338,12 +340,14 @@ namespace XLParser
 
             NamedRange.Rule = NamedRangeToken | NamedRangeCombinationToken;
             Prefix.Rule =
-                Sheet
-                | File + Sheet
+                SheetToken
+                | QuoteS + SheetQuotedToken
+                | File + SheetToken
+                | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
-                | QuotedFileSheet
                 | MultipleSheets
-                | File + MultipleSheets;
+                | File + MultipleSheets
+                ;
 
             #endregion
 
@@ -432,6 +436,7 @@ namespace XLParser
             public const int ExcelRefFunction = 1200;
             public const int FileNameNumericToken = 1200;
             public const int SheetToken = 1200;
+            public const int SheetQuotedToken = 1200;
             public const int QuotedFileToken = 1200;
         }
         #endregion
