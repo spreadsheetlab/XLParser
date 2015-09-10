@@ -345,6 +345,9 @@ namespace XLParser
                    && input.ChildNodes[1].ChildNodes[0].ChildNodes[0].Is(GrammarNames.Number);
         }
 
+        /// <summary>
+        /// Extract all of the information from a Prefix nonterminal
+        /// </summary>
         public static PrefixInfo GetPrefixInfo(this ParseTreeNode prefix)
         {
             if(prefix.Type() != GrammarNames.Prefix) throw new ArgumentException("Not a prefix", nameof(prefix));
@@ -369,6 +372,7 @@ namespace XLParser
 
                 if (file.ChildNodes[0].Is(GrammarNames.TokenFileNameNumeric))
                 {
+                    // Numeric filename
                     int n;
                     int.TryParse(Substr(file.ChildNodes[0].Print(), 1, 1), out n);
                     fileNumber = n;
@@ -376,7 +380,9 @@ namespace XLParser
                 }
                 else
                 {
+                    // String filename
                     var icur = 0;
+                    // Check if it includes a path
                     if (file.ChildNodes[icur].Is(GrammarNames.TokenFilePathWindows))
                     {
                         filePath = file.ChildNodes[icur].Print();
@@ -387,21 +393,25 @@ namespace XLParser
 
                 cur++;
             }
-
+            
+            // Check for a non-quoted sheet
             if (prefix.ChildNodes[cur].Is(GrammarNames.TokenSheet))
             {
                 sheetName = Substr(prefix.ChildNodes[cur].Print(), 1);
             }
+            // Check for a quoted sheet
             else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenSheetQuoted))
             {
                 // remove quote and !
                 sheetName = Substr(prefix.ChildNodes[cur].Print(), 2);
             }
+            // Check if multiple sheets
             else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenMultipleSheets))
             {
                 multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
             }
 
+            // Put it all into the convencience class
             return new PrefixInfo(
                 sheetName,
                 fileNumber,
