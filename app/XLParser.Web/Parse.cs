@@ -42,7 +42,7 @@ namespace XLParser.Web
                 context.Response.Cache.SetMaxAge(new TimeSpan(0, 0, 5));
             }
 
-            // Dynamically load an library version
+            // Dynamically load a library version
             var xlparserVersion = context.Request.Params["version"] ?? latestVersion;
             if (!Regex.IsMatch(xlparserVersion, @"^[0-9]{3}[\-a-z0-9]*$"))
             {

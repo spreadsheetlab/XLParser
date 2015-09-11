@@ -22,7 +22,7 @@
                     <td><textarea cols="25" rows="1" id="formulainput"></textarea></td>
                     <td>
                         <select id="parserversionselected">
-                            <option selected value="120">1.2.0</option>
+                            <option selected value="120a">1.2.0a</option>
                             <option value="114">1.1.4</option>
                             <option value="113">1.1.3</option>
                             <option value="112">1.1.2</option>
@@ -30,7 +30,7 @@
                         </select>
                     </td>
                     <td>
-                        <button id="parsebutton" onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
+                        <button id="parsebutton" onclick="newTree(document.getElementById('formulainput').value, document.getElementById('parserversionselected').value)">Parse</button>
                     </td>
                     </tr>
                 </table>

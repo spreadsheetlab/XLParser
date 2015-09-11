@@ -1,4 +1,5 @@
 ﻿var default_formula = "SUM(B5,2)";
+var latestVersion = "120a";
 
 var margin = { top: 20, right: 20, bottom: 20, left: 20 },
         width = 500 - margin.right - margin.left,
@@ -14,9 +15,11 @@ var diagonal = d3.svg.diagonal()
 var vis;
 
 // Replace the existing parse tree image with a new one
-function newTree(formula) {
+function newTree(formula, version) {
     var encodedFormula = encodeURIComponent(formula);
-    var url = "Parse.json?formula=" + encodedFormula;
+    var url = "Parse.json?version=" + version + "&formula=" + encodedFormula;
+
+    d3.select("#d3viz").html("");
 
     // Request the JSON parse tree
     d3.json(url, function (request, json) {
@@ -36,8 +39,6 @@ function newTree(formula) {
             // create a tree and its container
             tree = d3.layout.tree().size([w, h]);
             i = 0;
-
-            d3.select("#d3viz").html("");
 
             var svg = d3.select("#d3viz")
             .append("svg")
@@ -91,7 +92,7 @@ function newTree(formula) {
 }
 
 // Set the parse tree image to the default formula and enter it in the formula input field
-newTree(default_formula);
+newTree(default_formula, latestVersion);
 d3.select('#formulainput').text(default_formula);
 
 // Create nodes in the parse tree

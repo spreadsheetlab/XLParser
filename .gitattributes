@@ -12,6 +12,9 @@
 *.config    eol=crlf
 *.md        eol=lf
 
+*.html      eol=lf
+*.css       eol=lf
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
