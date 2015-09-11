@@ -16,8 +16,24 @@
             <h2><a href="https://github.com/PerfectXL/XLParser">XLParser</a> web demo</h2>
     
             <p>
-                Formula: <br/><textarea cols="25" rows="1" id="formulainput"></textarea> <br/> <br />
-                <button onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
+                <table>
+                    <thead><tr><th>Formula:</th><th>Version:</th><th></th></tr></thead>
+                    <tr>
+                    <td><textarea cols="25" rows="1" id="formulainput"></textarea></td>
+                    <td>
+                        <select id="parserversionselected">
+                            <option selected value="120">1.2.0</option>
+                            <option value="114">1.1.4</option>
+                            <option value="113">1.1.3</option>
+                            <option value="112">1.1.2</option>
+                            <option value="100">1.0.0</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button id="parsebutton" onclick="newTree(document.getElementById('formulainput').value)">Parse</button>
+                    </td>
+                    </tr>
+                </table>
             </p>
     
             <div id="bugreport">

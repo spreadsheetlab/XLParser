@@ -12,6 +12,28 @@ body {
     flex-flow: column;
 }
 
+td {
+    vertical-align: top;
+    text-align: center;
+}
+
+#parsebutton {
+    border: 1px solid #999999;
+    background-color: white;
+    height: 24px;
+    vertical-align: middle;
+    width: 50px;
+}
+
+#parserversionselected {
+    border: 1px solid #999999;
+    background-color: white;
+    height: 24px;
+    width: 75px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 /* This is now defined in the javascript file, otherwise downloaded image would miss these styles*/
 /*    
 .node circle {
@@ -38,8 +60,9 @@ path.link {
 
 #formulainput, #errorformulainput {
     min-width: 25em;
-    min-height: 1em;
+    min-height: 19px;
     resize: both;
+    border: 1px solid #999999;
 }
 
 #errormessages {
