@@ -671,5 +671,17 @@ namespace XLParser.Tests
             Assert.IsFalse(union.IsParentheses());
             Assert.IsFalse(union.ChildNodes[0].IsParentheses());
         }
+
+        [TestMethod]
+        public void TestQuotedFileSheetWithPath()
+        {
+            test(@"='C:\mypath\[myfile.xlsm]Sheet'!A1");
+        }
+
+        [TestMethod]
+        public void TestFileNameString()
+        {
+            test("=[sheet]!A1", "=[sheet.xls]!A1");
+        }
     }
 }

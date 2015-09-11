@@ -8,11 +8,13 @@ namespace XLParser
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.2.0", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.2.0-alpha", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         #region 1-Terminals
+
         #region Symbols and operators
+
         public Terminal comma => ToTerm(",");
         public Terminal colon => ToTerm(":");
         public Terminal semicolon => ToTerm(";");
@@ -23,6 +25,7 @@ namespace XLParser
         public Terminal exclamationMark => ToTerm("!");
         public Terminal CloseCurlyParen => ToTerm("}");
         public Terminal OpenCurlyParen => ToTerm("{");
+        public Terminal QuoteS => ToTerm("'");
 
         public Terminal mulop => ToTerm("*");
         public Terminal plusop => ToTerm("+");
@@ -43,9 +46,11 @@ namespace XLParser
         public Terminal neqop => ToTerm("<>");
         public Terminal gteop => ToTerm(">=");
         public Terminal lteop => ToTerm("<=");
+
         #endregion
 
         #region Literals
+
         public Terminal BoolToken { get; } = new RegexBasedTerminal(GrammarNames.TokenBool, "TRUE|FALSE")
         {
             Priority = TerminalPriority.Bool
@@ -53,11 +58,15 @@ namespace XLParser
 
         public Terminal NumberToken { get; } = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None)
         {
-            DefaultIntTypes = new[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt }
+            DefaultIntTypes = new[] {TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt}
         };
 
         public Terminal TextToken { get; } = new StringLiteral(GrammarNames.TokenText, "\"",
             StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak);
+
+        public Terminal SingleQuotedStringToken { get; } = new StringLiteral(GrammarNames.TokenSingleQuotedString, "'",
+            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak)
+        { Priority = TerminalPriority.SingleQuotedString };
 
         public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A");
         public Terminal RefErrorToken => ToTerm("#REF!", GrammarNames.TokenRefError);
@@ -100,33 +109,38 @@ namespace XLParser
         public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
         { Priority = TerminalPriority.NamedRangeCombination };
 
-        private static readonly string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
-        private static readonly string notSheetNameChars = @"'*\[\]\\:/?";
+        private const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
+        private const string notSheetNameChars = @"'*\[\]\\:/?";
         //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
         //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
         private static readonly string normalSheetName = $"[^{notSheetNameChars}{mustBeQuotedInSheetName}]+";
         private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')+";
-        private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
+        //private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
 
-        public Terminal SheetToken { get; } = new RegexBasedTerminal(GrammarNames.TokenSheet, sheetRegEx)
+        public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, $"{normalSheetName}!")
         { Priority = TerminalPriority.SheetToken };
 
+        public Terminal SheetQuotedToken = new RegexBasedTerminal(GrammarNames.TokenSheetQuoted, $"{quotedSheetName}'!")
+        { Priority = TerminalPriority.SheetQuotedToken };
+
         private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
-        public Terminal MultipleSheetsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
+        public Terminal MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
-        public Terminal FileToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, "[0-9]+")
-        { Priority = TerminalPriority.FileToken };
+        private const string fileNameNumericRegex = @"\[[0-9]+\]";
+        public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
+        { Priority = TerminalPriority.FileNameNumericToken };
 
-        private static readonly string quotedFileSheetRegex = @"'\[\d+\]" + quotedSheetName + "'!";
+        private const string fileNameRegex = @"\[[^<>:""/\|?*\[\]]+\]";
+        public Terminal FileNameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameString, fileNameRegex)
+        { Priority = TerminalPriority.FileName };
 
-        public Terminal QuotedFileSheetToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileSheetQuoted, quotedFileSheetRegex)
-        { Priority = TerminalPriority.QuotedFileToken };
-
-        public Terminal ReservedNameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
+        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
         { Priority = TerminalPriority.ReservedName };
 
-        public Terminal DDEToken { get; } = new RegexBasedTerminal(GrammarNames.TokenDDE, @"'([^']|'')+'");
+        // Source: http://stackoverflow.com/a/6416209/572635
+        private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*";
+        public Terminal FilePathWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex);
 
         #endregion
 
@@ -149,14 +163,13 @@ namespace XLParser
         public NonTerminal DynamicDataExchange{ get; } = new NonTerminal(GrammarNames.DynamicDataExchange);
         public NonTerminal EmptyArgument{ get; } = new NonTerminal(GrammarNames.EmptyArgument);
         public NonTerminal Error{ get; } = new NonTerminal(GrammarNames.Error);
-        public NonTerminal File{ get; } = new NonTerminal(GrammarNames.File);
+        public NonTerminal File { get; } = new NonTerminal(GrammarNames.File);
         public NonTerminal Formula{ get; } = new NonTerminal(GrammarNames.Formula);
         public NonTerminal FormulaWithEq{ get; } = new NonTerminal(GrammarNames.FormulaWithEq);
         public NonTerminal FunctionCall{ get; } = new NonTerminal(GrammarNames.FunctionCall);
         public NonTerminal FunctionName{ get; } = new NonTerminal(GrammarNames.FunctionName);
         public NonTerminal HRange{ get; } = new NonTerminal(GrammarNames.HorizontalRange);
         public NonTerminal InfixOp{ get; } = new NonTerminal(GrammarNames.TransientInfixOp);
-        public NonTerminal MultipleSheets{ get; } = new NonTerminal(GrammarNames.MultipleSheets);
         public NonTerminal NamedRange{ get; } = new NonTerminal(GrammarNames.NamedRange);
         public NonTerminal Number{ get; } = new NonTerminal(GrammarNames.Number);
         public NonTerminal PostfixOp{ get; } = new NonTerminal(GrammarNames.TransientPostfixOp);
@@ -183,10 +196,10 @@ namespace XLParser
         {
             
             #region Punctuation
-            MarkPunctuation(exclamationMark);
             MarkPunctuation(OpenParen, CloseParen);
             MarkPunctuation(OpenSquareParen, CloseSquareParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
+            //exclamationMark.SetFlag(TermFlags.IsDelimiter);
             #endregion
             
             #region Rules
@@ -245,7 +258,7 @@ namespace XLParser
 
             EmptyArgument.Rule = EmptyArgumentToken;
             Argument.Rule = Formula | EmptyArgument;
-            MarkTransient(Argument);
+            //MarkTransient(Argument);
 
             PrefixOp.Rule =
                 ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
@@ -309,28 +322,26 @@ namespace XLParser
 
             VRange.Rule = VRangeToken;
             HRange.Rule = HRangeToken;
-            
-            //ConditionalRefFunctionName.Rule = ExcelConditionalRefFunctionToken;
-
-            QuotedFileSheet.Rule = QuotedFileSheetToken;
-            Sheet.Rule = SheetToken;
-            MultipleSheets.Rule = MultipleSheetsToken;
 
             Cell.Rule = CellToken;
 
-            File.Rule = OpenSquareParen + FileToken + CloseSquareParen;
+            File.Rule = FileToken
+				| FileNameToken
+				| FilePathWindowsToken + FileNameToken
+                ;
 
-            DynamicDataExchange.Rule = File + exclamationMark + DDEToken;
+            DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
             NamedRange.Rule = NamedRangeToken | NamedRangeCombinationToken;
-
             Prefix.Rule =
-                Sheet
-                | File + Sheet
+                SheetToken
+                | QuoteS + SheetQuotedToken
+                | File + SheetToken
+                | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
-                | QuotedFileSheet
-                | MultipleSheets
-                | File + MultipleSheets;
+                | MultipleSheetsToken
+                | File + MultipleSheetsToken
+                ;
 
             #endregion
 
@@ -396,6 +407,10 @@ namespace XLParser
             public const int NamedRange = -800;
             public const int ReservedName = -700;
 
+            public const int FileName = -500;
+
+            public const int SingleQuotedString = -100;
+
             // Irony Normal value, default value
             //public const int Normal = 0;
             public const int Bool = 0;
@@ -413,361 +428,14 @@ namespace XLParser
 
             public const int ExcelFunction = 1200;
             public const int ExcelRefFunction = 1200;
-            public const int FileToken = 1200;
+            public const int FileNameNumericToken = 1200;
             public const int SheetToken = 1200;
+            public const int SheetQuotedToken = 1200;
             public const int QuotedFileToken = 1200;
         }
         #endregion
 
-        #region Excel function list
-        private static readonly IList<string> excelFunctionList = new List<string>
-        {
-            "ABS",
-            "ACCRINT",
-            "ACCRINTM",
-            "ACOS",
-            "ACOSH",
-            "ADDRESS",
-            "AMORDEGRC",
-            "AMORLINC",
-            "AND",
-            "AREAS",
-            "ASC",
-            "ASIN",
-            "ASINH",
-            "ATAN",
-            "ATAN2",
-            "ATANH",
-            "AVEDEV",
-            "AVERAGE",
-            "AVERAGEA",
-            "AVERAGEIF",
-            "AVERAGEIFS",
-            "BAHTTEXT",
-            "BESSELI",
-            "BESSELJ",
-            "BESSELK",
-            "BESSELY",
-            "BETADIST",
-            "BETAINV",
-            "BIN2DEC",
-            "BIN2HEX",
-            "BIN2OCT",
-            "BINOMDIST",
-            "CALL",
-            "CEILING",
-            "CELL",
-            "CHAR",
-            "CHIDIST",
-            "CHIINV",
-            "CHITEST",
-            //"CHOOSE",
-            "CLEAN",
-            "CODE",
-            "COLUMN",
-            "COLUMNS",
-            "COMBIN",
-            "COMPLEX",
-            "CONCATENATE",
-            "CONFIDENCE",
-            "CONVERT",
-            "CORREL",
-            "COS",
-            "COSH",
-            "COUNT",
-            "COUNTA",
-            "COUNTBLANK",
-            "COUNTIF",
-            "COUNTIFS",
-            "COUPDAYBS",
-            "COUPDAYS",
-            "COUPDAYSNC",
-            "COUPNCD",
-            "COUPNUM",
-            "COUPPCD",
-            "COVAR",
-            "CRITBINOM",
-            "CUBEKPIMEMBER",
-            "CUBEMEMBER",
-            "CUBEMEMBERPROPERTY",
-            "CUBERANKEDMEMBER",
-            "CUBESET",
-            "CUBESETCOUNT",
-            "CUBEVALUE",
-            "CUMIPMT",
-            "CUMPRINC",
-            "DATE",
-            "DATEVALUE",
-            "DAVERAGE",
-            "DAY",
-            "DAYS360",
-            "DB",
-            "DCOUNT",
-            "DCOUNTA",
-            "DDB",
-            "DEC2BIN",
-            "DEC2HEX",
-            "DEC2OCT",
-            "DEGREES",
-            "DELTA",
-            "DEVSQ",
-            "DGET",
-            "DISC",
-            "DMAX",
-            "DMIN",
-            "DOLLAR",
-            "DOLLARDE",
-            "DOLLARFR",
-            "DPRODUCT",
-            "DSTDEV",
-            "DSTDEVP",
-            "DSUM",
-            "DURATION",
-            "DVAR",
-            "DVARP",
-            "EDATEEFFECT",
-            "EOMONTH",
-            "ERF",
-            "ERFC",
-            "ERROR.TYPE",
-            "EUROCONVERT",
-            "EVEN",
-            "EXACT",
-            "EXP",
-            "EXPONDIST",
-            "FACT",
-            "FACTDOUBLE",
-            "FALSE",
-            "FDIST",
-            "FIND",
-            "FINV",
-            "FISHER",
-            "FISHERINV",
-            "FIXED",
-            "FLOOR",
-            "FORECAST",
-            "FREQUENCY",
-            "FTEST",
-            "FV",
-            "FVSCHEDULE",
-            "GAMMADIST",
-            "GAMMAINV",
-            "GAMMALN",
-            "GCD",
-            "GEOMEAN",
-            "GESTEP",
-            "GETPIVOTDATA",
-            "GROWTH",
-            "HARMEAN",
-            "HEX2BIN",
-            "HEX2DEC",
-            "HEX2OCT",
-            "HLOOKUP",
-            "HOUR",
-            "HYPERLINK",
-            "HYPGEOMDIST",
-            //"IF",
-            "ISBLANK",
-            "IFERROR",
-            "IMABS",
-            "IMAGINARY",
-            "IMARGUMENT",
-            "IMCONJUGATE",
-            "IMCOS",
-            "IMDIV",
-            "IMEXP",
-            "IMLN",
-            "IMLOG10",
-            "IMLOG2",
-            "IMPOWER",
-            "IMPRODUCT",
-            "IMREAL",
-            "IMSIN",
-            "IMSQRT",
-            "IMSUB",
-            "IMSUM",
-            "INFO",
-            "INT",
-            "INTERCEPT",
-            "INTRATE",
-            "IPMT",
-            "IRR",
-            "IS",
-            "ISB",
-            "ISERROR",
-            "ISNA",
-            "ISNUMBER",
-            "ISPMT",
-            "JIS",
-            "KURT",
-            "LARGE",
-            "LCM",
-            "LEFT",
-            "LEFTB",
-            "LEN",
-            "LENB",
-            "LINEST",
-            "LN",
-            "LOG",
-            "LOG10",
-            "LOGEST",
-            "LOGINV",
-            "LOGNORMDIST",
-            "LOOKUP",
-            "LOWER",
-            "MATCH",
-            "MAX",
-            "MAXA",
-            "MDETERM",
-            "MDURATION",
-            "MEDIAN",
-            "MID",
-            "MIDB",
-            "MIN",
-            "MINA",
-            "MINUTE",
-            "MINVERSE",
-            "MIRR",
-            "MMULT",
-            "MOD",
-            "MODE",
-            "MONTH",
-            "MROUND",
-            "MULTINOMIAL",
-            "N",
-            "NA",
-            "NEGBINOMDIST",
-            "NETWORKDAYS",
-            "NOMINAL",
-            "NORMDIST",
-            "NORMINV",
-            "NORMSDIST",
-            "NORMSINV",
-            "NOT",
-            "NOW",
-            "NPER",
-            "NPV",
-            "OCT2BIN",
-            "OCT2DEC",
-            "OCT2HEX",
-            "ODD",
-            "ODDFPRICE",
-            "ODDFYIELD",
-            "ODDLPRICE",
-            "ODDLYIELD",
-            "OR",
-            "PEARSON",
-            "PERCENTILE",
-            "PERCENTRANK",
-            "PERMUT",
-            "PHONETIC",
-            "PI",
-            "PMT",
-            "POISSON",
-            "POWER",
-            "PPMT",
-            "PRICE",
-            "PRICEDISC",
-            "PRICEMAT",
-            "PROB",
-            "PRODUCT",
-            "PROPER",
-            "PV",
-            "QUARTILE",
-            "QUOTIENT",
-            "RADIANS",
-            "RAND",
-            "RANDBETWEEN",
-            "RANK",
-            "RATE",
-            "RECEIVED",
-            "REGISTER.ID",
-            "REPLACE",
-            "REPLACEB",
-            "REPT",
-            "RIGHT",
-            "RIGHTB",
-            "ROMAN",
-            "ROUND",
-            "ROUNDDOWN",
-            "ROUNDUP",
-            "ROW",
-            "ROWS",
-            "RSQ",
-            "RTD",
-            "SEARCH",
-            "SEARCHB",
-            "SECOND",
-            "SERIESSUM",
-            "SIGN",
-            "SIN",
-            "SINH",
-            "SKEW",
-            "SLN",
-            "SLOPE",
-            "SMALL",
-            "SQL.REQUEST",
-            "SQRT",
-            "SQRTPI",
-            "STANDARDIZE",
-            "STDEV",
-            "STDEVA",
-            "STDEVP",
-            "STDEVPA",
-            "STEYX",
-            "SUBSTITUTE",
-            "SUBTOTAL",
-            "SUM",
-            "SUMIF",
-            "SUMIFS",
-            "SUMPRODUCT",
-            "SUMSQ",
-            "SUMX2MY2",
-            "SUMX2PY2",
-            "SUMXMY2",
-            "SYD",
-            "T",
-            "TAN",
-            "TANH",
-            "TBILLEQ",
-            "TBILLPRICE",
-            "TBILLYIELD",
-            "TDIST",
-            "TEXT",
-            "TIME",
-            "TIMEVALUE",
-            "TINV",
-            "TODAY",
-            "TRANSPOSE",
-            "TREND",
-            "TRIM",
-            "TRIMMEAN",
-            "TRUE",
-            "TRUNC",
-            "TTEST",
-            "TYPE",
-            "UPPER",
-            "VALUE",
-            "VAR",
-            "VARA",
-            "VARP",
-            "VARPA",
-            "VDB",
-            "VLOOKUP",
-            "WEEKDAY",
-            "WEEKNUM",
-            "WEIBULL",
-            "WORKDAY",
-            "XIRR",
-            "XNPV",
-            "YEAR",
-            "YEARFRAC",
-            "YIELD",
-            "YIELDDISC",
-            "YIELDMAT",
-            "ZTEST"
-        };
-        #endregion
+        private static string[] excelFunctionList => Properties.Resources.ExcelBuiltinFunctionList.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
     }
 
     #region Names
@@ -802,14 +470,12 @@ namespace XLParser
         public const string FunctionCall = "FunctionCall";
         public const string FunctionName = "FunctionName";
         public const string HorizontalRange = "HRange";
-        public const string MultipleSheets = "MultipleSheets";
         public const string NamedRange = "NamedRange";
         public const string Number = "Number";
         public const string Prefix = "Prefix";
         public const string QuotedFileSheet = "QuotedFileSheet";
         public const string Range = "Range";
         public const string Reference = "Reference";
-        //public const string ReferenceFunction = "ReferenceFunction";
         public const string ReferenceFunctionCall = "ReferenceFunctionCall";
         public const string RefError = "RefError";
         public const string RefFunctionName = "RefFunctionName";
@@ -833,13 +499,13 @@ namespace XLParser
         #region Terminals
         public const string TokenBool = "BoolToken";
         public const string TokenCell = "CellToken";
-        public const string TokenDDE = "DDEToken";
         public const string TokenEmptyArgument = "EmptyArgumentToken";
         public const string TokenError = "ErrorToken";
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
         public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
+        public const string TokenFilePathWindows = "FilePathWindowsToken";
+        public const string TokenFileNameString = "FileNameStringToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
-        public const string TokenFileSheetQuoted = "FileSheetQuotedToken";
         public const string TokenHRange = "HRangeToken";
         public const string TokenIntersect = "INTERSECT";
         public const string TokenMultipleSheets = "MultipleSheetsToken";
@@ -848,7 +514,9 @@ namespace XLParser
         public const string TokenNumber = "NumberToken";
         public const string TokenRefError = "RefErrorToken";
         public const string TokenReservedName = "ReservedNameToken";
+        public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
+        public const string TokenSheetQuoted = "SheetNameQuotedToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
