@@ -4,7 +4,12 @@ using System.Web;
 using Irony.Parsing;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Diagnostics;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace XLParser.Web
 {
@@ -24,6 +29,8 @@ namespace XLParser.Web
             false;
         #endif
 
+        private const string latestVersion = "114";
+
         public void ProcessRequest(HttpContext context)
         {
             ctx = context;
@@ -34,6 +41,33 @@ namespace XLParser.Web
                 context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(5));
                 context.Response.Cache.SetMaxAge(new TimeSpan(0, 0, 5));
             }
+
+            // Dynamically load an library version
+            var xlparserVersion = context.Request.Params["version"] ?? latestVersion;
+            if (!Regex.IsMatch(xlparserVersion, @"^[0-9]{3}[\-a-z0-9]*$"))
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                ctx.Response.ContentType = "text/plain";
+                w("Invalid version");
+                context.Response.End();
+                return;
+            }
+
+            Assembly xlparser;
+            try
+            {
+                xlparser = LoadXLParserVersion(xlparserVersion);
+            }
+            catch (ArgumentException)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                ctx.Response.ContentType = "text/plain";
+                w("Version doesn't exist");
+                context.Response.End();
+                return;
+            }
+            
+
             // We want to actually give meaningful HTTP error codes and not have IIS interfere
             context.Response.TrySkipIisCustomErrors = true;
 
@@ -43,19 +77,21 @@ namespace XLParser.Web
             switch (format)
             {
                 case "json":
-                    ParseToJSON(formula);
+                    ParseToJSON(formula, xlparser);
                     break;
                 default:
                     context.Response.StatusCode = 415;
                     ctx.Response.ContentType = "text/plain";
-                    w(String.Format("Format '{0}' not supported.", format));
+                    w($"Format '{format}' not supported.");
                     context.Response.End();
                     break;
             }
         }
 
-        private void ParseToJSON(string formula)
+        private void ParseToJSON(string formula, Assembly xlparser)
         {
+            var ExcelFormulaParser = xlparser.GetType("XLParser.ExcelFormulaParser", true);
+
             ctx.Response.ContentType = "application/json";
             if (formula == null)
             {
@@ -67,13 +103,16 @@ namespace XLParser.Web
             ParseTreeNode root;
             try
             {
-                root = XLParser.ExcelFormulaParser.Parse(formula);
+                var Parse = ExcelFormulaParser.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public);
+                //root = XLParser.ExcelFormulaParser.Parse(formula);
+                root = (ParseTreeNode)Parse.Invoke(null, new object[] { formula });
             }
             catch (ArgumentException)
             {
                 // Parse error, return 422 - Unprocessable Entity
                 ctx.Response.StatusCode = 422;
-                var r = new Parser(new ExcelFormulaGrammar()).Parse(formula);
+                //var r = new Parser(new ExcelFormulaGrammar()).Parse(formula);
+                var r = new Parser((Grammar)Activator.CreateInstance(xlparser.GetType("ExcelFormulaGrammar"))).Parse(formula);
                 w(JsonConvert.SerializeObject(new
                 {
                     error = "Parse error",
@@ -92,8 +131,13 @@ namespace XLParser.Web
                 return;
             }
 
+            Func<ParseTreeNode, string> printer =
+                node =>
+                    NodeText(node,
+                        (inode => (string) ExcelFormulaParser.GetMethod("Print").Invoke(null, new object[] {inode})));
+
             w(JsonConvert.SerializeObject(
-                    ToJSON(root),
+                    ToJSON(root, printer),
                     Formatting.Indented,
                     new JsonSerializerSettings
                     {
@@ -103,12 +147,12 @@ namespace XLParser.Web
             ctx.Response.End();
         }
 
-        private static JSONNode ToJSON(ParseTreeNode node)
+        private static JSONNode ToJSON(ParseTreeNode node, Func<ParseTreeNode,string> printer)
         {
             return new JSONNode
             {
-                name = NodeText(node),
-                children = node.ChildNodes.Count == 0 ? null : node.ChildNodes.Select(ToJSON)
+                name = printer(node),
+                children = node.ChildNodes.Count == 0 ? null : node.ChildNodes.Select(n=>ToJSON(n,printer))
             };
         }
 
@@ -118,22 +162,32 @@ namespace XLParser.Web
             public IEnumerable<JSONNode> children;
         }
 
-        private static string NodeText(ParseTreeNode node)
+        private static string NodeText(ParseTreeNode node, Func<ParseTreeNode, string> Print)
         {
-            if (node.Term is NonTerminal) return node.Type();
+            if (node.Term is NonTerminal) return node.Term.Name;
 
             // These are simple terminals like + or =, just print them
-            if (node.Type().Length <= 2) return node.Print();
-
             // For other terminals, print the terminal name + contents
-            return String.Format("{0}[\"{1}\"]", node.Type(), node.Print());
+            return node.Term.Name.Length <= 2 ? Print(node) : $"{node.Term.Name}[\"{Print(node)}\"]";
         }
 
-        public bool IsReusable
+        private IDictionary<string, Assembly> xlparsers = new Dictionary<string, Assembly>();
+        private Assembly LoadXLParserVersion(string version)
         {
-            // Return false in case your Managed Handler cannot be reused for another request.
-            // Usually this would be false in case you have some state information preserved per request.
-            get { return true; }
+            if (xlparsers.ContainsKey(version)) return xlparsers[version];
+            try
+            {
+                var uri = new UriBuilder(Assembly.GetExecutingAssembly().CodeBase);
+                string dir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+                string path = Path.Combine(dir, $@"xlparser\{version}.dll");
+                return xlparsers[version] = Assembly.LoadFrom(path);
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new ArgumentException($"Version {version} doesn't exist", e);
+            }
         }
+
+        public bool IsReusable => true;
     }
 }

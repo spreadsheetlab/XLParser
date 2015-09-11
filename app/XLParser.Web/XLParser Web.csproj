@@ -79,6 +79,18 @@
     <Content Include="img\logo-tudelft.png" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
+    <Content Include="xlparser\100.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xlparser\112.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xlparser\113.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xlparser\114.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -90,12 +102,6 @@
     </Compile>
     <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\XLParser\XLParser.csproj">
-      <Project>{fb048d20-29fd-4d2c-a336-59f93f9a68f3}</Project>
-      <Name>XLParser</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
