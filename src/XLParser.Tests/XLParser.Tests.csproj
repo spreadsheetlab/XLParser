@@ -65,6 +65,11 @@
     <Compile Include="PrintTests.cs" />
     <Compile Include="DatasetTests.cs" />
     <Compile Include="PrefixInfoTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XLParser\XLParser.csproj">
@@ -73,18 +78,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\enron\formulas.csv">
+    <Content Include="data\enron\formulas.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="data\enron\knownfails.csv">
+    </Content>
+    <Content Include="data\enron\knownfails.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="data\euses\formulas.csv">
+    </Content>
+    <Content Include="data\euses\formulas.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="data\euses\knownfails.csv">
+    </Content>
+    <Content Include="data\euses\knownfails.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="data\testformulas\structured_references.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
