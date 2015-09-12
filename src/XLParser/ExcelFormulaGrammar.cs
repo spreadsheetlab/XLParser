@@ -15,6 +15,7 @@ namespace XLParser
 
         #region Symbols and operators
 
+        public Terminal at => ToTerm("@");
         public Terminal comma => ToTerm(",");
         public Terminal colon => ToTerm(":");
         public Terminal semicolon => ToTerm(";");
@@ -201,9 +202,9 @@ namespace XLParser
         public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
         public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
         public NonTerminal StructureReference { get; } = new NonTerminal(GrammarNames.StructureReference);
-        public NonTerminal StructureReferenceColumnOrKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceColumn);
-        public NonTerminal StructureReferenceContents { get; } = new NonTerminal(GrammarNames.StructureReferenceContents);
-        public NonTerminal StructureReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceKeyword);
+        public NonTerminal StructureReferenceColumnOrKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceColumnOrKeyword);
+        public NonTerminal StructureReferenceExpression { get; } = new NonTerminal(GrammarNames.StructureReferenceExpression);
+        //public NonTerminal StructureReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceKeyword);
         public NonTerminal StructureReferenceTable { get; } = new NonTerminal(GrammarNames.StructureReferenceTable);
         public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
         public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
@@ -364,31 +365,29 @@ namespace XLParser
                 | File + MultipleSheetsToken
                 ;
 
-
             StructureReferenceColumnOrKeyword.Rule =
-                SRColumnToken
-                | NameToken
-                | EnclosedInBracketsToken
-                ;
+                  OpenSquareParen + SRColumnToken + CloseSquareParen
+                | OpenSquareParen + NameToken + CloseSquareParen
+                | EnclosedInBracketsToken;
 
-            StructureReferenceKeyword.Rule = EnclosedInBracketsToken;
+            //StructureReferenceKeyword.Rule = EnclosedInBracketsToken;
 
             StructureReferenceTable.Rule = NameToken;
 
-            StructureReferenceContents.Rule =
-                StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
+            StructureReferenceExpression.Rule =
+                  StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
                 | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceKeyword + comma + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceKeyword + comma + StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
                 ;
 
             StructureReference.Rule =
-                  StructureReferenceKeyword
-                | OpenSquareParen + StructureReferenceContents + CloseSquareParen
-                | StructureReferenceTable + StructureReferenceKeyword
-                | StructureReferenceTable + OpenSquareParen + StructureReferenceContents + CloseSquareParen
+                  StructureReferenceColumnOrKeyword
+                | OpenSquareParen + StructureReferenceExpression + CloseSquareParen
+                | StructureReferenceTable + StructureReferenceColumnOrKeyword
+                | StructureReferenceTable + OpenSquareParen + StructureReferenceExpression + CloseSquareParen
                 ;
             #endregion
 
@@ -530,9 +529,8 @@ namespace XLParser
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
         public const string StructureReference = "StructureReference";
-        public const string StructureReferenceColumn = "StructureReferenceColumn";
-        public const string StructureReferenceContents = "StructureReferenceContents";
-        public const string StructureReferenceKeyword = "StructureReferenceKeyword";
+        public const string StructureReferenceColumnOrKeyword = "StructureReferenceColumnOrKeyword";
+        public const string StructureReferenceExpression = "StructureReferenceExpression";
         public const string StructureReferenceTable = "StructureReferenceTable";
         public const string Text = "Text";
         public const string UDFName = "UDFName";

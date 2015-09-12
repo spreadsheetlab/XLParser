@@ -25,3 +25,4 @@
 =DeptSalesFYSummary['#OfItems]
 =DeptSales[ [SalesPers]:[Region] ]
 =DeptSales[[#Headers], [#Data], [ComPct]]
+=DeptSales[@Column]

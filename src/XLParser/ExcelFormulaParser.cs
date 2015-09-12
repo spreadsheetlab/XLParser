@@ -566,7 +566,7 @@ namespace XLParser
                     childsL = childs.ToList();
                     if (hastable) ret += childsL[0];
 
-                    if (input.ChildNodes[contentsNode].Is(GrammarNames.StructureReferenceKeyword))
+                    if (input.ChildNodes[contentsNode].Is(GrammarNames.StructureReferenceColumnOrKeyword))
                     {
                         ret += childsL[contentsNode];
                     } else
@@ -581,7 +581,7 @@ namespace XLParser
                 case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                 case GrammarNames.File:
-                case GrammarNames.StructureReferenceContents:
+                case GrammarNames.StructureReferenceExpression:
                     return string.Join("", childs);
 
                 // Terms for which we print the childs comma-separated
