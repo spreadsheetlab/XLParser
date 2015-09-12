@@ -494,6 +494,7 @@ namespace XLParser
             // Concrete list when needed
             List<string> childsL;
 
+            string ret;
             // Switch on nonterminals
             switch (input.Term.Name)
             {
@@ -547,7 +548,7 @@ namespace XLParser
                     return string.Join("", childs);
 
                 case GrammarNames.Prefix:
-                    var ret = string.Join("", childs);
+                    ret = string.Join("", childs);
                     // The exclamation mark token is not included in the parse tree, so we have to add that if it's a single file
                     if (input.ChildNodes.Count == 1 && input.ChildNodes[0].Is(GrammarNames.File))
                     {
@@ -558,11 +559,29 @@ namespace XLParser
                 case GrammarNames.ArrayFormula:
                     return "{=" + childs.ElementAt(1) + "}";
 
+                case GrammarNames.StructureReference:
+                    ret = "";
+                    var hastable = input.ChildNodes.Count == 2;
+                    var contentsNode = hastable ? 1 : 0;
+                    childsL = childs.ToList();
+                    if (hastable) ret += childsL[0];
+
+                    if (input.ChildNodes[contentsNode].Is(GrammarNames.StructureReferenceKeyword))
+                    {
+                        ret += childsL[contentsNode];
+                    } else
+                    {
+                        ret += $"[{childsL[contentsNode]}]";
+                    }
+
+                    return ret;
+
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
                 case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                 case GrammarNames.File:
+                case GrammarNames.StructureReferenceContents:
                     return string.Join("", childs);
 
                 // Terms for which we print the childs comma-separated

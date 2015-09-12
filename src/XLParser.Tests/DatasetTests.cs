@@ -53,9 +53,9 @@ namespace XLParser.Tests
                 }
                 try
                 {
-                    ExcelFormulaParser.Parse(formula);
+                    ParserTests.test(formula);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     if (!knownfails.Contains(formula))
                     {
