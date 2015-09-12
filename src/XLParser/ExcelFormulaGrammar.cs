@@ -102,13 +102,30 @@ namespace XLParser
         { Priority = TerminalPriority.CellToken };
 
         private const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
-        public Terminal NamedRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRange, NamedRangeRegex)
-        { Priority = TerminalPriority.NamedRange };
+        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NamedRangeRegex)
+        { Priority = TerminalPriority.Name };
 
         // To prevent e.g. "A1A1" being parsed as 2 celltokens
         public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
         { Priority = TerminalPriority.NamedRangeCombination };
 
+        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
+        { Priority = TerminalPriority.ReservedName };
+
+        #region Structured References
+
+        //public Terminal SRTableNameToken = new RegexBasedTerminal(GrammarNames.TokenSRTableName, @"[\w\\.]+\[")
+        //{Priority = 0};
+
+        public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, @"[\w\\.]+")
+        { Priority = TerminalPriority.SRColumn };
+
+        //public Terminal SREnclosedColumnToken = new RegexBasedTerminal(GrammarNames.TokenSREnclosedColumn, @"\[( )*[\w+\\.,:#'""{}$^&*+=-></]+( )*\]")
+        //{Priority = 0};
+
+        #endregion
+
+        #region Prefixes
         private const string mustBeQuotedInSheetName = @"\(\);{}#""=<>&+\-*/\^%, ";
         private const string notSheetNameChars = @"'*\[\]\\:/?";
         //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
@@ -132,15 +149,13 @@ namespace XLParser
         { Priority = TerminalPriority.FileNameNumericToken };
 
         private const string fileNameRegex = @"\[[^<>:""/\|?*\[\]]+\]";
-        public Terminal FileNameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameString, fileNameRegex)
+        public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameRegex)
         { Priority = TerminalPriority.FileName };
-
-        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
-        { Priority = TerminalPriority.ReservedName };
 
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*";
         public Terminal FilePathWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex);
+        #endregion
 
         #endregion
 
@@ -185,6 +200,11 @@ namespace XLParser
         public NonTerminal ReservedName{ get; } = new NonTerminal(GrammarNames.ReservedName);
         public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
         public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
+        public NonTerminal StructureReference { get; } = new NonTerminal(GrammarNames.StructureReference);
+        public NonTerminal StructureReferenceColumnOrKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceColumn);
+        public NonTerminal StructureReferenceContents { get; } = new NonTerminal(GrammarNames.StructureReferenceContents);
+        public NonTerminal StructureReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceKeyword);
+        public NonTerminal StructureReferenceTable { get; } = new NonTerminal(GrammarNames.StructureReferenceTable);
         public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
         public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
         public NonTerminal UDFunctionCall{ get; } = new NonTerminal(GrammarNames.UDFunctionCall);
@@ -314,6 +334,7 @@ namespace XLParser
                 | HRange
                 | RefError
                 | UDFunctionCall
+                | StructureReference
                 ;
             MarkTransient(ReferenceItem);
 
@@ -326,13 +347,13 @@ namespace XLParser
             Cell.Rule = CellToken;
 
             File.Rule = FileToken
-				| FileNameToken
-				| FilePathWindowsToken + FileNameToken
+				| EnclosedInBracketsToken
+				| FilePathWindowsToken + EnclosedInBracketsToken
                 ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
-            NamedRange.Rule = NamedRangeToken | NamedRangeCombinationToken;
+            NamedRange.Rule = NameToken | NamedRangeCombinationToken;
             Prefix.Rule =
                 SheetToken
                 | QuoteS + SheetQuotedToken
@@ -343,6 +364,32 @@ namespace XLParser
                 | File + MultipleSheetsToken
                 ;
 
+
+            StructureReferenceColumnOrKeyword.Rule =
+                SRColumnToken
+                | NameToken
+                | EnclosedInBracketsToken
+                ;
+
+            StructureReferenceKeyword.Rule = EnclosedInBracketsToken;
+
+            StructureReferenceTable.Rule = NameToken;
+
+            StructureReferenceContents.Rule =
+                StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceKeyword + comma + StructureReferenceColumnOrKeyword
+                | StructureReferenceColumnOrKeyword + comma + StructureReferenceKeyword + comma + StructureReferenceColumnOrKeyword + ":" + StructureReferenceColumnOrKeyword
+                ;
+
+            StructureReference.Rule =
+                  StructureReferenceKeyword
+                | OpenSquareParen + StructureReferenceContents + CloseSquareParen
+                | StructureReferenceTable + StructureReferenceKeyword
+                | StructureReferenceTable + OpenSquareParen + StructureReferenceContents + CloseSquareParen
+                ;
             #endregion
 
             #region Arrays
@@ -403,8 +450,10 @@ namespace XLParser
         {
             // Irony Low value
             //public const int Low = -1000;
-            
-            public const int NamedRange = -800;
+
+            public const int SRColumn = -900;
+
+            public const int Name = -800;
             public const int ReservedName = -700;
 
             public const int FileName = -500;
@@ -431,7 +480,6 @@ namespace XLParser
             public const int FileNameNumericToken = 1200;
             public const int SheetToken = 1200;
             public const int SheetQuotedToken = 1200;
-            public const int QuotedFileToken = 1200;
         }
         #endregion
 
@@ -481,6 +529,11 @@ namespace XLParser
         public const string RefFunctionName = "RefFunctionName";
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
+        public const string StructureReference = "StructureReference";
+        public const string StructureReferenceColumn = "StructureReferenceColumn";
+        public const string StructureReferenceContents = "StructureReferenceContents";
+        public const string StructureReferenceKeyword = "StructureReferenceKeyword";
+        public const string StructureReferenceTable = "StructureReferenceTable";
         public const string Text = "Text";
         public const string UDFName = "UDFName";
         public const string UDFunctionCall = "UDFunctionCall";
@@ -504,12 +557,12 @@ namespace XLParser
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
         public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
         public const string TokenFilePathWindows = "FilePathWindowsToken";
-        public const string TokenFileNameString = "FileNameStringToken";
+        public const string TokenEnclosedInBrackets = "EnclosedInBracketsToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
         public const string TokenHRange = "HRangeToken";
         public const string TokenIntersect = "INTERSECT";
         public const string TokenMultipleSheets = "MultipleSheetsToken";
-        public const string TokenNamedRange = "NamedRangeToken";
+        public const string TokenName = "NameToken";
         public const string TokenNamedRangeCombination = "NamedRangeCombinationToken";
         public const string TokenNumber = "NumberToken";
         public const string TokenRefError = "RefErrorToken";
@@ -517,6 +570,10 @@ namespace XLParser
         public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
         public const string TokenSheetQuoted = "SheetNameQuotedToken";
+        public const string TokenSRTableName = "SRTableName";
+        public const string TokenSRKeyword = "SRKeyword";
+        public const string TokenSRColumn = "SRColumn";
+        public const string TokenSREnclosedColumn = "SREnclosedColumn";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";

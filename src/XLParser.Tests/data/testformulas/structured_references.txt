@@ -1,6 +1,6 @@
 ﻿=SUM(DeptSales[SaleAmt])
 =DeptSales[[SalesPers]:[Region]]
-=DeptSales[SaleAmt],DeptSales[ComAmt]
+=(DeptSales[SaleAmt],DeptSales[ComAmt])
 =DeptSales[[SalesPers]:[SaleAmt]] DeptSales[[Region]:[ComPct]]
 =DeptSales[#All]
 =DeptSales[#Data]
