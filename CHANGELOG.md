@@ -2,10 +2,13 @@
 
 ## 1.2
 
-Fixes [#17](https://github.com/PerfectXL/XLParser/issues/17), [#19](https://github.com/PerfectXL/XLParser/issues/3)
+Fixes [#16](https://github.com/PerfectXL/XLParser/issues/16), [#17](https://github.com/PerfectXL/XLParser/issues/17), [#19](https://github.com/PerfectXL/XLParser/issues/3)
 
 * Made it easier to modify the grammar in your own class by extending the grammar class
 * Can now parse non-numeric filenames (`=[file]Sheet!A1`)
+* Parsing of the `Prefix` nonterminal is changed and is now a little bit more uniform. `ExcelFormulaParser.GetPrefixInfo` gives prefix information in an easy to use format.
+* Can now parse [Structured References](https://support.office.com/en-us/article/Using-structured-references-with-Excel-tables-f5ed2452-2337-4f71-bed3-c8ae6d2b276e). See [#16](https://github.com/PerfectXL/XLParser/issues/16) for caveats.
+* You can now select the XLParser version to use in the web demo
 
 ## 1.1.4
 
