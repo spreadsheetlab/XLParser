@@ -11,7 +11,7 @@ using Irony.Parsing;
 namespace XLParser.Tests
 {
     [TestClass]
-    // Visual studio standard datasources where tried for this class, but it was found very slow
+    // Visual studio standard datasources where tried for this class, but it was found to be very slow
     public class DatasetTests
     {
         public TestContext TestContext { get; set; }
@@ -20,20 +20,22 @@ namespace XLParser.Tests
 
         [TestMethod]
         [TestCategory("Slow")]
-        // Uncomment this to execute the test
-        //[Ignore]
         public void EnronFormulasParseTest()
         {
-            parseCSVDataSet("data/enron/formulas.csv", "data/enron/knownfails.csv");
+            parseCSVDataSet("data/enron/formulas.txt", "data/enron/knownfails.txt");
         }
 
         [TestMethod]
         [TestCategory("Slow")]
-        // Uncomment this to execute the test
-        //[Ignore]
         public void EusesFormulasParseTest()
         {
-            parseCSVDataSet("data/euses/formulas.csv", "data/euses/knownfails.csv");
+            parseCSVDataSet("data/euses/formulas.txt", "data/euses/knownfails.txt");
+        }
+
+        [TestMethod]
+        public void ParseTestFormulasStructuredReferences()
+        {
+            parseCSVDataSet("data/testformulas/structured_references.txt");
         }
 
         private void parseCSVDataSet(string filename, string knownfailsfile = null)
@@ -51,15 +53,15 @@ namespace XLParser.Tests
                 }
                 try
                 {
-                    ExcelFormulaParser.Parse(formula);
+                    ParserTests.test(formula);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     if (!knownfails.Contains(formula))
                     {
                         lock (LOCK)
                         {
-                            TestContext.WriteLine(String.Format("Failed parsing line {0} <<{1}>>", linenr, formula));
+                            TestContext.WriteLine($"Failed parsing line {linenr} <<{formula}>>");
                             parseErrors++;
                         }
                     }
