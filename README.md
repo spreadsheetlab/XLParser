@@ -35,7 +35,7 @@ XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/
 
 ### Building
 
-Open the `XLParser.sln` file in `src/` in Visual Studio 2013 or higher and press build. The dependencies are already included in compiled form in this repository.
+Open the `XLParser.sln` file in `src/` in Visual Studio 2015 or higher and press build. The dependencies are already included in compiled form in this repository.
 
 ### Using in your project
 
