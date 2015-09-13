@@ -91,9 +91,7 @@
     <Content Include="xlparser\114.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="xlparser\120a.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="xlparser\120.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">

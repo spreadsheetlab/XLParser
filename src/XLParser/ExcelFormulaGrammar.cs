@@ -8,7 +8,7 @@ namespace XLParser
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.2.0-alpha", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.2.0", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         #region 1-Terminals
