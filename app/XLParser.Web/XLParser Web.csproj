@@ -77,21 +77,9 @@
     <Content Include="img\logo-infotron.png" />
     <Content Include="img\logo-spreadsheet-lab.png" />
     <Content Include="img\logo-tudelft.png" />
+    <None Include="Resources\ExcelBuiltinFunctionList.txt" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
-    <Content Include="xlparser\100.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="xlparser\112.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="xlparser\113.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="xlparser\114.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="xlparser\120.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -103,12 +91,34 @@
     </Compile>
     <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="XLParserVersions\v100\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v100\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v112\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v112\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v113\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v113\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v114\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v114\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v120\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v120\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v120\PrefixInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

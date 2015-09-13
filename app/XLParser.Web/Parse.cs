@@ -29,7 +29,7 @@ namespace XLParser.Web
             false;
         #endif
 
-        private const string latestVersion = "114";
+        private const string latestVersion = "120";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -42,31 +42,30 @@ namespace XLParser.Web
                 context.Response.Cache.SetMaxAge(new TimeSpan(0, 0, 5));
             }
 
-            // Dynamically load a library version
+             // Dynamically load a library version
             var xlparserVersion = context.Request.Params["version"] ?? latestVersion;
             if (!Regex.IsMatch(xlparserVersion, @"^[0-9]{3}[\-a-z0-9]*$"))
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 ctx.Response.ContentType = "text/plain";
                 w("Invalid version");
                 context.Response.End();
                 return;
             }
 
-            Assembly xlparser;
             try
             {
-                xlparser = LoadXLParserVersion(xlparserVersion);
+                LoadXLParserVersion(xlparserVersion);
             }
             catch (ArgumentException)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 ctx.Response.ContentType = "text/plain";
                 w("Version doesn't exist");
                 context.Response.End();
                 return;
             }
-            
+
 
             // We want to actually give meaningful HTTP error codes and not have IIS interfere
             context.Response.TrySkipIisCustomErrors = true;
@@ -77,7 +76,7 @@ namespace XLParser.Web
             switch (format)
             {
                 case "json":
-                    ParseToJSON(formula, xlparser);
+                    ParseToJSON(formula);
                     break;
                 default:
                     context.Response.StatusCode = 415;
@@ -88,10 +87,8 @@ namespace XLParser.Web
             }
         }
 
-        private void ParseToJSON(string formula, Assembly xlparser)
+        private void ParseToJSON(string formula)
         {
-            var ExcelFormulaParser = xlparser.GetType("XLParser.ExcelFormulaParser", true);
-
             ctx.Response.ContentType = "application/json";
             if (formula == null)
             {
@@ -103,16 +100,14 @@ namespace XLParser.Web
             ParseTreeNode root;
             try
             {
-                var Parse = ExcelFormulaParser.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public);
                 //root = XLParser.ExcelFormulaParser.Parse(formula);
-                root = (ParseTreeNode)Parse.Invoke(null, new object[] { formula });
+                root = parse(formula);
             }
             catch (ArgumentException)
             {
                 // Parse error, return 422 - Unprocessable Entity
                 ctx.Response.StatusCode = 422;
-                //var r = new Parser(new ExcelFormulaGrammar()).Parse(formula);
-                var r = new Parser((Grammar)Activator.CreateInstance(xlparser.GetType("ExcelFormulaGrammar"))).Parse(formula);
+                var r = new Parser((Grammar)Activator.CreateInstance(grammar)).Parse(formula);
                 w(JsonConvert.SerializeObject(new
                 {
                     error = "Parse error",
@@ -131,13 +126,8 @@ namespace XLParser.Web
                 return;
             }
 
-            Func<ParseTreeNode, string> printer =
-                node =>
-                    NodeText(node,
-                        (inode => (string) ExcelFormulaParser.GetMethod("Print").Invoke(null, new object[] {inode})));
-
             w(JsonConvert.SerializeObject(
-                    ToJSON(root, printer),
+                    ToJSON(root),
                     Formatting.Indented,
                     new JsonSerializerSettings
                     {
@@ -147,12 +137,12 @@ namespace XLParser.Web
             ctx.Response.End();
         }
 
-        private static JSONNode ToJSON(ParseTreeNode node, Func<ParseTreeNode,string> printer)
+        private JSONNode ToJSON(ParseTreeNode node)
         {
             return new JSONNode
             {
-                name = printer(node),
-                children = node.ChildNodes.Count == 0 ? null : node.ChildNodes.Select(n=>ToJSON(n,printer))
+                name = NodeText(node),
+                children = node.ChildNodes.Count == 0 ? null : node.ChildNodes.Select(ToJSON)
             };
         }
 
@@ -162,29 +152,52 @@ namespace XLParser.Web
             public IEnumerable<JSONNode> children;
         }
 
-        private static string NodeText(ParseTreeNode node, Func<ParseTreeNode, string> Print)
+        private string NodeText(ParseTreeNode node)
         {
             if (node.Term is NonTerminal) return node.Term.Name;
 
             // These are simple terminals like + or =, just print them
             // For other terminals, print the terminal name + contents
-            return node.Term.Name.Length <= 2 ? Print(node) : $"{node.Term.Name}[\"{Print(node)}\"]";
+            return node.Term.Name.Length <= 2 ? print(node) : $"{node.Term.Name}[\"{print(node)}\"]";
         }
 
-        private IDictionary<string, Assembly> xlparsers = new Dictionary<string, Assembly>();
-        private Assembly LoadXLParserVersion(string version)
+        private Func<string, ParseTreeNode> parse;
+        private Func<ParseTreeNode, string> print;
+        private Type grammar;
+
+        // Yes, this is f-ugly. Better solutions were tried (dynamically loading through reflection, extern alias and separate appdomains) but failed.
+        // Mainly this is because .NET is very very picky about loading multiple versions of libraries with the same name
+        private void LoadXLParserVersion(string version)
         {
-            if (xlparsers.ContainsKey(version)) return xlparsers[version];
-            try
+            switch (version)
             {
-                var uri = new UriBuilder(Assembly.GetExecutingAssembly().CodeBase);
-                string dir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-                string path = Path.Combine(dir, $@"xlparser\{version}.dll");
-                return xlparsers[version] = Assembly.LoadFrom(path);
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new ArgumentException($"Version {version} doesn't exist", e);
+                case "100":
+                    parse = XLParserVersions.v100.ExcelFormulaParser.Parse;
+                    print = XLParserVersions.v100.ExcelFormulaParser.Print;
+                    grammar = typeof(XLParserVersions.v100.ExcelFormulaGrammar);
+                    break;
+                case "112":
+                    parse = XLParserVersions.v112.ExcelFormulaParser.Parse;
+                    print = XLParserVersions.v112.ExcelFormulaParser.Print;
+                    grammar = typeof(XLParserVersions.v112.ExcelFormulaGrammar);
+                    break;
+                case "113":
+                    parse = XLParserVersions.v113.ExcelFormulaParser.Parse;
+                    print = XLParserVersions.v113.ExcelFormulaParser.Print;
+                    grammar = typeof(XLParserVersions.v113.ExcelFormulaGrammar);
+                    break;
+                case "114":
+                    parse = XLParserVersions.v114.ExcelFormulaParser.Parse;
+                    print = XLParserVersions.v114.ExcelFormulaParser.Print;
+                    grammar = typeof(XLParserVersions.v114.ExcelFormulaGrammar);
+                    break;
+                case "120":
+                    parse = XLParserVersions.v120.ExcelFormulaParser.Parse;
+                    print = XLParserVersions.v120.ExcelFormulaParser.Print;
+                    grammar = typeof(XLParserVersions.v120.ExcelFormulaGrammar);
+                    break;
+                default:
+                    throw new ArgumentException($"Version {version} doesn't exist");
             }
         }
 

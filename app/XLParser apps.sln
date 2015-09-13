@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLParser Web", "XLParser.Web\XLParser Web.csproj", "{A24BD58E-5958-4990-8836-958C52A6AA02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLParser", "..\src\XLParser\XLParser.csproj", "{FB048D20-29FD-4D2C-A336-59F93F9A68F3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{A24BD58E-5958-4990-8836-958C52A6AA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A24BD58E-5958-4990-8836-958C52A6AA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A24BD58E-5958-4990-8836-958C52A6AA02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
