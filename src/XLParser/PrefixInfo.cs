@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace XLParser
 {
+    /// <summary>
+    /// Simple data class that holds information about a Prefix.
+    /// </summary>
+    /// <seealso cref="ExcelFormulaParser.GetPrefixInfo"/>
     public class PrefixInfo
     {
-        
         public string FilePath { get; }
         public bool HasFilePath => FilePath != null;
 
