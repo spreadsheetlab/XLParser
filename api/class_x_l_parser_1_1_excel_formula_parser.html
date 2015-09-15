@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.1.2</span>
+   &#160;<span id="projectnumber">1.2.0</span>
    </div>
   </td>
  </tr>
@@ -125,15 +125,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e138ad7f616f81a0583c11f50011c00"><td class="memItemLeft" align="right" valign="top">static ParseTree&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a3e138ad7f616f81a0583c11f50011c00">ParseToTree</a> (string input)</td></tr>
 <tr class="memdesc:a3e138ad7f616f81a0583c11f50011c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a formula, return the the tree  <a href="#a3e138ad7f616f81a0583c11f50011c00">More...</a><br /></td></tr>
 <tr class="separator:a3e138ad7f616f81a0583c11f50011c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaccea8c14f4b2872cb482de7210b20e7"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; ParseTreeNode &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#aaccea8c14f4b2872cb482de7210b20e7">AllNodesConditional</a> (this ParseTreeNode root, Predicate&lt; ParseTreeNode &gt; stopAt=null)</td></tr>
+<tr class="memdesc:aaccea8c14f4b2872cb482de7210b20e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-terminal nodes in depth-first pre-order, with a conditional stop  <a href="#aaccea8c14f4b2872cb482de7210b20e7">More...</a><br /></td></tr>
+<tr class="separator:aaccea8c14f4b2872cb482de7210b20e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2686815b4ad0eb50da292ce8412eb821"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; ParseTreeNode &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a2686815b4ad0eb50da292ce8412eb821">AllNodes</a> (this ParseTreeNode root)</td></tr>
 <tr class="memdesc:a2686815b4ad0eb50da292ce8412eb821"><td class="mdescLeft">&#160;</td><td class="mdescRight">All non-terminal nodes in depth-first pre-order  <a href="#a2686815b4ad0eb50da292ce8412eb821">More...</a><br /></td></tr>
 <tr class="separator:a2686815b4ad0eb50da292ce8412eb821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96144e599c74efb7aa05aa99649a5985"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; ParseTreeNode &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a96144e599c74efb7aa05aa99649a5985">AllNodes</a> (this ParseTreeNode root, string type)</td></tr>
 <tr class="memdesc:a96144e599c74efb7aa05aa99649a5985"><td class="mdescLeft">&#160;</td><td class="mdescRight">All non-terminal nodes of a certain type in depth-first pre-order  <a href="#a96144e599c74efb7aa05aa99649a5985">More...</a><br /></td></tr>
 <tr class="separator:a96144e599c74efb7aa05aa99649a5985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeb30ddae9b6949b2e34e9625c7f025a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#aeeb30ddae9b6949b2e34e9625c7f025a">Contains</a> (this ParseTreeNode root, string type)</td></tr>
-<tr class="memdesc:aeeb30ddae9b6949b2e34e9625c7f025a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this tree contains any nodes of a type  <a href="#aeeb30ddae9b6949b2e34e9625c7f025a">More...</a><br /></td></tr>
-<tr class="separator:aeeb30ddae9b6949b2e34e9625c7f025a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d865c42ba2268fa9f9fe4bbcda6523c"><td class="memItemLeft" align="right" valign="top">static ParseTreeNode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a1d865c42ba2268fa9f9fe4bbcda6523c">Parent</a> (this ParseTreeNode child, ParseTreeNode treeRoot)</td></tr>
+<tr class="memdesc:a1d865c42ba2268fa9f9fe4bbcda6523c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the parent node of a node  <a href="#a1d865c42ba2268fa9f9fe4bbcda6523c">More...</a><br /></td></tr>
+<tr class="separator:a1d865c42ba2268fa9f9fe4bbcda6523c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac012be0f2ed7b45190da0a705038f08a"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#ac012be0f2ed7b45190da0a705038f08a">Type</a> (this ParseTreeNode node)</td></tr>
 <tr class="memdesc:ac012be0f2ed7b45190da0a705038f08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The node type/name  <a href="#ac012be0f2ed7b45190da0a705038f08a">More...</a><br /></td></tr>
 <tr class="separator:ac012be0f2ed7b45190da0a705038f08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +152,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ff455b2b0add8471523168dc1698234"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ff455b2b0add8471523168dc1698234"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBinaryOperation</b> (this ParseTreeNode input)</td></tr>
 <tr class="separator:a4ff455b2b0add8471523168dc1698234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311c400a811d86a0992519b86969dbb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a311c400a811d86a0992519b86969dbb9"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBinaryNonReferenceOperation</b> (this ParseTreeNode input)</td></tr>
+<tr class="separator:a311c400a811d86a0992519b86969dbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accda5e03ec9a04f24b771abd012f5a41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accda5e03ec9a04f24b771abd012f5a41"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBinaryReferenceOperation</b> (this ParseTreeNode input)</td></tr>
 <tr class="separator:accda5e03ec9a04f24b771abd012f5a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,9 +170,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsUnaryPostfix
 <tr class="memitem:a1372cbd3afaa535db9db0a751f1785f5"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a1372cbd3afaa535db9db0a751f1785f5">GetFunction</a> (this ParseTreeNode input)</td></tr>
 <tr class="memdesc:a1372cbd3afaa535db9db0a751f1785f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the function or operator name of this function call  <a href="#a1372cbd3afaa535db9db0a751f1785f5">More...</a><br /></td></tr>
 <tr class="separator:a1372cbd3afaa535db9db0a751f1785f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e738f499beda97a9e7000bf9f45c15c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a0e738f499beda97a9e7000bf9f45c15c">MatchFunction</a> (this ParseTreeNode input, String functionName)</td></tr>
-<tr class="memdesc:a0e738f499beda97a9e7000bf9f45c15c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node is a specific function  <a href="#a0e738f499beda97a9e7000bf9f45c15c">More...</a><br /></td></tr>
-<tr class="separator:a0e738f499beda97a9e7000bf9f45c15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110db4b8fc60e49390b7b849cbe67a0a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a110db4b8fc60e49390b7b849cbe67a0a">MatchFunction</a> (this ParseTreeNode input, string functionName)</td></tr>
+<tr class="memdesc:a110db4b8fc60e49390b7b849cbe67a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node is a specific function  <a href="#a110db4b8fc60e49390b7b849cbe67a0a">More...</a><br /></td></tr>
+<tr class="separator:a110db4b8fc60e49390b7b849cbe67a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adce7b7944b2ea81625258b2b5fdda88a"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; ParseTreeNode &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#adce7b7944b2ea81625258b2b5fdda88a">GetFunctionArguments</a> (this ParseTreeNode input)</td></tr>
+<tr class="memdesc:adce7b7944b2ea81625258b2b5fdda88a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all the arguments of a function or operation  <a href="#adce7b7944b2ea81625258b2b5fdda88a">More...</a><br /></td></tr>
+<tr class="separator:adce7b7944b2ea81625258b2b5fdda88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c36c697cad614083616344e7487f57"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a43c36c697cad614083616344e7487f57">IsBuiltinFunction</a> (this ParseTreeNode node)</td></tr>
 <tr class="memdesc:a43c36c697cad614083616344e7487f57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this node is a built-in excel function  <a href="#a43c36c697cad614083616344e7487f57">More...</a><br /></td></tr>
 <tr class="separator:a43c36c697cad614083616344e7487f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,12 +188,18 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsUnaryPostfix
 <tr class="memitem:a9fdf7c924195c39f7fae335400c3a65d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a9fdf7c924195c39f7fae335400c3a65d">IsNamedFunction</a> (this ParseTreeNode input)</td></tr>
 <tr class="memdesc:a9fdf7c924195c39f7fae335400c3a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this node is a function call with name, and not just a unary or binary operation  <a href="#a9fdf7c924195c39f7fae335400c3a65d">More...</a><br /></td></tr>
 <tr class="separator:a9fdf7c924195c39f7fae335400c3a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a740694a25c587e4ec1e921ad79fe89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a740694a25c587e4ec1e921ad79fe89"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsOperation</b> (this ParseTreeNode input)</td></tr>
+<tr class="separator:a0a740694a25c587e4ec1e921ad79fe89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8165342710e24bd922095f254f738329"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8165342710e24bd922095f254f738329"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFunction</b> (this ParseTreeNode input)</td></tr>
 <tr class="separator:a8165342710e24bd922095f254f738329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc6bade9540aefff18c7f5ad8b4380b0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#adc6bade9540aefff18c7f5ad8b4380b0">IsNumberWithSign</a> (this ParseTreeNode input)</td></tr>
 <tr class="memdesc:adc6bade9540aefff18c7f5ad8b4380b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this node presents a number constant with a sign  <a href="#adc6bade9540aefff18c7f5ad8b4380b0">More...</a><br /></td></tr>
 <tr class="separator:adc6bade9540aefff18c7f5ad8b4380b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b21d5465d04b35704aa19585bb4022"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_x_l_parser_1_1_prefix_info.html">PrefixInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#af2b21d5465d04b35704aa19585bb4022">GetPrefixInfo</a> (this ParseTreeNode prefix)</td></tr>
+<tr class="memdesc:af2b21d5465d04b35704aa19585bb4022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract all of the information from a Prefix nonterminal  <a href="#af2b21d5465d04b35704aa19585bb4022">More...</a><br /></td></tr>
+<tr class="separator:af2b21d5465d04b35704aa19585bb4022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1594f8c08b54e6bbad201dcff773070f"><td class="memItemLeft" align="right" valign="top">static ParseTreeNode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_x_l_parser_1_1_excel_formula_parser.html#a1594f8c08b54e6bbad201dcff773070f">SkipFormula</a> (this ParseTreeNode input)</td></tr>
 <tr class="memdesc:a1594f8c08b54e6bbad201dcff773070f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Go to the first non-formula child node  <a href="#a1594f8c08b54e6bbad201dcff773070f">More...</a><br /></td></tr>
 <tr class="separator:a1594f8c08b54e6bbad201dcff773070f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,7 +276,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
 
 </div>
 </div>
-<a class="anchor" id="aeeb30ddae9b6949b2e34e9625c7f025a"></a>
+<a class="anchor" id="aaccea8c14f4b2872cb482de7210b20e7"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -269,7 +284,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool XLParser.ExcelFormulaParser.Contains </td>
+          <td class="memname">static IEnumerable&lt;ParseTreeNode&gt; XLParser.ExcelFormulaParser.AllNodesConditional </td>
           <td>(</td>
           <td class="paramtype">this ParseTreeNode&#160;</td>
           <td class="paramname"><em>root</em>, </td>
@@ -277,8 +292,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
+          <td class="paramtype">Predicate&lt; ParseTreeNode &gt;&#160;</td>
+          <td class="paramname"><em>stopAt</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -293,7 +308,13 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
 </table>
 </div><div class="memdoc">
 
-<p>Whether this tree contains any nodes of a type </p>
+<p>Non-terminal nodes in depth-first pre-order, with a conditional stop </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stopAt</td><td>Don't process the children of a node matching this predicate</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -320,6 +341,58 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
 </div><div class="memdoc">
 
 <p>Get the function or operator name of this function call </p>
+
+</div>
+</div>
+<a class="anchor" id="adce7b7944b2ea81625258b2b5fdda88a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static IEnumerable&lt;ParseTreeNode&gt; XLParser.ExcelFormulaParser.GetFunctionArguments </td>
+          <td>(</td>
+          <td class="paramtype">this ParseTreeNode&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get all the arguments of a function or operation </p>
+
+</div>
+</div>
+<a class="anchor" id="af2b21d5465d04b35704aa19585bb4022"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_x_l_parser_1_1_prefix_info.html">PrefixInfo</a> XLParser.ExcelFormulaParser.GetPrefixInfo </td>
+          <td>(</td>
+          <td class="paramtype">this ParseTreeNode&#160;</td>
+          <td class="paramname"><em>prefix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract all of the information from a Prefix nonterminal </p>
 
 </div>
 </div>
@@ -541,7 +614,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
 
 </div>
 </div>
-<a class="anchor" id="a0e738f499beda97a9e7000bf9f45c15c"></a>
+<a class="anchor" id="a110db4b8fc60e49390b7b849cbe67a0a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -557,7 +630,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">String&#160;</td>
+          <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>functionName</em>&#160;</td>
         </tr>
         <tr>
@@ -574,6 +647,43 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsExternalUDFu
 </div><div class="memdoc">
 
 <p>Check if this node is a specific function </p>
+
+</div>
+</div>
+<a class="anchor" id="a1d865c42ba2268fa9f9fe4bbcda6523c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static ParseTreeNode XLParser.ExcelFormulaParser.Parent </td>
+          <td>(</td>
+          <td class="paramtype">this ParseTreeNode&#160;</td>
+          <td class="paramname"><em>child</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ParseTreeNode&#160;</td>
+          <td class="paramname"><em>treeRoot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the parent node of a node </p>
+<p>This is an expensive operation, as the whole tree will be searched through </p>
 
 </div>
 </div>

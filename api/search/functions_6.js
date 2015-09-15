@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['matchfunction',['MatchFunction',['../class_x_l_parser_1_1_excel_formula_parser.html#a0e738f499beda97a9e7000bf9f45c15c',1,'XLParser::ExcelFormulaParser']]]
+  ['matchfunction',['MatchFunction',['../class_x_l_parser_1_1_excel_formula_parser.html#a110db4b8fc60e49390b7b849cbe67a0a',1,'XLParser::ExcelFormulaParser']]]
 ];
