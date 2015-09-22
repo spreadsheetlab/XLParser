@@ -57,6 +57,15 @@ namespace XLParser.Tests
             var nums = fa.Numbers().ToList();
             Assert.AreEqual(2, nums.Count());
         }
+
+        // Test for issue #21: https://github.com/spreadsheetlab/XLParser/issues/21
+        [TestMethod]
+        public void NegativeNumber()
+        {
+            var fa = new FormulaAnalyzer("=-8+A1");
+            var nums = fa.Numbers().ToList();
+            CollectionAssert.AreEqual(new[] { -8.0 }, nums);
+        }
         #endregion
 
         #region Functions()
