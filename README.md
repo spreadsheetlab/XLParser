@@ -16,14 +16,14 @@ You can parse formulas and view parse trees in the [**online demo**](http://xlpa
 
 1. Download the [latest release](https://github.com/PerfectXL/XLParser/releases/latest)
 2. Extract somewhere convenient
-3. Open `Irony.GrammarExplorer.exe` in the `Irony.GrammarExplorer` subfolder
+3. Build Irony GrammarExplorer, see the Debugging section below, and open it
 4. Click on the `...` button at the top and select `Add Grammar`
 5. Point to the `XLParser.dll` file in the folder you extracted and click ok
 6. You can now parse formulas and see the trees in the `Test` tab
 
 ### Background
 
-XLParser is the reference implementation of the Excel grammar published in the upcoming paper ["A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by Efthimia Aivaloglou, David Hoepelman and Felienne Hermans](http://figshare.com/articles/A_Grammar_for_Spreadsheet_Formulas_Evaluated_on_Two_Large_Datasets/1488646).
+XLParser is the reference implementation of the Excel grammar published in the upcoming paper ["A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by Efthimia Aivaloglou, David Hoepelman and Felienne Hermans](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing).
 
 XLParser can parse Excel formulas and is intended to facilitate the analysis of spreadsheet formulas, and for that purpose produces compact parse trees.
 XLParser  has a 99.99% success rate on the [Enron](http://www.felienne.com/archives/3634) and [EUSES](http://eusesconsortium.org/resources.php) datasets.
@@ -58,7 +58,7 @@ In Visual Studio you can see the printed version of any node during debugging by
 
 ### Documentation
 
-See the paper and [the API documentation](https://perfectxl.github.io/XLParser/api/namespace_x_l_parser.html).
+See [the paper](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing) and [the API documentation](https://spreadsheetlab.github.io/XLParser/api/namespace_x_l_parser.html).
 
 ### License
 
