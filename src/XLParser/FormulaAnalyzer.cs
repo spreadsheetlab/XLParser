@@ -52,10 +52,7 @@ namespace XLParser
         /// </summary>
         public IEnumerable<ParseTreeNode> References()
         {
-            return Root.AllNodesConditional(node => node.Is(GrammarNames.Reference))
-                .Where(node => node.Is(GrammarNames.Reference))
-                .Select(node => node.SkipToRelevant())
-                ;
+            return Root.GetReferenceNodes();
         }
 
         public IEnumerable<string> Functions()
