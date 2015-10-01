@@ -440,6 +440,17 @@ namespace XLParser
         }
 
         /// <summary>
+        /// Get all child nodes that are references and aren't part of another reference expression
+        /// </summary>
+        public static IEnumerable<ParseTreeNode> GetReferenceNodes(this ParseTreeNode input)
+        {
+            return input.AllNodesConditional(node => node.Is(GrammarNames.Reference))
+                .Where(node => node.Is(GrammarNames.Reference))
+                .Select(node => node.SkipToRelevant())
+                ;
+        }
+
+        /// <summary>
         /// Go to the first "relevant" child node, i.e. skips wrapper nodes
         /// </summary>
         /// <remarks>
