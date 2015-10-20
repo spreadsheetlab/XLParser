@@ -1,4 +1,4 @@
-## XLParser
+# XLParser
 A C# Excel formula parser with the following properties:
 
 * **High compatiblity**<br/>
@@ -10,7 +10,11 @@ A C# Excel formula parser with the following properties:
 
 ### Quickstart
 
-You can parse formulas and view parse trees in the [**online demo**](http://xlparser.perfectxl.nl/demo).
+You can parse formulas and view parse trees in [the online demo](http://xlparser.perfectxl.nl/demo).
+
+**or**
+
+Use [the NuGet package](https://www.nuget.org/packages/XLParser/).
 
 **or**
 
@@ -21,7 +25,7 @@ You can parse formulas and view parse trees in the [**online demo**](http://xlpa
 5. Point to the `XLParser.dll` file in the folder you extracted and click ok
 6. You can now parse formulas and see the trees in the `Test` tab
 
-### Background
+## Background
 
 XLParser is the reference implementation of the Excel grammar published in the paper ["A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by Efthimia Aivaloglou, David Hoepelman and Felienne Hermans](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing).
 
@@ -56,11 +60,11 @@ To load the XLParser grammar, first make sure you have built XLParser. Then open
 
 In Visual Studio you can see the printed version of any node during debugging by adding `yournode.Print(),ac` in the watch window.
 
-### Documentation
+## Documentation
 
-See [the paper](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing) and [the API documentation](https://spreadsheetlab.github.io/XLParser/api/namespace_x_l_parser.html).
+See [the doc folder](doc) for further documentation
 
-### License
+## License
 
 All files of XLParser are released under the Mozilla Public License 2.0.
 

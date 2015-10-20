@@ -1,9 +1,10 @@
 # XLParser Documentation
 
-For a full overview of XLParser, read the original paper: [A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets] - link will become available after publication.
+For a full overview of XLParser, read the original paper: [A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing).
 
 ### [API documentation](https://perfectxl.github.io/XLParser/api/)
 
 ### Grammar Used
 
-Read the paper for full details. The grammar can also be interfered from [the source code](https://github.com/PerfectXL/XLParser/blob/master/src/XLParser/ExcelFormulaGrammar.cs). [This diagram](production-rules.png) of production rules might prove useful.
+Read [this paper](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing) (v1.1.2) or this thesis (v1.2.1) for full details. The grammar can also be interfered from [the source code](../src/XLParser/ExcelFormulaGrammar.cs).
+Also available are the EBNF grammar ([PDF](ebnf.pdf), [PNG](ebnf.png), updated v1.2.1)  and token list ([PDF](tokens.pdf), [PNG](tokens.png), updated v1.2.1).
