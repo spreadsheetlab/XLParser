@@ -1,5 +1,14 @@
 # Changelog
 
+*Changes which are in master, but not yet in a release*:
+
+* Added equality to `PrefixInfo` class
+
+
+## 1.2.1
+
+* Adds `GetReferenceNodes` method to `ExcelFormulaParser`
+
 ## 1.2
 
 Fixes [#16](https://github.com/PerfectXL/XLParser/issues/16), [#17](https://github.com/PerfectXL/XLParser/issues/17), [#19](https://github.com/PerfectXL/XLParser/issues/3)
