@@ -683,12 +683,5 @@ namespace XLParser.Tests
         {
             test("=[sheet]!A1", "=[sheet.xls]!A1");
         }
-
-        [TestMethod]
-        public void TestStructuredReferences()
-        {
-            // Examples from msdn support document about structured references: https://support.office.com/en-us/article/Using-structured-references-with-Excel-tables-f5ed2452-2337-4f71-bed3-c8ae6d2b276e
-            test();
-        }
     }
 }
