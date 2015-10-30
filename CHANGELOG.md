@@ -2,7 +2,8 @@
 
 *Changes which are in master, but not yet in a release*:
 
-* Added equality to `PrefixInfo` class
+* Adds equality to `PrefixInfo` class
+* Fixes parse error if external reference file path contains a space (`='C:\My Dir\[file.xlsx]Sheet'!A1`)
 
 
 ## 1.2.1
