@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 // Free form tag, use the version tag from git
-[assembly: AssemblyInformationalVersion("1.2.2-master")]
+[assembly: AssemblyInformationalVersion("1.2.2-dev")]
 // This is what other developers reference. As such this should change at breaking changes, but not otherwise
 // so use major.minor.0.0, but only bump minor if there's a breaking change (and at that point you should consider bumping major)
 [assembly: AssemblyVersion("1.2.0.0")]
