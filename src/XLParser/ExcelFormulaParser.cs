@@ -376,6 +376,7 @@ namespace XLParser
         /// <summary>
         /// Go to the first "relevant" child node, i.e. skips wrapper nodes
         /// </summary>
+        /// <param name="skipReferencesWithoutPrefix">If true, skip all reference nodes without a prefix instead of only parentheses</param>
         /// <remarks>
         /// Skips:
         /// * FormulaWithEq and ArrayFormula nodes
@@ -383,7 +384,7 @@ namespace XLParser
         /// * Parentheses
         /// * Reference nodes which are just wrappers
         /// </remarks>
-        public static ParseTreeNode SkipToRelevant(this ParseTreeNode input)
+        public static ParseTreeNode SkipToRelevant(this ParseTreeNode input, bool skipReferencesWithoutPrefix = true)
         {
             while (true)
             {
@@ -395,9 +396,19 @@ namespace XLParser
                         break;
                     case GrammarNames.Argument:
                     case GrammarNames.Formula:
-                    case GrammarNames.Reference:
-                        // This also catches parentheses
                         if (input.ChildNodes.Count == 1)
+                        {
+                            input = input.ChildNodes[0];
+                        }
+                        else
+                        {
+                            return input;
+                        }
+                        break;
+                    case GrammarNames.Reference:
+                        // Skip references which are parentheses
+                        // Skip references without a prefix (=> they only have one child node) if the option is set
+                        if ((skipReferencesWithoutPrefix && input.ChildNodes.Count == 1) || input.IsParentheses())
                         {
                             input = input.ChildNodes[0];
                         }
