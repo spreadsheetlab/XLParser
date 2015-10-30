@@ -4,8 +4,8 @@
 
 * Adds equality to `PrefixInfo` class
 * Fixes parse error if external reference file path contains a space (`='C:\My Dir\[file.xlsx]Sheet'!A1`)
-* Adds an option to `ExcelFormulaParser.SkipToRelevant` to not skip reference nodes which do not contain a prefix
-
+* `ExcelFormulaParser.SkipToRelevant` no longer skips references without a prefix.
+<br> This is a breaking change, but the old behavior is arguably a bug. An argument is added to restore old behavior, defaults to new behavior.
 
 ## 1.2.1
 

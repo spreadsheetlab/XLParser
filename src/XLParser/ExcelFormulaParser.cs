@@ -384,7 +384,7 @@ namespace XLParser
         /// * Parentheses
         /// * Reference nodes which are just wrappers
         /// </remarks>
-        public static ParseTreeNode SkipToRelevant(this ParseTreeNode input, bool skipReferencesWithoutPrefix = true)
+        public static ParseTreeNode SkipToRelevant(this ParseTreeNode input, bool skipReferencesWithoutPrefix = false)
         {
             while (true)
             {
