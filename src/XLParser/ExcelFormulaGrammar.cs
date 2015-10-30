@@ -8,7 +8,7 @@ namespace XLParser
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.2.0", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.2.2", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         #region 1-Terminals
@@ -149,12 +149,13 @@ namespace XLParser
         public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
 
-        private const string fileNameRegex = @"\[[^<>:""/\|?*\[\]]+\]";
+        private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
+        private const string fileNameRegex = @"\[[^" + fileNameForbiddenCharacter + @"\[\]]+\]";
         public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameRegex)
         { Priority = TerminalPriority.FileName };
 
         // Source: http://stackoverflow.com/a/6416209/572635
-        private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*";
+        private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
         public Terminal FilePathWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex);
         #endregion
 
