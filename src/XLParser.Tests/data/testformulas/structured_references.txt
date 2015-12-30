@@ -26,3 +26,4 @@
 =DeptSales[ [SalesPers]:[Region] ]
 =DeptSales[[#Headers], [#Data], [ComPct]]
 =DeptSales[@Column]
+=Tabel25[[#This Row],[I/HV]]

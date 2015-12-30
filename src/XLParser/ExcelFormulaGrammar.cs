@@ -150,7 +150,7 @@ namespace XLParser
         { Priority = TerminalPriority.FileNameNumericToken };
 
         private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
-        private const string fileNameRegex = @"\[[^" + fileNameForbiddenCharacter + @"\[\]]+\]";
+        private const string fileNameRegex = @"\[[^\[\]]+\]";
         public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameRegex)
         { Priority = TerminalPriority.FileName };
 
