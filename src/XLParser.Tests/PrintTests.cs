@@ -180,8 +180,8 @@ namespace XLParser.Tests
                 var printed = parsed.Print();
                 if (ignorewhitespace)
                 {
-                    formula = formula.Replace(" ", "");
-                    printed = printed.Replace(" ", "");
+                    formula = Regex.Replace(formula, @"\s+", "");
+                    printed = Regex.Replace(printed, @"\s+", "");
                 }
                 Assert.AreEqual(formula, printed, "Printed parsed formula differs from original.\nOriginal: '{0}'\nPrinted: '{1}'", formula, printed);
             }

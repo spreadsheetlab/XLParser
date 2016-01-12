@@ -700,5 +700,14 @@ namespace XLParser.Tests
                 @"='C:\EOL\Management Report\DATAMART\REGIONAL ANALYSIS\REPORTS\052301\[DEAL BREAKDOWN ANALYSIS 05-23-01.xls]PHYSICAL PIVOT'!D7"
                 );
         }
+
+        [TestMethod]
+        public void TestSpaceAsSheetName()
+        {
+            // See [Issue 37](https://github.com/spreadsheetlab/XLParser/issues/37)
+            test(new [] { "VLOOKUP(' '!G3,' '!B4:F99,5)", "VLOOKUP('\t'!G3,'\t'!B4:F99,5)", "VLOOKUP('   '!G3,'   '!B4:F99,5)" },
+                // Make sure they all return a single space as sheet name
+                tree => tree.AllNodes(GrammarNames.Prefix).All(node => node.GetPrefixInfo().Sheet == " "));
+        } 
     }
 }

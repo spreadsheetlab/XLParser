@@ -132,7 +132,7 @@ namespace XLParser
         //const string singleQuotedContent = @"\w !@#$%^&*()\-\+={}|:;<>,\./\?" + "\\\"";
         //const string sheetRegEx = @"(([\w\.]+)|('([" + singleQuotedContent + @"]|'')+'))!";
         private static readonly string normalSheetName = $"[^{notSheetNameChars}{mustBeQuotedInSheetName}]+";
-        private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')+";
+        private static readonly string quotedSheetName = $"([^{notSheetNameChars}]|'')*";
         //private static readonly string sheetRegEx = $"(({normalSheetName})|('{quotedSheetName}'))!";
 
         public Terminal SheetToken = new RegexBasedTerminal(GrammarNames.TokenSheet, $"{normalSheetName}!")
