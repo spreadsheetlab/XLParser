@@ -2,6 +2,9 @@
 
 <!--*Changes which are in this source code, but not yet in a release*:-->
 
+## 1.2.3
+* Adds support for special characters in structured references.
+
 ## 1.2.2
 
 * Adds equality to `PrefixInfo` class
