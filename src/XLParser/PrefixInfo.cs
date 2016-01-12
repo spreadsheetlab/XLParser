@@ -104,6 +104,13 @@ namespace XLParser
             {
                 // remove quote and !
                 sheetName = Substr(prefix.ChildNodes[cur].Print(), 2);
+                
+                if (sheetName == "")
+                {
+                    // The sheetname consists solely of whitespace (see https://github.com/spreadsheetlab/XLParser/issues/37)
+                    // We can not identify the sheetname in the case, and return all whitespace-only sheetnames as if they were a single-space sheetname.
+                    sheetName = " ";
+                }
             }
             // Check if multiple sheets
             else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenMultipleSheets))
