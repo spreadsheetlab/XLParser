@@ -102,7 +102,8 @@ namespace XLParser
         public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
         { Priority = TerminalPriority.CellToken };
 
-        private const string NamedRangeRegex = @"[A-Za-z\\_][\w\.]*";
+        // Start with a letter or underscore, continue with word character (letters, numbers and underscore), dot or question mark 
+        private const string NamedRangeRegex = @"[\p{L}\\_][\w\\_\.\?]*";
         public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NamedRangeRegex)
         { Priority = TerminalPriority.Name };
 
