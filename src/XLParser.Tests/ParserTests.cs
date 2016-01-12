@@ -366,6 +366,14 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void TextWithEscapesAndDoubleQuotes()
+        {
+            test(@"IF(RIGHT(G8,1)=""\"","""",""PLEASE END THE PATH STRING WITH A '\' SYMBOL."")",
+                // Check if any of the strings is "\"
+                tree => tree.AllNodes(GrammarNames.Text).Any(text => text.Print() == @"""\"""));
+        }
+
+        [TestMethod]
         public void Text_with_linebreak()
         {
             test("\"line1" + Environment.NewLine + "line two\"");   
