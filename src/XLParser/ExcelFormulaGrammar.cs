@@ -63,10 +63,10 @@ namespace XLParser
         };
 
         public Terminal TextToken { get; } = new StringLiteral(GrammarNames.TokenText, "\"",
-            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak);
+            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes);
 
         public Terminal SingleQuotedStringToken { get; } = new StringLiteral(GrammarNames.TokenSingleQuotedString, "'",
-            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak)
+            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes)
         { Priority = TerminalPriority.SingleQuotedString };
 
         public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A");
