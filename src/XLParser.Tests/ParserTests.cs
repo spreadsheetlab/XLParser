@@ -166,6 +166,23 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void NamedRangeOthers()
+        {
+            test(new []
+            {
+                // See https://github.com/spreadsheetlab/XLParser/issues/40
+                "XDO_?Amount?",
+                "_ABC",
+                @"\ABC",
+                "äBC",
+                "ABC.ABC",
+                "ABC?ABC",
+                "Abcäbc",
+                @"ABC\ABC"
+            }, node => node.SkipToRelevant(true).Type() == GrammarNames.NamedRange);
+        }
+
+        [TestMethod]
         public void VRange()
         {
             test("SUM(A:B)");   
