@@ -389,6 +389,7 @@ namespace XLParser
                   StructureReferenceColumnOrKeyword
                 | OpenSquareParen + StructureReferenceExpression + CloseSquareParen
                 | StructureReferenceTable + StructureReferenceColumnOrKeyword
+                | StructureReferenceTable + OpenSquareParen + CloseSquareParen
                 | StructureReferenceTable + OpenSquareParen + StructureReferenceExpression + CloseSquareParen
                 ;
             #endregion

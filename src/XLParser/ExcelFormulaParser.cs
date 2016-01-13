@@ -506,12 +506,16 @@ namespace XLParser
 
                 case GrammarNames.StructureReference:
                     ret = "";
-                    var hastable = input.ChildNodes.Count == 2;
+                    var hastable = input.ChildNodes.Count >= 1 && input.ChildNodes[0].Is(GrammarNames.StructureReferenceTable);
                     var contentsNode = hastable ? 1 : 0;
                     childsL = childs.ToList();
                     if (hastable) ret += childsL[0];
 
-                    if (input.ChildNodes[contentsNode].Is(GrammarNames.StructureReferenceColumnOrKeyword))
+                    if (hastable && input.ChildNodes.Count == 1)
+                    {
+                        // Full table reference
+                        ret += "[]";
+                    }else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructureReferenceColumnOrKeyword))
                     {
                         ret += childsL[contentsNode];
                     } else
