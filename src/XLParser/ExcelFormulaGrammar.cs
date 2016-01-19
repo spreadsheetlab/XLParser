@@ -103,12 +103,18 @@ namespace XLParser
         { Priority = TerminalPriority.CellToken };
 
         // Start with a letter or underscore, continue with word character (letters, numbers and underscore), dot or question mark 
-        private const string NamedRangeRegex = @"[\p{L}\\_][\w\\_\.\?]*";
-        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NamedRangeRegex)
+        private const string NameStartCharRegex = @"[\p{L}\\_]";
+        private const string NameValidCharacterRegex = @"[\w\\_\.\?]*";
+        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex)
         { Priority = TerminalPriority.Name };
 
+        // Words that are valid names, but are dissalowed by Excel. E.g. "A1" is a valid name, but it is not because it is also a cell reference.
+        // If we ever parse R1C1 references, make sure to include them here
+        // TODO: Add all function names here
+        private const string NameInvalidWordsRegex = "(TRUE|FALSE|" + CellTokenRegex + ")";
+
         // To prevent e.g. "A1A1" being parsed as 2 celltokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, "(TRUE|FALSE|" + CellTokenRegex + ")" + NamedRangeRegex)
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex)
         { Priority = TerminalPriority.NamedRangeCombination };
 
         public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
