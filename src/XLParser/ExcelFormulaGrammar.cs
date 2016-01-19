@@ -154,8 +154,11 @@ namespace XLParser
         public Terminal SheetQuotedToken = new RegexBasedTerminal(GrammarNames.TokenSheetQuoted, $"{quotedSheetName}'!")
         { Priority = TerminalPriority.SheetQuotedToken };
 
-        private static readonly string multiSheetRegex = $"(({normalSheetName}:{normalSheetName})|('{quotedSheetName}:{quotedSheetName}'))!";
+        private static readonly string multiSheetRegex = $"{normalSheetName}:{normalSheetName}!";
+        private static readonly string multiSheetQuotedRegex = $"{quotedSheetName}:{quotedSheetName}'!";
         public Terminal MultipleSheetsToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)
+        { Priority = TerminalPriority.MultipleSheetsToken };
+        public Terminal MultipleSheetsQuotedToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheetsQuoted, multiSheetQuotedRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
         private const string fileNameNumericRegex = @"\[[0-9]+\]";
@@ -376,7 +379,9 @@ namespace XLParser
                 | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
                 | MultipleSheetsToken
+                | QuoteS + MultipleSheetsQuotedToken
                 | File + MultipleSheetsToken
+                | QuoteS + File + MultipleSheetsQuotedToken
                 ;
 
             StructureReferenceColumnOrKeyword.Rule =
@@ -575,6 +580,7 @@ namespace XLParser
         public const string TokenHRange = "HRangeToken";
         public const string TokenIntersect = "INTERSECT";
         public const string TokenMultipleSheets = "MultipleSheetsToken";
+        public const string TokenMultipleSheetsQuoted = "MultipleSheetsQuotedToken";
         public const string TokenName = "NameToken";
         public const string TokenNamedRangeCombination = "NamedRangeCombinationToken";
         public const string TokenNumber = "NumberToken";
