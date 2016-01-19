@@ -298,6 +298,9 @@ namespace XLParser.Tests
         public void MultipleSheetRefence()
         {
             test("Sheet1:Sheet2!A6");
+            test("'Sheet1:Sheet2'!A6");
+            test("SUM('[74]Miami P&L:Venezuela P&L'!G10)");
+            //test(@"=SUM('D:\TV_LATAM_NET_ACC\Financial Statement Comments\Ad Sales\FY''15\Period 3[3-Ad Sales Financial Statements FY15 June-v2.xlsx]Miami P&L:Venezuela P&L'!G10)");
         }
 
         [TestMethod]
