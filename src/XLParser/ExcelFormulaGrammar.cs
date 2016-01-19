@@ -114,9 +114,10 @@ namespace XLParser
         // TODO: Add all function names here
         
         private const string NameInvalidWordsRegex =
-              "((TRUE | FALSE)" + NameValidCharacterRegex + "+)"
+              "((TRUE|FALSE)" + NameValidCharacterRegex + "+)"
             // \w is equivalent to [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Nd}\p{Pc}], we want the decimal left out here because otherwise "A11" would be a combination token
-            + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?])" + NameValidCharacterRegex + "*";
+            + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?]" + NameValidCharacterRegex + "*)"
+            ;
 
         // To prevent e.g. "A1A1" being parsed as 2 celltokens
         public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+")
