@@ -197,7 +197,11 @@ namespace XLParser.Tests
         [TestMethod]
         public void CellReference()
         {
-            test("+BSO48");
+            var cells = new[] {"A1", "Z9", "AB10", "ABC999", "BSO48"};
+            foreach (var cell in cells)
+            {
+                test(cell, tree => tree.AllNodes(GrammarNames.Cell).Select(ExcelFormulaParser.Print).FirstOrDefault() == cell);
+            }
         }
 
 
@@ -733,6 +737,18 @@ namespace XLParser.Tests
             test(new [] { "VLOOKUP(' '!G3,' '!B4:F99,5)", "VLOOKUP('\t'!G3,'\t'!B4:F99,5)", "VLOOKUP('   '!G3,'   '!B4:F99,5)" },
                 // Make sure they all return a single space as sheet name
                 tree => tree.AllNodes(GrammarNames.Prefix).All(node => node.GetPrefixInfo().Sheet == " "));
-        } 
+        }
+
+        [TestMethod]
+        public void TestNamedRangeCombination()
+        {
+            // See [Issue 46](https://github.com/spreadsheetlab/XLParser/issues/46)
+            // Names which start with non-name words, e.g. 
+            var names = new[] {"A1ABC", "A1A1", "A2.PART_NUM", "A2?PART_NUM", "TRUEFOO", "FALSEFOO", "TRUEMODEL" };
+            foreach (var name in names)
+            {
+                test(name, tree => tree.AllNodes(GrammarNames.NamedRange).Select(ExcelFormulaParser.Print).Contains(name));
+            }
+        }
     }
 }
