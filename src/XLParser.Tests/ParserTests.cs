@@ -197,7 +197,11 @@ namespace XLParser.Tests
         [TestMethod]
         public void CellReference()
         {
-            test("+BSO48");
+            var cells = new[] {"A1", "Z9", "AB10", "ABC999", "BSO48"};
+            foreach (var cell in cells)
+            {
+                test(cell, tree => tree.AllNodes(GrammarNames.Cell).Select(ExcelFormulaParser.Print).FirstOrDefault() == cell);
+            }
         }
 
 

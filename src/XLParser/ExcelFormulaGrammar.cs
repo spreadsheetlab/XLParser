@@ -104,17 +104,22 @@ namespace XLParser
 
         // Start with a letter or underscore, continue with word character (letters, numbers and underscore), dot or question mark 
         private const string NameStartCharRegex = @"[\p{L}\\_]";
-        private const string NameValidCharacterRegex = @"[\w\\_\.\?]*";
-        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex)
+        
+        private const string NameValidCharacterRegex = @"[\w\\_\.\?]";
+        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + "*")
         { Priority = TerminalPriority.Name };
 
         // Words that are valid names, but are dissalowed by Excel. E.g. "A1" is a valid name, but it is not because it is also a cell reference.
         // If we ever parse R1C1 references, make sure to include them here
         // TODO: Add all function names here
-        private const string NameInvalidWordsRegex = "(TRUE|FALSE|" + CellTokenRegex + ")";
+        
+        private const string NameInvalidWordsRegex =
+              "((TRUE | FALSE)" + NameValidCharacterRegex + "+)"
+            // \w is equivalent to [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Nd}\p{Pc}], we want the decimal left out here because otherwise "A11" would be a combination token
+            + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?])" + NameValidCharacterRegex + "*";
 
         // To prevent e.g. "A1A1" being parsed as 2 celltokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex)
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+")
         { Priority = TerminalPriority.NamedRangeCombination };
 
         public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
