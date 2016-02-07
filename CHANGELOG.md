@@ -2,6 +2,18 @@
 
 <!--*Changes which are in this source code, but not yet in a release*:-->
 
+## 1.2.4
+Reference implementation of the Excel grammar published in the Journal of Systems and Software SCAM special issue paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
+
+* Fixed several errors in which names/named ranges were allowed
+  * Question marks are now allowed
+  * Can now start with all unicode letters (e.g. `=äbc`)
+  * Corrected characters which are allowed if the name starts with a cell name or TRUE/FALSE (e.g. `=A1.MYNAME`)
+* Allow for whitespace-only sheetnames (e.g. `='    '!A1`), altough they will always be returned as `" "` by `PrefixInfo` 
+* Made some corrections in how multiple sheet references (`=Sheet1:Sheet3!A1`) are parsed
+* Removed escape sequences in strings (e.g. `"Line1\nLine2"`) as these are not part of the Excel formula language
+* Added support for structured references to a complete table (e.g. `=MyTable[]`)
+
 ## 1.2.3
 * Adds support for special characters in structured references.
 
@@ -33,7 +45,7 @@ Fixes [#16](https://github.com/PerfectXL/XLParser/issues/16), [#17](https://gith
 
 ## 1.1.3
 
-Reference implementation of the Excel grammar published in the upcoming paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
+Reference implementation of the Excel grammar published in the paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
 
 * Added all formulas from EUSES and Enron datasets and tests to check if they all parse
 * Made parser thread safe
