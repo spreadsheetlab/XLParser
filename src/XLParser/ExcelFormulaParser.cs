@@ -515,7 +515,7 @@ namespace XLParser
                     {
                         // Full table reference
                         ret += "[]";
-                    }else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceColumnOrKeyword))
+                    }else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceElement))
                     {
                         ret += childsL[contentsNode];
                     } else

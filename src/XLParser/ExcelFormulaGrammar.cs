@@ -219,7 +219,7 @@ namespace XLParser
         public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
         public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
         public NonTerminal StructuredReference { get; } = new NonTerminal(GrammarNames.StructuredReference);
-        public NonTerminal StructuredReferenceColumnOrKeyword { get; } = new NonTerminal(GrammarNames.StructuredReferenceColumnOrKeyword);
+        public NonTerminal StructuredReferenceElement { get; } = new NonTerminal(GrammarNames.StructuredReferenceElement);
         public NonTerminal StructuredReferenceExpression { get; } = new NonTerminal(GrammarNames.StructuredReferenceExpression);
         //public NonTerminal StructuredReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructuredReferenceKeyword);
         public NonTerminal StructuredReferenceTable { get; } = new NonTerminal(GrammarNames.StructuredReferenceTable);
@@ -383,7 +383,7 @@ namespace XLParser
                 | QuoteS + File + MultipleSheetsQuotedToken
                 ;
 
-            StructuredReferenceColumnOrKeyword.Rule =
+            StructuredReferenceElement.Rule =
                   OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
                 | EnclosedInBracketsToken;
@@ -393,18 +393,18 @@ namespace XLParser
             StructuredReferenceTable.Rule = NameToken;
 
             StructuredReferenceExpression.Rule =
-                  StructuredReferenceColumnOrKeyword
-                | StructuredReferenceColumnOrKeyword + colon + StructuredReferenceColumnOrKeyword
-                | StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword
-                | StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword + colon + StructuredReferenceColumnOrKeyword
-                | StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword
-                | StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword + comma + StructuredReferenceColumnOrKeyword + colon + StructuredReferenceColumnOrKeyword
+                  StructuredReferenceElement
+                | StructuredReferenceElement + colon + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
                 ;
 
             StructuredReference.Rule =
-                  StructuredReferenceColumnOrKeyword
+                  StructuredReferenceElement
                 | OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
-                | StructuredReferenceTable + StructuredReferenceColumnOrKeyword
+                | StructuredReferenceTable + StructuredReferenceElement
                 | StructuredReferenceTable + OpenSquareParen + CloseSquareParen
                 | StructuredReferenceTable + OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
                 ;
@@ -548,7 +548,7 @@ namespace XLParser
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
         public const string StructuredReference = "StructuredReference";
-        public const string StructuredReferenceColumnOrKeyword = "StructuredReferenceColumnOrKeyword";
+        public const string StructuredReferenceElement = "StructuredReferenceElement";
         public const string StructuredReferenceExpression = "StructuredReferenceExpression";
         public const string StructuredReferenceTable = "StructuredReferenceTable";
         public const string Text = "Text";
