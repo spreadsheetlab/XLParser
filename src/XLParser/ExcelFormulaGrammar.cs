@@ -218,11 +218,11 @@ namespace XLParser
         public NonTerminal ReservedName{ get; } = new NonTerminal(GrammarNames.ReservedName);
         public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
         public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
-        public NonTerminal StructureReference { get; } = new NonTerminal(GrammarNames.StructureReference);
-        public NonTerminal StructureReferenceColumnOrKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceColumnOrKeyword);
-        public NonTerminal StructureReferenceExpression { get; } = new NonTerminal(GrammarNames.StructureReferenceExpression);
-        //public NonTerminal StructureReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructureReferenceKeyword);
-        public NonTerminal StructureReferenceTable { get; } = new NonTerminal(GrammarNames.StructureReferenceTable);
+        public NonTerminal StructuredReference { get; } = new NonTerminal(GrammarNames.StructuredReference);
+        public NonTerminal StructuredReferenceElement { get; } = new NonTerminal(GrammarNames.StructuredReferenceElement);
+        public NonTerminal StructuredReferenceExpression { get; } = new NonTerminal(GrammarNames.StructuredReferenceExpression);
+        //public NonTerminal StructuredReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructuredReferenceKeyword);
+        public NonTerminal StructuredReferenceTable { get; } = new NonTerminal(GrammarNames.StructuredReferenceTable);
         public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
         public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
         public NonTerminal UDFunctionCall{ get; } = new NonTerminal(GrammarNames.UDFunctionCall);
@@ -338,7 +338,6 @@ namespace XLParser
                 | Reference + intersectop + Reference
                 | OpenParen + Union + CloseParen
                 | RefFunctionName + Arguments + CloseParen
-                //| ConditionalRefFunctionName + Arguments + CloseParen
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
@@ -352,7 +351,7 @@ namespace XLParser
                 | HRange
                 | RefError
                 | UDFunctionCall
-                | StructureReference
+                | StructuredReference
                 ;
             MarkTransient(ReferenceItem);
 
@@ -384,30 +383,30 @@ namespace XLParser
                 | QuoteS + File + MultipleSheetsQuotedToken
                 ;
 
-            StructureReferenceColumnOrKeyword.Rule =
+            StructuredReferenceElement.Rule =
                   OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
                 | EnclosedInBracketsToken;
 
-            //StructureReferenceKeyword.Rule = EnclosedInBracketsToken;
+            //StructuredReferenceKeyword.Rule = EnclosedInBracketsToken;
 
-            StructureReferenceTable.Rule = NameToken;
+            StructuredReferenceTable.Rule = NameToken;
 
-            StructureReferenceExpression.Rule =
-                  StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword
-                | StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + comma + StructureReferenceColumnOrKeyword + colon + StructureReferenceColumnOrKeyword
+            StructuredReferenceExpression.Rule =
+                  StructuredReferenceElement
+                | StructuredReferenceElement + colon + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement
+                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
                 ;
 
-            StructureReference.Rule =
-                  StructureReferenceColumnOrKeyword
-                | OpenSquareParen + StructureReferenceExpression + CloseSquareParen
-                | StructureReferenceTable + StructureReferenceColumnOrKeyword
-                | StructureReferenceTable + OpenSquareParen + CloseSquareParen
-                | StructureReferenceTable + OpenSquareParen + StructureReferenceExpression + CloseSquareParen
+            StructuredReference.Rule =
+                  StructuredReferenceElement
+                | OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
+                | StructuredReferenceTable + StructuredReferenceElement
+                | StructuredReferenceTable + OpenSquareParen + CloseSquareParen
+                | StructuredReferenceTable + OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
                 ;
             #endregion
 
@@ -548,10 +547,10 @@ namespace XLParser
         public const string RefFunctionName = "RefFunctionName";
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
-        public const string StructureReference = "StructureReference";
-        public const string StructureReferenceColumnOrKeyword = "StructureReferenceColumnOrKeyword";
-        public const string StructureReferenceExpression = "StructureReferenceExpression";
-        public const string StructureReferenceTable = "StructureReferenceTable";
+        public const string StructuredReference = "StructuredReference";
+        public const string StructuredReferenceElement = "StructuredReferenceElement";
+        public const string StructuredReferenceExpression = "StructuredReferenceExpression";
+        public const string StructuredReferenceTable = "StructuredReferenceTable";
         public const string Text = "Text";
         public const string UDFName = "UDFName";
         public const string UDFunctionCall = "UDFunctionCall";
