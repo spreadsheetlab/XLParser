@@ -51,7 +51,7 @@ namespace XLParser.Tests
             var p = parse(input);
             if (condition != null)
             {
-                Assert.IsTrue(condition.Invoke(p.SkipToRelevant()), "condition failed for input '{0}'", input);
+                Assert.IsTrue(condition.Invoke(p.SkipToRelevant(true)), "condition failed for input '{0}'", input);
             }
             // Also do a print test for every parse
             PrintTests.test(formula: input, parsed: p);
@@ -272,8 +272,8 @@ namespace XLParser.Tests
         [TestMethod]
         public void Union()
         {
-            test("LARGE((F38,C38),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant().GetFunction() == ",");
-            test("LARGE((2:2,C38,$A$1:A6),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant().GetFunction() == ",");   
+            test("LARGE((F38,C38),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant(true).GetFunction() == ",");
+            test("LARGE((2:2,C38,$A$1:A6),1)", node => node.ChildNodes[1].ChildNodes[0].SkipToRelevant(true).GetFunction() == ",");
         }
 
         [TestMethod]
