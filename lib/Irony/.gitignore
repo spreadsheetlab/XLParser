@@ -1,9 +1,0 @@
-*.suo
-*.user
-*.cache
-*.Cache
-*.FileListAbsolute.txt
-*.gpState
-obj
-*.lnk
-TestResults/*
