@@ -13,14 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Utilities.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Properties\Resources.resx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Irony" Version="1.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.11" />
@@ -52,11 +44,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="dotnet-test-mstest">
-      <Version>1.1.2-preview</Version>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>
