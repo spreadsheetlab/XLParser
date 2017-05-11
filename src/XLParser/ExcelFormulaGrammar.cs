@@ -1,7 +1,7 @@
 ﻿using Irony.Parsing;
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
+using System.IO;
+using System.Reflection;
 
 namespace XLParser
 {
@@ -501,7 +501,15 @@ namespace XLParser
         }
         #endregion
 
-        private static string[] excelFunctionList => Properties.Resources.ExcelBuiltinFunctionList.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
+        private static string[] excelFunctionList => GetExcelFunctionList();
+        private static string[] GetExcelFunctionList()
+        {
+            var assembly = typeof(ExcelFormulaGrammar).GetTypeInfo().Assembly;
+            var resource = assembly.GetManifestResourceStream("XLParser.Resources.ExcelBuiltinFunctionList.txt");
+            using (var sr = new StreamReader(resource))
+                return sr.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
     }
 
     #region Names
