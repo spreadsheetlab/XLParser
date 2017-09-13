@@ -2,7 +2,9 @@
 
 For a full overview of XLParser, read the original paper: [A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets](https://drive.google.com/file/d/0B79P2Uym3JjvMjlaWWtnTWRLQmc/view?usp=sharing).
 
-### [API documentation](https://perfectxl.github.io/XLParser/api/)
+### API documentation
+
+You can generate API documentation using [Doxygen](www.doxygen.org) and the Doxyfile in api/Doxyfile
 
 ### Grammar Used
 
