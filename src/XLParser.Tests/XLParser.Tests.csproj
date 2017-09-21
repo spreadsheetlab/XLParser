@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net452;net461;netcoreapp1.1</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.0.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.1.11" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.1.11" />
+    <PackageReference Include="Irony" Version="1.0.7" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>
 
   <ItemGroup>

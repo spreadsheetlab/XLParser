@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net452;net461;netstandard1.6</TargetFrameworks>
     <Version>1.2.0.0</Version>
     <PackageId>XLParser</PackageId>
     <Company>TU Delft Spreadsheet Lab, Infotron</Company>
@@ -15,12 +15,16 @@
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <DefineConstants>$(DefineConstants);_NET40_</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <DefineConstants>$(DefineConstants);_NET461_</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
-    <DefineConstants>$(DefineConstants);_NETCORE_</DefineConstants>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.0.4" />
+    <PackageReference Include="Irony" Version="1.0.7" />
   </ItemGroup>
 
 </Project>
