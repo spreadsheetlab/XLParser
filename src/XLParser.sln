@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLParser", "XLParser\XLParser.csproj", "{FB048D20-29FD-4D2C-A336-59F93F9A68F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser", "XLParser\XLParser.csproj", "{FB048D20-29FD-4D2C-A336-59F93F9A68F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLParser.Tests", "XLParser.Tests\XLParser.Tests.csproj", "{699A456A-7028-41EA-9CD0-96D1ED4DDF75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser.Tests", "XLParser.Tests\XLParser.Tests.csproj", "{699A456A-7028-41EA-9CD0-96D1ED4DDF75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{83E77A33-3086-4230-B089-B48EAF92DB67}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.config = NuGet.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7C2C9DF-98E2-4A6C-A284-14B952D1EA6D}
 	EndGlobalSection
 EndGlobal
