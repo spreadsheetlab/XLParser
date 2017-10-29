@@ -39,7 +39,7 @@ XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/
 
 ### Building
 
-Open the `XLParser.sln` file in `src/` in Visual Studio 2015 or higher and press build. The dependencies are already included in compiled form in this repository.
+Open the `XLParser.sln` file in `src/` in Visual Studio and press build. The dependencies are already included in compiled form in this repository.
 
 ### Using in your project
 
@@ -64,16 +64,6 @@ In Visual Studio you can see the printed version of any node during debugging by
 
 See [the doc folder](doc) for further documentation
 
-## Known uses
-
-The XLParser is currently being used by:
-* The [SpreadsheetLab](http://spreadsheetlab.org/) research team of the [Software Engineering Research Group](http://swerl.tudelft.nl/bin/view/Main/WebHome) at [TU Delft](https://www.tudelft.nl/)
-* The [PerfectXL](https://www.perfectxl.com/) spreadsheet validation and risk analysis tool
-
-Are you also using the XLParser? [Let us know!](http://spreadsheetlab.org/contact-us/)
-
 ## License
 
-All files of XLParser are released under the Mozilla Public License 2.0.
-
-Roughly this means that you can make any alterations you like and can use this library in any project, even closed-source and statically linked, as long as you publish any modifications to the library.
+All files of XLParser are released under the [Mozilla Public License 2.0](License.md).
