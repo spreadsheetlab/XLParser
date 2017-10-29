@@ -1,6 +1,10 @@
 # Changelog
 
 <!--*Changes which are in this source code, but not yet in a release*:-->
+## 1.3.0
+
+* Build for .NET 4.5.2, 4.6.1 and standard 1.6, thanks [igitur](https://github.com/spreadsheetlab/XLParser/pull/61).
+* Remove embedded Irony dependency in favor of [daxnet](https://github.com/daxnet)s [updated fork](https://github.com/daxnet/irony).
 
 ## 1.2.4
 Reference implementation of the Excel grammar published in the Journal of Systems and Software SCAM special issue paper "A Grammar for Spreadsheet Formulas Evaluated on Two Large Datasets" by E. Aivaloglou, D. Hoepelman and F. Hermans.
