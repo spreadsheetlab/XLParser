@@ -7,11 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser", "XLParser\XLPars
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser.Tests", "XLParser.Tests\XLParser.Tests.csproj", "{699A456A-7028-41EA-9CD0-96D1ED4DDF75}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{83E77A33-3086-4230-B089-B48EAF92DB67}"
-	ProjectSection(SolutionItems) = preProject
-		NuGet.config = NuGet.config
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
