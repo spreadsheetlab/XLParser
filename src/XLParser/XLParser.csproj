@@ -2,18 +2,19 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;net461;netstandard1.6</TargetFrameworks>
-    <Version>1.3.3.0</Version>
+    <Version>1.3.4.0</Version>
     <PackageId>XLParser</PackageId>
     <Company>TU Delft Spreadsheet Lab, Infotron</Company>
     <Authors>TU Delft Spreadsheet Lab, Infotron</Authors>
     <Description>A parser for Excel formulas</Description>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
-    <FileVersion>1.3.3.0</FileVersion>
+    <AssemblyVersion>1.3.4.0</AssemblyVersion>
+    <FileVersion>1.3.4.0</FileVersion>
     <PackageLicenseUrl>https://github.com/spreadsheetlab/XLParser/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/spreadsheetlab/XLParser</PackageProjectUrl>
     <Copyright>Mozilla Public License, version 2.0</Copyright>
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>- Updated Excel built-in function list (patch from hell-racer)</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
