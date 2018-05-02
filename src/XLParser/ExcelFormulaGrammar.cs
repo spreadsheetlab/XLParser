@@ -394,7 +394,9 @@ namespace XLParser
 
             StructuredReferenceExpression.Rule =
                   StructuredReferenceElement
+                | at + StructuredReferenceElement
                 | StructuredReferenceElement + colon + StructuredReferenceElement
+                | at + StructuredReferenceElement + colon + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement
