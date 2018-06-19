@@ -31,3 +31,4 @@
 =Tabel25[[#This Row],[I/HV]]
 VLOOKUP(GroupVertices[[#This Row],[Vertex]], Vertices[], MATCH("ID", Vertices[#Headers], 0), FALSE)
 IFERROR(VLOOKUP($A4,TABLA_AHORRO[],6,FALSE),"")
+SUM(Table[1])
