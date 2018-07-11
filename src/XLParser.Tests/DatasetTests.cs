@@ -38,6 +38,12 @@ namespace XLParser.Tests
             parseCSVDataSet("data/testformulas/structured_references.txt");
         }
 
+        [TestMethod]
+        public void ParseTestFormulasUserContributed()
+        {
+            parseCSVDataSet("data/testformulas/user_contributed.txt");
+        }
+
         private void parseCSVDataSet(string filename, string knownfailsfile = null)
         {
             ISet<string> knownfails = new HashSet<string>(readFormulaCSV(knownfailsfile));
