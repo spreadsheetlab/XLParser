@@ -15,6 +15,8 @@
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>- Updated Excel built-in function list (patch from hell-racer)</PackageReleaseNotes>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\signing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
