@@ -134,7 +134,8 @@ namespace XLParser.Tests
         public void IntersectIsAtCorrectPosition()
         {
             var fa = new FormulaAnalyzer("SUM(A1:A3 A2:A3)");
-            var intersect = fa.AllNodes.FirstOrDefault(node => node.Token?.Terminal?.Name == "INTERSECT");
+            ParseTreeNode intersect = fa.AllNodes.FirstOrDefault(node => node.Token?.Terminal?.Name == "INTERSECT");
+            Assert.IsNotNull(intersect);
             Assert.AreEqual(9, intersect.Span.Location.Position);
         }
         #endregion
