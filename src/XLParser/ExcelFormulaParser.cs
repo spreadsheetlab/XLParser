@@ -45,6 +45,15 @@ namespace XLParser
         public static ParseTree ParseToTree(string input)
         {
             var tree = p.Parse(input);
+            var intersects = tree.Root.AllNodes().Where(node => node.Token?.Terminal?.Name == "INTERSECT");
+
+            foreach (ParseTreeNode intersect in intersects)
+            {
+                int newPosition = intersect.Span.Location.Position - 1;
+                var newLocation = new SourceLocation(newPosition, intersect.Span.Location.Line, newPosition);
+
+                intersect.Span = new SourceSpan(newLocation, 1);
+            }
 
             if (tree.HasErrors())
             {

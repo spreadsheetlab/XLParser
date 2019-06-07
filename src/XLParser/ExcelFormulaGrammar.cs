@@ -8,7 +8,7 @@ namespace XLParser
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.2.2", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.3.5", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         #region 1-Terminals
@@ -394,7 +394,9 @@ namespace XLParser
 
             StructuredReferenceExpression.Rule =
                   StructuredReferenceElement
+                | at + StructuredReferenceElement
                 | StructuredReferenceElement + colon + StructuredReferenceElement
+                | at + StructuredReferenceElement + colon + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
                 | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement
