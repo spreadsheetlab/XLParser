@@ -147,5 +147,13 @@ namespace XLParser
         {
             return OperatorDepth(Root, conditionalFunctions);
         }
+
+        /// <summary>
+        /// Get all references (to cells or ranges) included in the formula
+        /// </summary>
+        public IEnumerable<ParserReference> ParserReferences()
+        {
+            return References().SelectMany(x => x.GetParserReferences());
+        }
     }
 }

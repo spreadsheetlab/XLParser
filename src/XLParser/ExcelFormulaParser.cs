@@ -374,6 +374,79 @@ namespace XLParser
         }
 
         /// <summary>
+        /// Gets the ParserReferences from the input parse tree node and its children
+        /// </summary>
+        /// <remarks>
+        /// 5 cases:
+        /// 1. ReferenceItem node: convert to ParserReference
+        /// 2. Reference node (Prefix ReferenceItem): convert to ParserReference, recursive call on the nodes returned from GetReferenceNodes(node) 
+        ///     (to include the references in the argumnents of external UDFs)
+        /// 3. Range node (Cell:Cell): recursive call to retrieve the 2 limits, create ParserReference of type CellRange
+        /// 4. Range node with complex limits: recursive call to retrieve limits as 2 ParserReferences
+        /// 5. Other cases (RefFunctionCall, Union, Arguments):recursive call on the nodes returned from GetReferenceNodes(node)
+        /// </remarks>
+        public static IEnumerable<ParserReference> GetParserReferences(this ParseTreeNode node)
+        {
+            if (node.Type() == GrammarNames.Reference && node.ChildNodes.Count == 1)
+                node = node.ChildNodes[0];
+
+            var list = new List<ParserReference>();
+
+            switch (node.Type())
+            {
+                case GrammarNames.Cell:
+                case GrammarNames.NamedRange:
+                case GrammarNames.HorizontalRange:
+                case GrammarNames.VerticalRange:
+                    list.Add(new ParserReference(node));
+                    break;
+                case GrammarNames.Reference:
+                    list.Add(new ParserReference(node));
+                    list.AddRange(node.ChildNodes[1].GetReferenceNodes().SelectMany(x => x.GetParserReferences()));
+                    break;
+                default:
+                    if (node.IsRange())
+                    {
+                        var rangeStart = GetParserReferences(node.ChildNodes[0].SkipToRelevant());
+                        var rangeEnd = GetParserReferences(node.ChildNodes[2].SkipToRelevant());
+                        if (IsCellReference(rangeStart) && IsCellReference(rangeEnd))
+                        {
+                            var range = rangeStart.First();
+                            range.MaxLocation = rangeEnd.First().MinLocation;
+                            range.ReferenceType = ReferenceType.CellRange;
+                            range.LocationString = node.Print();
+                            list.Add(range);
+                        }
+                        else
+                        {
+                            list.AddRange(rangeStart);
+                            list.AddRange(rangeEnd);
+                        }
+                    }
+                    else
+                    {
+                        list.AddRange(node.GetReferenceNodes().SelectMany(x => x.GetParserReferences()));
+                    }
+                    break;
+            }
+            return list;
+        }
+
+        public static bool IsCellReference(IEnumerable<ParserReference> references)
+        {
+            return references.Count() == 1 && references.First().ReferenceType == ReferenceType.Cell;
+        }
+
+        /// <summary>
+        /// Whether or not this node represents a range
+        /// </summary>
+        public static bool IsRange(this ParseTreeNode input)
+        {
+            return input.IsBinaryReferenceOperation() &&
+                       input.ChildNodes[1].Is(":");
+        }
+
+        /// <summary>
         /// Go to the first "relevant" child node, i.e. skips wrapper nodes
         /// </summary>
         /// <param name="skipReferencesWithoutPrefix">If true, skip all reference nodes without a prefix instead of only parentheses</param>
