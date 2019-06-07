@@ -49,7 +49,7 @@ The `ExcelFormulaParser` class is your main entry point. You can parse a formula
 
 `ExcelFormulaParser` has several useful methods that operate directly on the parse tree like `AllNodes` to traverse the whole tree or `GetFunction` to get the function name of a node that represents a function call. You can `Print` any node.
 
-`FormulaAnalyzer` contains some example functionality for analyzing the parse tree.
+`FormulaAnalyzer` provides functionality for analyzing the parse tree. For example, `FormulaAnalyzer.ParserReferences()` returns all references (to cells, cell ranges, named ranges, horizontal or vertical ranges) that the formula contains.        
 
 ### Debugging
 
