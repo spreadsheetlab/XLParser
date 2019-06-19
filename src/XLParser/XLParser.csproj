@@ -1,44 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>net452;net461;netstandard1.6</TargetFrameworks>
-    <Version>1.3.6.0</Version>
-    <PackageId>XLParser</PackageId>
-    <Company>TU Delft Spreadsheet Lab, Infotron</Company>
     <Authors>TU Delft Spreadsheet Lab, Infotron</Authors>
+    <Company>TU Delft Spreadsheet Lab, Infotron</Company>
+    <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
-    <AssemblyVersion>1.3.6.0</AssemblyVersion>
-    <FileVersion>1.3.6.0</FileVersion>
+    <AssemblyVersion>1.3.7.0</AssemblyVersion>
+    <FileVersion>1.3.7.0</FileVersion>
+    <Version>1.3.7.0</Version>
+    <PackageReleaseNotes>
+      - Added method for getting all references (to cells or ranges) included in formulas (thanks to aivaloglou)
+      - Fixed regression where the parse tree was used before testing if the parser was successful
+      - Updated Irony.NetCore from 1.0.10 to 1.0.11
+    </PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/spreadsheetlab/XLParser/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/spreadsheetlab/XLParser</PackageProjectUrl>
-    <Copyright>Mozilla Public License, version 2.0</Copyright>
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
+    <Copyright>Mozilla Public License, version 2.0</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>- Added sign assembly attributes and key file for strong named assemblies (thanks to greggbjensen)
-- Fix the span position of the intersect operators (thanks to joerivv)
-</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\signing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <DefineConstants>$(DefineConstants);_NET40_</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <DefineConstants>$(DefineConstants);_NET461_</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
     <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExcelBuiltinFunctionList.txt" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Irony.NetCore" Version="1.0.10" />
+    <PackageReference Include="Irony.NetCore" Version="1.0.11" />
   </ItemGroup>
-
 </Project>
