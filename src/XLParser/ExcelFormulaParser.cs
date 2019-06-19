@@ -45,6 +45,12 @@ namespace XLParser
         public static ParseTree ParseToTree(string input)
         {
             var tree = p.Parse(input);
+
+            if (tree.HasErrors())
+            {
+                throw new ArgumentException("Failed parsing input <<" + input + ">>");
+            }
+
             var intersects = tree.Root.AllNodes().Where(node => node.Token?.Terminal?.Name == "INTERSECT");
 
             foreach (ParseTreeNode intersect in intersects)
@@ -53,11 +59,6 @@ namespace XLParser
                 var newLocation = new SourceLocation(newPosition, intersect.Span.Location.Line, newPosition);
 
                 intersect.Span = new SourceSpan(newLocation, 1);
-            }
-
-            if (tree.HasErrors())
-            {
-                throw new ArgumentException("Failed parsing input <<" + input + ">>");
             }
 
             return tree;
