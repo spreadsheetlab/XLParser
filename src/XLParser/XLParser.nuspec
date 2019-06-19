@@ -17,7 +17,7 @@
     </summary>
     <tags>parser parsing excel formula</tags>
     <dependencies>
-      <dependency id="Irony" version="0.9.0" />
+      <dependency id="Irony" version="1.0.11" />
     </dependencies>
   </metadata>
 </package>
