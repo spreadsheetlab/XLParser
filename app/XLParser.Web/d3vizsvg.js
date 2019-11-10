@@ -80,15 +80,6 @@ function newTree(formula, version) {
         }
     });
 
-    if (ga !== undefined) {
-        ga('send', 'pageview', url);
-        var imgdatasvg = $('#imgdatasvg');
-        imgdatasvg.off('click');
-        imgdatasvg.on('click', function () { ga('send', 'pageview', 'parsetree.svg?formula=' + encodedFormula); })
-        var imgdatapng = $('#imgdatapng');
-        imgdatapng.off('click');
-        imgdatapng.on('click', function () { ga('send', 'pageview', 'parsetree.png?formula=' + encodedFormula); })
-    }
 }
 
 // Set the parse tree image to the default formula and enter it in the formula input field
