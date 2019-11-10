@@ -56,7 +56,7 @@
         
         <div id="logos">
             <a href="https://tudelft.nl"><img src="img/logo-tudelft.png" alt="TU Delft logo"/></a><br/>
-            <a href="http://spreadsheetlab.org/"><img src="img/logo-spreadsheet-lab.png" alt="Spreadsheet lab logo"/></a><br/>
+            <img src="img/logo-spreadsheet-lab.png" alt="Spreadsheet lab logo"/><br/>
             <a href="http://www.infotron.nl/"><img src="img/logo-infotron.png" alt="Infotron logo"/></a>
         </div> 
     </div>
