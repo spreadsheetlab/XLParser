@@ -33,7 +33,7 @@ XLParser can parse Excel formulas and is intended to facilitate the analysis of 
 XLParser  has a 99.99% success rate on the [Enron](http://www.felienne.com/archives/3634) and [EUSES](http://eusesconsortium.org/resources.php) datasets.
 Note however that XLParser is not very restrictive, and thus might parse formulas that Excel would reject as invalid, keep this in mind when parsing user input with XLParser.
 
-XLParser is based on the C# [Irony parser framework](https://irony.codeplex.com/).
+XLParser is based on the C# [Irony parser framework](https://github.com/IronyProject/Irony).
 
 ## Using XLParser
 
