@@ -76,7 +76,7 @@ namespace XLParser
 
         #region Functions
 
-        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, @"(_xll\.)?[\w\\.]+\(")
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, @"('[^<>""/\|?*]+\.xla'!|_xll\.)?[\w\\.]+\(")
         { Priority = TerminalPriority.UDF };
 
         public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
