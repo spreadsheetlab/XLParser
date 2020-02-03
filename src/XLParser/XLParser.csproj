@@ -6,13 +6,12 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.3.7.0</AssemblyVersion>
-    <FileVersion>1.3.7.0</FileVersion>
-    <Version>1.3.7.0</Version>
+    <AssemblyVersion>1.3.8.0</AssemblyVersion>
+    <FileVersion>1.3.8.0</FileVersion>
+    <Version>1.3.8.0</Version>
     <PackageReleaseNotes>
-- Added method for getting all references (to cells or ranges) included in formulas (thanks to aivaloglou)
-- Fixed regression where the parse tree was used before testing if the parser was successful
-- Updated Irony.NetCore from 1.0.10 to 1.0.11
+- Fixed parser fails on formulas with addin (.xla) explicit references (#53 and #84)
+- Add ParserReference.RefError
 </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/spreadsheetlab/XLParser</PackageProjectUrl>
