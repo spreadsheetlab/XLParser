@@ -753,5 +753,12 @@ namespace XLParser.Tests
                 test(name, tree => tree.AllNodes(GrammarNames.NamedRange).Select(ExcelFormulaParser.Print).Contains(name));
             }
         }
+
+        [TestMethod]
+        public void BackslashInEnclosedInBracketsToken()
+        {
+            // See [#84](https://github.com/spreadsheetlab/XLParser/issues/84)
+            test(@"'C:\MyAddins\MyAddin.xla'!MyFunc(""sampleTextArg"", 1)");
+        }
     }
 }
