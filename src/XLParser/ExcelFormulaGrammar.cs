@@ -95,10 +95,12 @@ namespace XLParser
 
         #region References and names
 
-        public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?[A-Z]{1,4}:[$]?[A-Z]{1,4}");
+        private const string ColumnPattern = @"(?:[A-Z]{1,2}|[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D])";
+
+        public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern);
         public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
 
-        private const string CellTokenRegex = "[$]?[A-Z]{1,4}[$]?[1-9][0-9]*";
+        private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?[1-9][0-9]*";
         public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
         { Priority = TerminalPriority.CellToken };
 
