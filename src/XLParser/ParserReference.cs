@@ -6,9 +6,10 @@ namespace XLParser
     {
         Cell,
         CellRange,
-        NamedRange,
+        UserDefinedName,
         HorizontalRange,
-        VerticalRange
+        VerticalRange,
+        RefError
     }
 
     public class ParserReference
@@ -86,7 +87,7 @@ namespace XLParser
                     MaxLocation = MinLocation;
                     break;
                 case GrammarNames.NamedRange:
-                    ReferenceType = ReferenceType.NamedRange;
+                    ReferenceType = ReferenceType.UserDefinedName;
                     Name = node.ChildNodes[0].Token.ValueString;
                     if (FileName != null)
                     {
@@ -105,8 +106,12 @@ namespace XLParser
                     MinLocation = verticalLimits[0] + "1";
                     MaxLocation = verticalLimits[1] + MaxRangeHeight;
                     break;
+                case GrammarNames.RefError:
+                    ReferenceType = ReferenceType.RefError;
+                    MinLocation = "A1";
+                    break;
                 default:
-                    //REF!, UDFs
+                    // UDFs
                     MinLocation = "A1";
                     break;
             }

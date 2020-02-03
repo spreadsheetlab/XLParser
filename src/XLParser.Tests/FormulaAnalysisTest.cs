@@ -198,7 +198,7 @@ namespace XLParser.Tests
             List<ParserReference> result = new FormulaAnalyzer("_XX1/100").ParserReferences().ToList();
             Assert.AreEqual(1, result.Count);
             Assert.IsFalse(result.First().ReferenceType == ReferenceType.Cell);
-            Assert.IsTrue(result.First().ReferenceType == ReferenceType.NamedRange);
+            Assert.IsTrue(result.First().ReferenceType == ReferenceType.UserDefinedName);
         }
 
         [TestMethod]
