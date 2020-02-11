@@ -88,7 +88,7 @@ namespace XLParser
         public Terminal ExcelFunction { get; } = new RegexBasedTerminal(GrammarNames.ExcelFunction,  "(" + string.Join("|", excelFunctionList) + ")\\(")
         { Priority = TerminalPriority.ExcelFunction };
 
-        // Using this instead of Empty allows a more accurate trees
+        // Using this instead of Empty allows a more accurate tree
         public Terminal EmptyArgumentToken { get; } = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument);
 
         #endregion
@@ -111,7 +111,7 @@ namespace XLParser
         public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + "*")
         { Priority = TerminalPriority.Name };
 
-        // Words that are valid names, but are dissalowed by Excel. E.g. "A1" is a valid name, but it is not because it is also a cell reference.
+        // Words that are valid names, but are disallowed by Excel. E.g. "A1" is a valid name, but it is not because it is also a cell reference.
         // If we ever parse R1C1 references, make sure to include them here
         // TODO: Add all function names here
         
@@ -121,7 +121,7 @@ namespace XLParser
             + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?]" + NameValidCharacterRegex + "*)"
             ;
 
-        // To prevent e.g. "A1A1" being parsed as 2 celltokens
+        // To prevent e.g. "A1A1" being parsed as 2 cell tokens
         public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+")
         { Priority = TerminalPriority.NamedRangeCombination };
 
@@ -182,8 +182,8 @@ namespace XLParser
         #endregion
 
         #region 2-NonTerminals
-        // Most nonterminals are first defined here, so they can be used anywhere in the rules
-        // Otherwise you can only use nonterminals that have been defined previously
+        // Most non-terminals are first defined here, so they can be used anywhere in the rules
+        // Otherwise you can only use non-terminals that have been defined previously
 
         public NonTerminal Argument{ get; } = new NonTerminal(GrammarNames.Argument);
         public NonTerminal Arguments{ get; } = new NonTerminal(GrammarNames.Arguments);
@@ -466,7 +466,7 @@ namespace XLParser
         }
 
         // Terminal priorities, indicates to lexer which token it should pick when multiple tokens can match
-        // E.g. "A1" is both a CellToken and NamedRange, pick celltoken because it has a higher priority
+        // E.g. "A1" is both a CellToken and NamedRange, pick cell token because it has a higher priority
         // E.g. "A1Blah" Is Both a CellToken + NamedRange, NamedRange and NamedRangeCombination, pick NamedRangeCombination
         private static class TerminalPriority
         {
