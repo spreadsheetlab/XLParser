@@ -739,9 +739,24 @@ namespace XLParser.Tests
         public void TestSpaceAsSheetName()
         {
             // See [Issue 37](https://github.com/spreadsheetlab/XLParser/issues/37)
-            test(new [] { "VLOOKUP(' '!G3,' '!B4:F99,5)", "VLOOKUP('\t'!G3,'\t'!B4:F99,5)", "VLOOKUP('   '!G3,'   '!B4:F99,5)" },
-                // Make sure they all return a single space as sheet name
-                tree => tree.AllNodes(GrammarNames.Prefix).All(node => node.GetPrefixInfo().Sheet == " "));
+            var inputs = new[] {"VLOOKUP(' '!G3,' '!B4:F99,5)", "VLOOKUP('\t'!G3,'\t'!B4:F99,5)", "VLOOKUP('   '!G3,'   '!B4:F99,5)"};
+            Test(inputs, tree => tree.AllNodes(GrammarNames.Prefix).All(node => Regex.IsMatch(node.GetPrefixInfo().Sheet, @"^\s+$")));
+        }
+
+        [TestMethod]
+        public void SheetNamesWithSpacesCanBeExtractedCorrectly()
+        {
+            var strangeSheetNames = new[] {"\t", " ","   ", " A", " ''A", " A ", " ''A1'' "};
+            foreach (var sheetName in strangeSheetNames)
+            {
+                // Simple reference to another sheet
+                var sourceText = $"'{sheetName}'!A1";
+                ParseTreeNode node = ExcelFormulaParser.Parse(sourceText);
+
+                var actual = node.AllNodes(GrammarNames.Prefix).First().GetPrefixInfo().Sheet;
+
+                Assert.AreEqual(sheetName, actual);
+            }
         }
 
         [TestMethod]

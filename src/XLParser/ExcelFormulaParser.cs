@@ -60,6 +60,13 @@ namespace XLParser
                 intersect.Span = new SourceSpan(newLocation, 1);
             }
 
+            var quotedSheetNodes = tree.Root.AllNodes().Where(node => node.Is(GrammarNames.TokenSheetQuoted));
+
+            foreach (ParseTreeNode quotedSheetNode in quotedSheetNodes)
+            {
+                PrefixInfo.FixQuotedSheetNodeForWhitespace(quotedSheetNode, input);
+            }
+
             return tree;
         }
 

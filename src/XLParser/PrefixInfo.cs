@@ -121,7 +121,40 @@ namespace XLParser
             }
 
             return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);
+        }
+
+        internal static void FixQuotedSheetNodeForWhitespace(ParseTreeNode quotedSheetNode, string sourceText)
+        {
+            var newPosition = GetSheetNamePositionFromSourceText(quotedSheetNode, sourceText);
+            SourceLocation currentLocation = quotedSheetNode.Span.Location;
+            if (newPosition == currentLocation.Position)
+            {
+                return;
+            }
+
+            var newLocation = new SourceLocation(newPosition, currentLocation.Line, currentLocation.Column + currentLocation.Position - newPosition);
+            quotedSheetNode.Span = new SourceSpan(newLocation, quotedSheetNode.Span.EndPosition - newPosition);
+
             // Cannot directly assign to quotedSheetNode.Token.Text; it is read-only. Falling back on reflection.
+            typeof(Token).GetField("Text", BindingFlags.Instance | BindingFlags.Public)
+                ?.SetValue(quotedSheetNode.Token, sourceText.Substring(newPosition, quotedSheetNode.Span.Length));
+        }
+
+        private static int GetSheetNamePositionFromSourceText(ParseTreeNode nodeSheetQuoted, string sourceText)
+        {
+            var startIndex = nodeSheetQuoted.Span.Location.Position;
+
+            while (startIndex > 0)
+            {
+                if (!char.IsWhiteSpace(sourceText[startIndex - 1]))
+                {
+                    break;
+                }
+
+                startIndex--;
+            }
+
+            return startIndex;
         }
 
         private static string Substr(string s, int removeLast = 0, int removeFirst = 0)
