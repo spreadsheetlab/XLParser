@@ -46,7 +46,7 @@ namespace XLParser
         public static ParseTree ParseToTree(string input)
         {
             var tree = P.Parse(input);
-            
+
             if (tree.HasErrors())
             {
                 throw new ArgumentException("Failed parsing input <<" + input + ">>");
@@ -389,7 +389,7 @@ namespace XLParser
         /// <remarks>
         /// 5 cases:
         /// 1. ReferenceItem node: convert to ParserReference
-        /// 2. Reference node (Prefix ReferenceItem): convert to ParserReference, recursive call on the nodes returned from GetReferenceNodes(node) 
+        /// 2. Reference node (Prefix ReferenceItem): convert to ParserReference, recursive call on the nodes returned from GetReferenceNodes(node)
         ///     (to include the references in the arguments of external UDFs)
         /// 3. Range node (Cell:Cell): recursive call to retrieve the 2 limits, create ParserReference of type CellRange
         /// 4. Range node with complex limits: recursive call to retrieve limits as 2 ParserReferences
@@ -523,7 +523,6 @@ namespace XLParser
             // Concrete list when needed
             List<string> childrenList;
 
-            string ret;
             // Switch on non-terminals
             switch (input.Term.Name)
             {
@@ -572,7 +571,7 @@ namespace XLParser
                     return IsParentheses(input) ? $"({children.First()})" : string.Concat(children);
 
                 case GrammarNames.Prefix:
-                    ret = string.Join("", children);
+                    var ret = string.Join("", children);
                     // The exclamation mark token is not included in the parse tree, so we have to add that if it's a single file
                     if (input.ChildNodes.Count == 1 && input.ChildNodes[0].Is(GrammarNames.File))
                     {

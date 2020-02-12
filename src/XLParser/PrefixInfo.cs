@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Text;
 using Irony.Parsing;
 
@@ -47,7 +48,10 @@ namespace XLParser
         /// </summary>
         internal static PrefixInfo From(ParseTreeNode prefix)
         {
-            if (prefix.Type() != GrammarNames.Prefix) throw new ArgumentException("Not a prefix", nameof(prefix));
+            if (prefix.Type() != GrammarNames.Prefix)
+            {
+                throw new ArgumentException("Not a prefix", nameof(prefix));
+            }
 
             string filePath = null;
             int? fileNumber = null;
@@ -56,23 +60,24 @@ namespace XLParser
             string multipleSheets = null;
 
             // Token number we're processing
-            int cur = 0;
+            var cur = 0;
 
             // Check for quotes
-            bool quoted = prefix.ChildNodes[cur].Is("'");
-            if (quoted) cur++;
+            var isQuoted = prefix.ChildNodes[cur].Is("'");
+            if (isQuoted)
+            {
+                cur++;
+            }
 
             // Check and process file
             if (prefix.ChildNodes[cur].Is(GrammarNames.File))
             {
-                var file = prefix.ChildNodes[cur];
+                ParseTreeNode file = prefix.ChildNodes[cur];
 
                 if (file.ChildNodes[0].Is(GrammarNames.TokenFileNameNumeric))
                 {
                     // Numeric filename
-                    int.TryParse(Substr(file.ChildNodes[0].Print(), 1, 1), out var n);
-                    fileNumber = n;
-                    if (fileNumber == 0) fileNumber = null;
+                    fileNumber = int.TryParse(Substr(file.ChildNodes[0].Print(), 1, 1), out var n) ? n : default(int?);
                 }
                 else
                 {
@@ -84,6 +89,7 @@ namespace XLParser
                         filePath = file.ChildNodes[iCur].Print();
                         iCur++;
                     }
+
                     fileName = Substr(file.ChildNodes[iCur].Print(), 1, 1);
                 }
 
@@ -100,7 +106,7 @@ namespace XLParser
             {
                 // remove quote and !
                 sheetName = Substr(prefix.ChildNodes[cur].Print(), 2);
-                
+
                 if (sheetName == "")
                 {
                     // The sheet name consists solely of whitespace (see https://github.com/spreadsheetlab/XLParser/issues/37)
@@ -114,15 +120,8 @@ namespace XLParser
                 multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
             }
 
-            // Put it all into the convenience class
-            return new PrefixInfo(
-                sheetName,
-                fileNumber,
-                fileName,
-                filePath,
-                multipleSheets,
-                quoted
-                );
+            return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);
+            // Cannot directly assign to quotedSheetNode.Token.Text; it is read-only. Falling back on reflection.
         }
 
         private static string Substr(string s, int removeLast = 0, int removeFirst = 0)
