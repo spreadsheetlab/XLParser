@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Irony.Parsing;
 
 namespace XLParser
@@ -45,19 +46,17 @@ namespace XLParser
         public static ParseTree ParseToTree(string input)
         {
             var tree = P.Parse(input);
-
+            
             if (tree.HasErrors())
             {
                 throw new ArgumentException("Failed parsing input <<" + input + ">>");
             }
 
-            var intersects = tree.Root.AllNodes().Where(node => node.Token?.Terminal?.Name == "INTERSECT");
+            var intersects = tree.Root.AllNodes().Where(node => node.Is(GrammarNames.TokenIntersect));
 
             foreach (ParseTreeNode intersect in intersects)
             {
-                int newPosition = intersect.Span.Location.Position - 1;
-                var newLocation = new SourceLocation(newPosition, intersect.Span.Location.Line, newPosition);
-
+                var newLocation = new SourceLocation(intersect.Span.Location.Position - 1, intersect.Span.Location.Line, intersect.Span.Location.Column - 1);
                 intersect.Span = new SourceSpan(newLocation, 1);
             }
 
@@ -570,12 +569,7 @@ namespace XLParser
                     throw new ArgumentException("Unknown function type.");
 
                 case GrammarNames.Reference:
-                    if (IsParentheses(input))
-                    {
-                        return $"({children.First()})";
-                    }
-
-                    return string.Join("", children);
+                    return IsParentheses(input) ? $"({children.First()})" : string.Concat(children);
 
                 case GrammarNames.Prefix:
                     ret = string.Join("", children);
@@ -590,25 +584,30 @@ namespace XLParser
                     return "{=" + children.ElementAt(1) + "}";
 
                 case GrammarNames.StructuredReference:
-                    ret = "";
+                    var sb = new StringBuilder();
                     var hashtable = input.ChildNodes.Count >= 1 && input.ChildNodes[0].Is(GrammarNames.StructuredReferenceTable);
                     var contentsNode = hashtable ? 1 : 0;
                     childrenList = children.ToList();
-                    if (hashtable) ret += childrenList[0];
+                    if (hashtable)
+                    {
+                        sb.Append(childrenList[0]);
+                    }
 
                     if (hashtable && input.ChildNodes.Count == 1)
                     {
                         // Full table reference
-                        ret += "[]";
-                    }else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceElement))
+                        sb.Append("[]");
+                    }
+                    else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceElement))
                     {
-                        ret += childrenList[contentsNode];
-                    } else
+                        sb.Append(childrenList[contentsNode]);
+                    }
+                    else
                     {
-                        ret += $"[{childrenList[contentsNode]}]";
+                        sb.Append($"[{childrenList[contentsNode]}]");
                     }
 
-                    return ret;
+                    return sb.ToString();
 
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
