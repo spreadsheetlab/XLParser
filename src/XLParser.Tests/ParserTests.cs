@@ -777,5 +777,14 @@ namespace XLParser.Tests
             // See [#84](https://github.com/spreadsheetlab/XLParser/issues/84)
             Test(@"'C:\MyAddins\MyAddin.xla'!MyFunc(""sampleTextArg"", 1)");
         }
+
+        [TestMethod]
+        public void ParseUdfNamesWithSpecialCharacters()
+        {
+            // See [#55](https://github.com/spreadsheetlab/XLParser/issues/55)
+            Test("·()", "¡¢£¤¥¦§¨©«¬­®¯°±²³´¶·¸¹»¼½¾¿×÷()");
+
+            Assert.ThrowsException<ArgumentException>(() => ExcelFormulaParser.ParseToTree("A↑()"));
+        }
     }
 }

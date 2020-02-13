@@ -76,7 +76,9 @@ namespace XLParser
 
         #region Functions
 
-        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, @"('[^<>""/\|?*]+\.xla'!|_xll\.)?[\w\\.]+\(")
+        private const string SpecialUdfChars = "¡¢£¤¥¦§¨©«¬­®¯°±²³´¶·¸¹»¼½¾¿×÷"; // Non-word characters from ISO 8859-1 that are allowed in VBA identifiers
+
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, $@"('[^<>""/\|?*]+\.xla'!|_xll\.)?[\w{SpecialUdfChars}\\.]+\(")
         { Priority = TerminalPriority.UDF };
 
         public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
