@@ -36,7 +36,7 @@ namespace XLParser
         public Terminal expop => ToTerm("^");
 
         // Intersect op is a single space, which cannot be parsed normally so we need an ImpliedSymbolTerminal
-        // Attention: ImpliedSymbolTerminal seems to break if you assign it a priority, and it's default priority is low
+        // Attention: ImpliedSymbolTerminal seems to break if you assign it a priority, and its default priority is low
         public Terminal intersectop { get; } = new ImpliedSymbolTerminal(GrammarNames.TokenIntersect);
 
         public Terminal percentop => ToTerm("%");
