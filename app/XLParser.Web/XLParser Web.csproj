@@ -100,10 +100,6 @@
     </Compile>
     <Compile Include="XLParserVersions\v100\ExcelFormulaGrammar.cs" />
     <Compile Include="XLParserVersions\v100\ExcelFormulaParser.cs" />
-    <Compile Include="XLParserVersions\v112\ExcelFormulaGrammar.cs" />
-    <Compile Include="XLParserVersions\v112\ExcelFormulaParser.cs" />
-    <Compile Include="XLParserVersions\v113\ExcelFormulaGrammar.cs" />
-    <Compile Include="XLParserVersions\v113\ExcelFormulaParser.cs" />
     <Compile Include="XLParserVersions\v114\ExcelFormulaGrammar.cs" />
     <Compile Include="XLParserVersions\v114\ExcelFormulaParser.cs" />
     <Compile Include="XLParserVersions\v120\ExcelFormulaGrammar.cs" />

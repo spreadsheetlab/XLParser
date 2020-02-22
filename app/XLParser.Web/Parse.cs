@@ -162,7 +162,7 @@ namespace XLParser.Web
         private Func<ParseTreeNode, string> _print;
         private Type _grammar;
 
-        // Yes, this is f-ugly. Better solutions were tried (dynamically loading through reflection, extern alias and separate appdomains) but failed.
+        // Yes, this is f-ugly. Better solutions were tried (dynamically loading through reflection, extern alias and separate AppDomains) but failed.
         // Mainly this is because .NET is very very picky about loading multiple versions of libraries with the same name
         private void LoadXlParserVersion(string version)
         {
@@ -172,16 +172,6 @@ namespace XLParser.Web
                     _parse = ExcelFormulaParser.Parse;
                     _print = ExcelFormulaParser.Print;
                     _grammar = typeof(ExcelFormulaGrammar);
-                    break;
-                case "112":
-                    _parse = XLParserVersions.v112.ExcelFormulaParser.Parse;
-                    _print = XLParserVersions.v112.ExcelFormulaParser.Print;
-                    _grammar = typeof(XLParserVersions.v112.ExcelFormulaGrammar);
-                    break;
-                case "113":
-                    _parse = XLParserVersions.v113.ExcelFormulaParser.Parse;
-                    _print = XLParserVersions.v113.ExcelFormulaParser.Print;
-                    _grammar = typeof(XLParserVersions.v113.ExcelFormulaGrammar);
                     break;
                 case "114":
                     _parse = XLParserVersions.v114.ExcelFormulaParser.Parse;
