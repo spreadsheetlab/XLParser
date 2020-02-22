@@ -1,9 +1,9 @@
 ﻿var default_formula = "SUM(B5,2)";
-var latestVersion = "114";
+var latestVersion = "139";
 
-var margin = { top: 20, right: 20, bottom: 20, left: 20 },
-    width = 500 - margin.right - margin.left,
-    height = 500 - margin.top - margin.bottom;
+var margin = { top: 20, right: 20, bottom: 20, left: 20 };
+var width = Math.max(document.getElementById("d3viz").clientWidth - 10, 500) - margin.right - margin.left;
+var height = 600 - margin.top - margin.bottom;
 
 var i;
 var tree;

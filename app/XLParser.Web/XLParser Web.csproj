@@ -80,6 +80,7 @@
     <Content Include="img\logo-spreadsheet-lab.png" />
     <Content Include="img\logo-tudelft.png" />
     <None Include="Resources\ExcelBuiltinFunctionList-v120.txt" />
+    <Content Include="Resources\ExcelBuiltinFunctionList-v139.txt" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>
@@ -105,6 +106,10 @@
     <Compile Include="XLParserVersions\v120\ExcelFormulaGrammar.cs" />
     <Compile Include="XLParserVersions\v120\ExcelFormulaParser.cs" />
     <Compile Include="XLParserVersions\v120\PrefixInfo.cs" />
+    <Compile Include="XLParserVersions\v139\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v139\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v139\ParserReference.cs" />
+    <Compile Include="XLParserVersions\v139\PrefixInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
