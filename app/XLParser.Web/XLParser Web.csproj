@@ -79,7 +79,7 @@
     <Content Include="img\logo-infotron.png" />
     <Content Include="img\logo-spreadsheet-lab.png" />
     <Content Include="img\logo-tudelft.png" />
-    <None Include="Resources\ExcelBuiltinFunctionList.txt" />
+    <None Include="Resources\ExcelBuiltinFunctionList-v120.txt" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>

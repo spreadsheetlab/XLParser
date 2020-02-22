@@ -123,9 +123,9 @@ namespace XLParser.Web.Properties {
         ///COUPNCD
         ///C [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string ExcelBuiltinFunctionList {
+        internal static string ExcelBuiltinFunctionList_v120 {
             get {
-                return ResourceManager.GetString("ExcelBuiltinFunctionList", resourceCulture);
+                return ResourceManager.GetString("ExcelBuiltinFunctionList-v120", resourceCulture);
             }
         }
     }

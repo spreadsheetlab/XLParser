@@ -480,7 +480,7 @@ namespace XLParser.Web.XLParserVersions.v120
         }
         #endregion
 
-        private static string[] excelFunctionList => Properties.Resources.ExcelBuiltinFunctionList.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
+        private static string[] excelFunctionList => Properties.Resources.ExcelBuiltinFunctionList_v120.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
     }
 
     #region Names
