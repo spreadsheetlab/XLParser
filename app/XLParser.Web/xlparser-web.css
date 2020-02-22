@@ -1,148 +1,125 @@
-﻿html, body {
-    margin: 0;
-    height: 100%;
-}
-
-body {
-    background-color: #f1f1f1;
-    font-size: 14px;
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-
-    display: flex;
-    flex-flow: column;
-}
-
-td {
-    vertical-align: top;
-    text-align: center;
-}
-
-#parsebutton {
-    border: 1px solid #999999;
-    background-color: white;
-    height: 24px;
-    vertical-align: middle;
-    width: 50px;
-}
-
-#parserversionselected {
-    border: 1px solid #999999;
-    background-color: white;
-    height: 24px;
-    width: 75px;
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-/* This is now defined in the javascript file, otherwise downloaded image would miss these styles*/
-/*    
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node text {
-  font-size: 14px;
-}
-
-path.link {
-  fill: none;
-  stroke: #bbb;
-  stroke-width: 1.5px;
-}*/
-
-#formulainput, #errorformulainput, #errormessages {
-    padding-left: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-#formulainput, #errorformulainput {
-    min-width: 25em;
-    min-height: 19px;
-    resize: both;
-    border: 1px solid #999999;
-}
-
-#errormessages {
-    font-family: "Courier New", monospace;
-    font-size: 12px;
-    border: 1px solid #999999;
-    padding: 5px;
-    background-color: transparent;
-    color: black;
-    width: 65em;
-    height: 15em;
-}
-
-#errorformulainput {
-    /*font-family: "Courier New", monospace;
-    font-size: 12px;
-    border: 1px solid #999999;*/
-    background-color: transparent;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color: black;
-    /*width: 62em;*/
-}
-
-#borderwrapper {
+﻿#borderwrapper {
     border: 12px solid #217346;
     border-bottom-width: 6px;
     border-top-width: 14px;
-
-    flex: 0 1 auto;
-
     display: flex;
+    flex: 0 1 auto;
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
 #borderwrapper2 {
-    clear: both;
-
     border: 12px solid #217346;
-    border-top-width: 6px;
     border-bottom-width: 14px;
-
-    padding-left: 75px;
-    padding-top: 10px;
-    padding-right: 75px;
-    padding-bottom: 35px;
-    
+    border-top-width: 6px;
+    clear: both;
     flex: 1 1 auto;
+    padding: 10px 75px 35px;
+}
+
+#errorformulainput {
+    background-color: transparent;
+    color: #000;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#errormessages {
+    background-color: transparent;
+    border: 1px solid #999;
+    color: #000;
+    font: 12px "Courier New",monospace;
+    height: 15em;
+    padding: 5px;
+    width: 65em;
+}
+
+#formulainput, #errorformulainput {
+    border: 1px solid #999;
+    min-height: 19px;
+    min-width: 25em;
+    resize: both;
+}
+
+#formulainput, #errorformulainput, #errormessages {
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-top: 2px;
 }
 
 #leftoflogos {
-    padding-left: 75px;
-    padding-top: 35px;
-    padding-right: 75px;
-    padding-bottom: 25px;
-
-    flex-grow: 1;
     align-items: stretch;
     border-right: 12px solid #217346;
+    flex-grow: 1;
+    padding: 35px 75px 25px;
 }
 
 #logos {
-    
+    flex-grow: 0;
+    height: 100%;
+    overflow: hidden;
     padding-left: 50px;
     padding-right: 50px;
     padding-top: 35px;
-    height: 100%;
-    flex-grow: 0;
-    overflow: hidden;
 }
 
 #logos img {
-    width: 150px;
     margin-bottom: 20px;
+    width: 150px;
+}
+
+#parsebutton {
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 24px;
+    vertical-align: middle;
+    width: 60px;
+}
+
+#parsebutton:hover {
+        background-color: #ccc;
+    }
+
+#parserversionselected {
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 24px;
+    width: 75px;
 }
 
 .clear {
     clear: both;
 }
 
+body {
+    -webkit-flex-flow: column;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-flow: column;
+    font: 14px "Helvetica Neue",Helvetica,sans-serif;
+}
+
 h2 a {
     text-decoration: none;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+table { 
+    width: 100%;
+}
+
+textarea {
+    width: 95%;
+}
+
+td, th {
+    text-align: left;
+    padding: 3px 0;
+    vertical-align: top;
 }
