@@ -6,5 +6,8 @@ var hierarchy =
       [ "XLParser.ExcelFormulaGrammar", "class_x_l_parser_1_1_excel_formula_grammar.html", null ]
     ] ],
     [ "XLParser.GrammarNames", "class_x_l_parser_1_1_grammar_names.html", null ],
-    [ "XLParser.PrefixInfo", "class_x_l_parser_1_1_prefix_info.html", null ]
+    [ "IEquatable", null, [
+      [ "XLParser.PrefixInfo", "class_x_l_parser_1_1_prefix_info.html", null ]
+    ] ],
+    [ "XLParser.ParserReference", "class_x_l_parser_1_1_parser_reference.html", null ]
 ];
