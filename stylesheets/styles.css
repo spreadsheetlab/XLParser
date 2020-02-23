@@ -1,8 +1,9 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
 
 body {
   padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font:16px/1.5 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#777;
   font-weight:300;
 }
@@ -33,7 +34,7 @@ h3, h4, h5, h6 {
 }
 
 a {
-  color:#39c;
+  color:#0b7dda;
   font-weight:400;
   text-decoration:none;
 }
@@ -58,7 +59,7 @@ blockquote {
 }
 
 code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  font-family: "Fira Code", Consolas, Courier, monospace;
   color:#333;
   font-size:12px;
 }
@@ -96,71 +97,53 @@ img {
 }
 
 header {
-  width:270px;
+  width:360px;
   float:left;
   position:fixed;
 }
 
 header ul {
+  display:flex;
   list-style:none;
-  height:40px;
-
   padding:0;
-
-  background: #eee;
-  background: -moz-linear-gradient(top, #f8f8f8 0%, #dddddd 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#dddddd));
-  background: -webkit-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -o-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -ms-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-
-  border-radius:5px;
-  border:1px solid #d2d2d2;
-  box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
-  width:270px;
 }
 
 header li {
-  width:89px;
-  float:left;
-  border-right:1px solid #d2d2d2;
-  height:40px;
+  background-color: #2196F3;
+  color: white;
+  padding: 14px;
+  border: 0;
+  border-right: 1px solid #0b7dda;
+  outline: none;
+  text-align: center;
+  width: 80px;
 }
 
-header ul a {
-  line-height:1;
-  font-size:11px;
-  color:#999;
-  display:block;
-  text-align:center;
-  padding-top:6px;
-  height:40px;
+header li:last-child {
+  border-right: 0;
+}
+
+header li:hover {
+  background-color: #0b7dda;
 }
 
 strong {
-  color:#222;
+  color:#fff;
   font-weight:700;
 }
 
-header ul li + li {
-  width:88px;
-  border-left:1px solid #fff;
-}
-
-header ul li + li + li {
-  border-right:none;
-  width:89px;
+header ul a {
+  font-size:14px;
+  color: #fff;
 }
 
 header ul a strong {
   font-size:14px;
   display:block;
-  color:#222;
 }
 
 section {
-  width:500px;
+  width:450px;
   float:right;
   padding-bottom:50px;
 }
@@ -174,6 +157,10 @@ hr {
   background:#e5e5e5;
   height:1px;
   margin:0 0 20px;
+}
+
+section ul {
+  padding-left: 20px;
 }
 
 footer {
