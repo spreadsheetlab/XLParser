@@ -80,7 +80,7 @@
     <Content Include="img\logo-spreadsheet-lab.png" />
     <Content Include="img\logo-tudelft.png" />
     <None Include="Resources\ExcelBuiltinFunctionList-v120.txt" />
-    <Content Include="Resources\ExcelBuiltinFunctionList-v139.txt" />
+    <None Include="Resources\ExcelBuiltinFunctionList-v139.txt" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>
