@@ -41,6 +41,9 @@ namespace XLParser.Web
                 context.Response.Cache.SetMaxAge(new TimeSpan(0, 0, 5));
             }
 
+            context.Response.AddHeader("Access-Control-Allow-Origin", "*");
+
+
             // Dynamically load a library version
             var xlParserVersion = context.Request.Params["version"] ?? LatestVersion;
             if (!Regex.IsMatch(xlParserVersion, @"^[0-9]{3}[\-a-z0-9]*$"))
