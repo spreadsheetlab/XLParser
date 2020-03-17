@@ -3,12 +3,12 @@ using System.IO;
 using System.Reflection;
 using Irony.Parsing;
 
-namespace XLParser.Web.XLParserVersions.v139
+namespace XLParser.Web.XLParserVersions.v1310
 {
     /// <summary>
     /// Contains the XLParser grammar
     /// </summary>
-    [Language("Excel Formulas", "1.3.9", "Grammar for Excel Formulas")]
+    [Language("Excel Formulas", "1.3.10", "Grammar for Excel Formulas")]
     public class ExcelFormulaGrammar : Grammar
     {
         #region 1-Terminals
@@ -75,11 +75,15 @@ namespace XLParser.Web.XLParserVersions.v139
         #endregion
 
         #region Functions
-
         private const string SpecialUdfChars = "¡¢£¤¥¦§¨©«¬­®¯°±²³´¶·¸¹»¼½¾¿×÷"; // Non-word characters from ISO 8859-1 that are allowed in VBA identifiers
+        private const string AllUdfChars = SpecialUdfChars + @"\\.\w";
+        private const string UdfPrefixRegex = @"('[^<>""/\|?*]+\.xla'!|_xll\.)";
 
-        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, $@"('[^<>""/\|?*]+\.xla'!|_xll\.)?[\w{SpecialUdfChars}\\.]+\(")
-        { Priority = TerminalPriority.UDF };
+        // The following regex uses the rather exotic feature Character Class Subtraction
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#CharacterClassSubtraction
+        private static readonly string UdfTokenRegex = $@"([{AllUdfChars}-[CcRr]]|{UdfPrefixRegex}[{AllUdfChars}]|{UdfPrefixRegex}?[{AllUdfChars}]{{2,1023}})\(";
+
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF};
 
         public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
         { Priority = TerminalPriority.ExcelRefFunction };
@@ -385,6 +389,7 @@ namespace XLParser.Web.XLParserVersions.v139
                 | QuoteS + MultipleSheetsQuotedToken
                 | File + MultipleSheetsToken
                 | QuoteS + File + MultipleSheetsQuotedToken
+                | RefErrorToken
                 ;
 
             StructuredReferenceElement.Rule =
@@ -510,7 +515,7 @@ namespace XLParser.Web.XLParserVersions.v139
         private static string[] excelFunctionList => GetExcelFunctionList();
         private static string[] GetExcelFunctionList()
         {
-            var resource = Properties.Resources.ExcelBuiltinFunctionList_v139;
+            var resource = Properties.Resources.ExcelBuiltinFunctionList_v1310;
             using (var sr = new StringReader(resource))
                 return sr.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         }

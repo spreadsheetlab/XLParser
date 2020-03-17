@@ -28,7 +28,7 @@ namespace XLParser.Web
             false;
 #endif
 
-        private const string LatestVersion = "137";
+        private const string LatestVersion = "1310";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -43,10 +43,9 @@ namespace XLParser.Web
 
             context.Response.AddHeader("Access-Control-Allow-Origin", "*");
 
-
             // Dynamically load a library version
             var xlParserVersion = context.Request.Params["version"] ?? LatestVersion;
-            if (!Regex.IsMatch(xlParserVersion, @"^[0-9]{3}[\-a-z0-9]*$"))
+            if (!Regex.IsMatch(xlParserVersion, @"^[0-9]{3,4}[\-a-z0-9]*$"))
             {
                 context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 _httpContext.Response.ContentType = "text/plain";
@@ -190,6 +189,11 @@ namespace XLParser.Web
                     _parse = XLParserVersions.v139.ExcelFormulaParser.Parse;
                     _print = XLParserVersions.v139.ExcelFormulaParser.Print;
                     _grammar = typeof(XLParserVersions.v139.ExcelFormulaGrammar);
+                    break;
+                case "1310":
+                    _parse = XLParserVersions.v1310.ExcelFormulaParser.Parse;
+                    _print = XLParserVersions.v1310.ExcelFormulaParser.Print;
+                    _grammar = typeof(XLParserVersions.v1310.ExcelFormulaGrammar);
                     break;
                 default:
                     throw new ArgumentException($"Version {version} doesn't exist");

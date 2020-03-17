@@ -6,11 +6,12 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.3.9.0</AssemblyVersion>
-    <FileVersion>1.3.9.0</FileVersion>
-    <Version>1.3.9.0</Version>
+    <AssemblyVersion>1.3.10.0</AssemblyVersion>
+    <FileVersion>1.3.10.0</FileVersion>
+    <Version>1.3.10.0</Version>
     <PackageReleaseNotes>
-- Fix problem with quoted sheet names starting with white space (#87)
+- Add support for formulas with a worksheet name that is #REF! (#76)
+- Fix for UDF names consisting only of "R" or "C" (#56)
 </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/spreadsheetlab/XLParser</PackageProjectUrl>
