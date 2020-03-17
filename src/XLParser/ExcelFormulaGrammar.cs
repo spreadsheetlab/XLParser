@@ -75,11 +75,15 @@ namespace XLParser
         #endregion
 
         #region Functions
-
         private const string SpecialUdfChars = "¡¢£¤¥¦§¨©«¬­®¯°±²³´¶·¸¹»¼½¾¿×÷"; // Non-word characters from ISO 8859-1 that are allowed in VBA identifiers
+        private const string AllUdfChars = SpecialUdfChars + @"\\.\w";
+        private const string UdfPrefixRegex = @"('[^<>""/\|?*]+\.xla'!|_xll\.)";
 
-        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, $@"('[^<>""/\|?*]+\.xla'!|_xll\.)?[\w{SpecialUdfChars}\\.]+\(")
-        { Priority = TerminalPriority.UDF };
+        // The following regex uses the rather exotic feature Character Class Subtraction
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#CharacterClassSubtraction
+        private static readonly string UdfTokenRegex = $@"([{AllUdfChars}-[CcRr]]|{UdfPrefixRegex}[{AllUdfChars}]|{UdfPrefixRegex}?[{AllUdfChars}]{{2,1023}})\(";
+
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF};
 
         public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
         { Priority = TerminalPriority.ExcelRefFunction };

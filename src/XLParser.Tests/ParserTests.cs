@@ -786,5 +786,18 @@ namespace XLParser.Tests
 
             Assert.ThrowsException<ArgumentException>(() => ExcelFormulaParser.ParseToTree("A↑()"));
         }
+
+        [TestMethod]
+        public void DoNotParseUdfNamesConsistingOnlyOfROrC()
+        {
+            // See [#56](https://github.com/spreadsheetlab/XLParser/issues/56)
+            // UDF function names consisting of a single character "R" or "C" must be prefixed by the module name
+            foreach (var disallowed in "RrCc")
+            {
+                Assert.ThrowsException<ArgumentException>(() => ExcelFormulaParser.ParseToTree($"{disallowed}()"));
+            }
+
+            Test("Module1.R()", "N()", "T()", "Ñ()");
+        }
     }
 }
