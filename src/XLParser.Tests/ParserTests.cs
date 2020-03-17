@@ -760,6 +760,28 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void SheetNameIsReferenceError()
+        {
+            var formulas = new[] {"#REF!A1", "B1+#REF!A1"};
+            Test(formulas);
+
+            // See [#76](https://github.com/spreadsheetlab/XLParser/issues/76)
+            foreach (var formula in formulas)
+            {
+                Assert.AreEqual(0, ExcelFormulaParser.ParseToTree(formula).Tokens.Count(TokenIsIntersect));
+            }
+
+            const string formulaWithOneIntersect = "#REF!A:A #REF!1:1";
+            Test(formulaWithOneIntersect);
+            Assert.AreEqual(1, ExcelFormulaParser.ParseToTree(formulaWithOneIntersect).Tokens.Count(TokenIsIntersect));
+
+            bool TokenIsIntersect(Token token)
+            {
+                return string.Equals(token.Terminal.Name, "INTERSECT", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        [TestMethod]
         public void TestNamedRangeCombination()
         {
             // See [Issue 46](https://github.com/spreadsheetlab/XLParser/issues/46)

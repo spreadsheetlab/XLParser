@@ -385,6 +385,7 @@ namespace XLParser
                 | QuoteS + MultipleSheetsQuotedToken
                 | File + MultipleSheetsToken
                 | QuoteS + File + MultipleSheetsQuotedToken
+                | RefErrorToken
                 ;
 
             StructuredReferenceElement.Rule =
