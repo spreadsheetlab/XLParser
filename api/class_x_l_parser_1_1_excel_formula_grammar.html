@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.3.9</span>
+   &#160;<span id="projectnumber">1.3.10</span>
    </div>
   </td>
  </tr>
@@ -216,7 +216,8 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>intersectop</b> =
 <tr class="memitem:a690af07417eda562f28abdd1e546c14f"><td class="memItemLeft" align="right" valign="top"><a id="a690af07417eda562f28abdd1e546c14f"></a>
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToken</b> = new RegexBasedTerminal(GrammarNames.TokenError, &quot;#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A&quot;)<code> [get]</code></td></tr>
 <tr class="separator:a690af07417eda562f28abdd1e546c14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e244f5c1fd4a8d616c54af49954f57"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b><code> [get]</code></td></tr>
+<tr class="memitem:a80e244f5c1fd4a8d616c54af49954f57"><td class="memItemLeft" align="right" valign="top"><a id="a80e244f5c1fd4a8d616c54af49954f57"></a>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b> = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF}<code> [get]</code></td></tr>
 <tr class="separator:a80e244f5c1fd4a8d616c54af49954f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9344c414206fee416f99bbbde70dab4a"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ExcelRefFunctionToken</b><code> [get]</code></td></tr>
 <tr class="separator:a9344c414206fee416f99bbbde70dab4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -716,28 +717,6 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> StringLiteral(GrammarNames.TokenText, <span class="stringliteral">&quot;\&quot;&quot;</span>,</div><div class="line">            StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes)</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a80e244f5c1fd4a8d616c54af49954f57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80e244f5c1fd4a8d616c54af49954f57">&#9670;&nbsp;</a></span>UDFToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.UDFToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenUDF, $<span class="stringliteral">@&quot;(&#39;[^&lt;&gt;&quot;&quot;/\|?*]+\.xla&#39;!|_xll\.)?[\w{SpecialUdfChars}\\.]+\(&quot;</span>)</div><div class="line">        { Priority = TerminalPriority.UDF }</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
