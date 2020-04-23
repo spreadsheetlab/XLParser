@@ -62,7 +62,9 @@ In Visual Studio you can see the printed version of any node during debugging by
 
 ## Documentation
 
-See [the doc folder](doc) for further documentation
+Browse the [API documentation](http://spreadsheetlab.github.io/XLParser/api/index.html)
+
+See [the doc folder](doc) for further documentation.
 
 ## License
 
