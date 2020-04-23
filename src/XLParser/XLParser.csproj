@@ -14,7 +14,7 @@
 - Fix for UDF names consisting only of "R" or "C" (#56)
 </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/spreadsheetlab/XLParser</PackageProjectUrl>
+    <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
     <Copyright>Mozilla Public License, version 2.0</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
