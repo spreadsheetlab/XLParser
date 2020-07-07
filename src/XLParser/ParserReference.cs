@@ -91,10 +91,6 @@ namespace XLParser
                 case GrammarNames.NamedRange:
                     ReferenceType = ReferenceType.UserDefinedName;
                     Name = node.ChildNodes[0].Token.ValueString;
-                    if (FileName != null)
-                    {
-                        MinLocation = "A1";
-                    }
                     break;
                 case GrammarNames.StructuredReference:
                     ReferenceType = ReferenceType.Table;
@@ -114,11 +110,6 @@ namespace XLParser
                     break;
                 case GrammarNames.RefError:
                     ReferenceType = ReferenceType.RefError;
-                    MinLocation = "A1";
-                    break;
-                default:
-                    // UDFs
-                    MinLocation = "A1";
                     break;
             }
 
