@@ -1,4 +1,5 @@
-﻿using Irony.Parsing;
+﻿using System.Linq;
+using Irony.Parsing;
 
 namespace XLParser
 {
@@ -9,7 +10,8 @@ namespace XLParser
         UserDefinedName,
         HorizontalRange,
         VerticalRange,
-        RefError
+        RefError,
+        Table
     }
 
     public class ParserReference
@@ -93,6 +95,10 @@ namespace XLParser
                     {
                         MinLocation = "A1";
                     }
+                    break;
+                case GrammarNames.StructuredReference:
+                    ReferenceType = ReferenceType.Table;
+                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceTable)?.ChildNodes[0].Token.ValueString;
                     break;
                 case GrammarNames.HorizontalRange:
                     string[] horizontalLimits = node.ChildNodes[0].Token.ValueString.Split(':');
