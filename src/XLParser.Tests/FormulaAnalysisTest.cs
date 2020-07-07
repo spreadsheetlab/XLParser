@@ -268,6 +268,47 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbookSingleCell()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.Cell, result.First().ReferenceType);
+            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookCellRange()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.CellRange, result.First().ReferenceType);
+            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDefinedNameLocalScope()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
+            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            Assert.AreEqual("FirstItem", result.First().Name);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDefinedNameGlobalScope()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
+            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Items", result.First().Name);
+        }
+
+        [TestMethod]
         public void DirectSheetReference()
         {
             List<ParserReference> References = new FormulaAnalyzer("Sheet1!F7").ParserReferences().ToList();

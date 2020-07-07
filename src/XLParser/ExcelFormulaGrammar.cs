@@ -172,12 +172,17 @@ namespace XLParser
         private const string fileNameNumericRegex = @"\[[0-9]+\]";
         public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
-
+        
         private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
-        private const string fileNameRegex = @"\[[^\[\]]+\]";
-        public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameRegex)
-        { Priority = TerminalPriority.FileName };
-
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
+        public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameInBracketsRegex)
+            { Priority = TerminalPriority.FileName };
+        
+        // Source: https://stackoverflow.com/a/14632579
+        private const string fileNameRegex = @"[^\.].*\..{1,4}";
+        public Terminal FileNameWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameWindows, fileNameRegex)
+            { Priority = TerminalPriority.FileName };
+        
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
         public Terminal FilePathWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex);
@@ -372,8 +377,9 @@ namespace XLParser
             Cell.Rule = CellToken;
 
             File.Rule = FileToken
-				| EnclosedInBracketsToken
-				| FilePathWindowsToken + EnclosedInBracketsToken
+                | EnclosedInBracketsToken
+                | FilePathWindowsToken + EnclosedInBracketsToken
+                | FilePathWindowsToken + FileNameWindowsToken
                 ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
@@ -593,6 +599,7 @@ namespace XLParser
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
         public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
         public const string TokenFilePathWindows = "FilePathWindowsToken";
+        public const string TokenFileNameWindows = "FileNameWindowsToken";
         public const string TokenEnclosedInBrackets = "EnclosedInBracketsToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
         public const string TokenHRange = "HRangeToken";
