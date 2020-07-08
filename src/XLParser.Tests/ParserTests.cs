@@ -744,6 +744,30 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void MultipleExternalWorkbookSingleCell()
+        {
+            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$2)");
+        }
+
+        [TestMethod]
+        public void MultipleExternalWorkbookCellRange()
+        {
+            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$11:$A$20)");
+        }
+
+        [TestMethod]
+        public void MultipleExternalWorkbookDefinedNameLocalScope()
+        {
+            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!SecondItem)");
+        }
+
+        [TestMethod]
+        public void MultipleExternalWorkbookDefinedNameGlobalScope()
+        {
+            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items,'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items2)");
+        }
+
+        [TestMethod]
         public void TestFilePathWithSpace()
         {
             Test(@"='C:\EOL\Management Report\DATAMART\REGIONAL ANALYSIS\REPORTS\052301\[DEAL BREAKDOWN ANALYSIS 05-23-01.xls]PHYSICAL+FINANCIAL PIVOT '!D8",
