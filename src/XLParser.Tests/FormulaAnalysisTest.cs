@@ -191,7 +191,6 @@ namespace XLParser.Tests
             Assert.AreEqual("TestRange", PrefixedReferences.First().Name);
         }
 
-
         [TestMethod]
         public void NamedRangeWithUnderscoreReference()
         {
@@ -199,6 +198,51 @@ namespace XLParser.Tests
             Assert.AreEqual(1, result.Count);
             Assert.IsFalse(result.First().ReferenceType == ReferenceType.Cell);
             Assert.IsTrue(result.First().ReferenceType == ReferenceType.UserDefinedName);
+        }
+
+        [TestMethod]
+        public void TableReference()
+        {
+            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1)").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
+            Assert.AreEqual("Table1", result.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceHeader()
+        {
+            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[#Header])").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
+            Assert.AreEqual("Table1", result.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceCurrentRow()
+        {
+            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[@])").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
+            Assert.AreEqual("Table1", result.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceColumns()
+        {
+            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[[Date]:[Color]])").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
+            Assert.AreEqual("Table1", result.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceRowAndColumn()
+        {
+            List<ParserReference> result = new FormulaAnalyzer("Table1[[#Totals],[Qty]]").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
+            Assert.AreEqual("Table1", result.First().Name);
         }
 
         [TestMethod]
