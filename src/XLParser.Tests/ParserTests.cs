@@ -719,6 +719,31 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbookSingleCell()
+        {
+            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookCellRange()
+        {
+            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDefinedNameLocalScope()
+        {
+            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDefinedNameGlobalScope()
+        {
+            // See [#101](https://github.com/spreadsheetlab/XLParser/issues/101)
+            Test(@"'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items");
+        }
+
+        [TestMethod]
         public void TestFilePathWithSpace()
         {
             Test(@"='C:\EOL\Management Report\DATAMART\REGIONAL ANALYSIS\REPORTS\052301\[DEAL BREAKDOWN ANALYSIS 05-23-01.xls]PHYSICAL+FINANCIAL PIVOT '!D8",
