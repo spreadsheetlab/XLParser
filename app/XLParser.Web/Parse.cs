@@ -28,7 +28,7 @@ namespace XLParser.Web
             false;
 #endif
 
-        private const string LatestVersion = "1310";
+        private const string LatestVersion = "141";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -194,6 +194,11 @@ namespace XLParser.Web
                     _parse = XLParserVersions.v1310.ExcelFormulaParser.Parse;
                     _print = XLParserVersions.v1310.ExcelFormulaParser.Print;
                     _grammar = typeof(XLParserVersions.v1310.ExcelFormulaGrammar);
+                    break;
+                case "141":
+                    _parse = XLParserVersions.v141.ExcelFormulaParser.Parse;
+                    _print = XLParserVersions.v141.ExcelFormulaParser.Print;
+                    _grammar = typeof(XLParserVersions.v141.ExcelFormulaGrammar);
                     break;
                 default:
                     throw new ArgumentException($"Version {version} doesn't exist");
