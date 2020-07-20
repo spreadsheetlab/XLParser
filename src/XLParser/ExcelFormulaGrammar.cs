@@ -112,8 +112,8 @@ namespace XLParser
 
         // Start with a letter or underscore, continue with word character (letters, numbers and underscore), dot or question mark 
         private const string NameStartCharRegex = @"[\p{L}\\_]";
-        
-        private const string NameValidCharacterRegex = @"[\w\\_\.\?]";
+        private const string NameValidCharacterRegex = @"[\w\\_\.\?€]";
+
         public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + "*")
         { Priority = TerminalPriority.Name };
 
