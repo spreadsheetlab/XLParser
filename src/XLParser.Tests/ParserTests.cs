@@ -185,7 +185,10 @@ namespace XLParser.Tests
                 "ABC.ABC",
                 "ABC?ABC",
                 "Abcäbc",
-                @"ABC\ABC"
+                @"ABC\ABC",
+                // See https://github.com/spreadsheetlab/XLParser/issues/106
+                "ct_per_€",
+                "ctM3_naar_€MWh€"
             }, node => node.SkipToRelevant(true).Type() == GrammarNames.NamedRange);
         }
 
