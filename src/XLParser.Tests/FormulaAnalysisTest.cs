@@ -312,6 +312,46 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbook()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(@"C:\Users\Test\Desktop\", result.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookNetworkPath()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(@"\\TEST-01\Folder\", result.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPath()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"='http:\\example.com\test\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(@"http:\\example.com\test\", result.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookRelativePath()
+        {
+            List<ParserReference> result = new FormulaAnalyzer(@"='Test\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(@"Test\Folder\", result.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
+            Assert.AreEqual("Sheet1", result.First().Worksheet);
+        }
+
+        [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
             List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
