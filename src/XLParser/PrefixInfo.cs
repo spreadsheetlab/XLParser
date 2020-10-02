@@ -84,13 +84,13 @@ namespace XLParser
                     // String filename
                     var iCur = 0;
                     // Check if it includes a path
-                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenFilePathWindows))
+                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenFilePath))
                     {
                         filePath = file.ChildNodes[iCur].Print();
                         iCur++;
                     }
 
-                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenEnclosedInBrackets))
+                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenFileNameEnclosedInBrackets))
                     {
                         fileName = Substr(file.ChildNodes[iCur].Print(), 1, 1);
                     }

@@ -170,22 +170,22 @@ namespace XLParser
         { Priority = TerminalPriority.MultipleSheetsToken };
 
         private const string fileNameNumericRegex = @"\[[0-9]+\]";
-        public Terminal FileToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
+        public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
         private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
-        public Terminal EnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameInBracketsRegex)
+        public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
             { Priority = TerminalPriority.FileName };
         
         // Source: https://stackoverflow.com/a/14632579
         private const string fileNameRegex = @"[^\.]+\..{1,4}";
-        public Terminal FileNameWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameWindows, fileNameRegex)
+        public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
             { Priority = TerminalPriority.FileName };
         
         // Source: http://stackoverflow.com/a/6416209/572635
+        private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
         private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
-        public Terminal FilePathWindowsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex);
+        public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);
         #endregion
 
         #endregion
@@ -376,10 +376,10 @@ namespace XLParser
 
             Cell.Rule = CellToken;
 
-            File.Rule = FileToken
-                | EnclosedInBracketsToken
-                | FilePathWindowsToken + EnclosedInBracketsToken
-                | FilePathWindowsToken + FileNameWindowsToken
+            File.Rule = FileNameNumericToken
+                | FileNameEnclosedInBracketsToken
+                | FilePathToken + FileNameEnclosedInBracketsToken
+                | FilePathToken + FileName
                 ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
@@ -401,7 +401,7 @@ namespace XLParser
             StructuredReferenceElement.Rule =
                   OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
-                | EnclosedInBracketsToken;
+                | FileNameEnclosedInBracketsToken;
 
             //StructuredReferenceKeyword.Rule = EnclosedInBracketsToken;
 
@@ -598,9 +598,9 @@ namespace XLParser
         public const string TokenError = "ErrorToken";
         public const string TokenExcelRefFunction = "ExcelRefFunctionToken";
         public const string TokenExcelConditionalRefFunction = "ExcelConditionalRefFunctionToken";
-        public const string TokenFilePathWindows = "FilePathWindowsToken";
-        public const string TokenFileNameWindows = "FileNameWindowsToken";
-        public const string TokenEnclosedInBrackets = "EnclosedInBracketsToken";
+        public const string TokenFilePath = "FilePathToken";
+        public const string TokenFileName = "FileNameToken";
+        public const string TokenFileNameEnclosedInBrackets = "FileNameEnclosedInBracketsToken";
         public const string TokenFileNameNumeric = "FileNameNumericToken";
         public const string TokenHRange = "HRangeToken";
         public const string TokenIntersect = "INTERSECT";
