@@ -751,50 +751,50 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
-            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1");
+            Test(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1");
         }
 
         [TestMethod]
         public void ExternalWorkbookCellRange()
         {
-            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10");
+            Test(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10");
         }
 
         [TestMethod]
         public void ExternalWorkbookDefinedNameLocalScope()
         {
-            Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem");
+            Test(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem");
         }
 
         [TestMethod]
         public void ExternalWorkbookDefinedNameGlobalScope()
         {
             // See [#101](https://github.com/spreadsheetlab/XLParser/issues/101)
-            Test(@"'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items");
+            Test(@"='C:\Users\Test\Desktop\Book1.xlsx'!Items");
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookSingleCell()
         {
-            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$2)");
+            Test(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$2)");
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookCellRange()
         {
-            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$11:$A$20)");
+            Test(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$11:$A$20)");
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameLocalScope()
         {
-            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!SecondItem)");
+            Test(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!SecondItem)");
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameGlobalScope()
         {
-            Test(@"=SUM('C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items,'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items2)");
+            Test(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items,'C:\Users\Test\Desktop\Book1.xlsx'!Items2)");
         }
 
         [TestMethod]

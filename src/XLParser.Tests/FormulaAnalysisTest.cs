@@ -314,30 +314,30 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(ReferenceType.Cell, result.First().ReferenceType);
-            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
             Assert.AreEqual("Sheet1", result.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookCellRange()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10").ParserReferences().ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(ReferenceType.CellRange, result.First().ReferenceType);
-            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
             Assert.AreEqual("Sheet1", result.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookDefinedNameLocalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem").ParserReferences().ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
-            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
             Assert.AreEqual("Sheet1", result.First().Worksheet);
             Assert.AreEqual("FirstItem", result.First().Name);
         }
@@ -345,56 +345,56 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExternalWorkbookDefinedNameGlobalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\Book1.xlsx'!Items").ParserReferences().ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
-            Assert.AreEqual("Data.xlsx", result.First().FileName);
+            Assert.AreEqual("Book1.xlsx", result.First().FileName);
             Assert.AreEqual("Items", result.First().Name);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookSingleCell()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$2)").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$2)").ParserReferences().ToList();
             Assert.AreEqual(2, result.Count);
             
             Assert.AreEqual(ReferenceType.Cell, result[0].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[0].FileName);
+            Assert.AreEqual("Book1.xlsx", result[0].FileName);
             Assert.AreEqual("Sheet1", result[0].Worksheet);
 
             Assert.AreEqual(ReferenceType.Cell, result[1].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[1].FileName);
+            Assert.AreEqual("Book1.xlsx", result[1].FileName);
             Assert.AreEqual("Sheet1", result[1].Worksheet);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookCellRange()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$11:$A$20)").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$11:$A$20)").ParserReferences().ToList();
             Assert.AreEqual(2, result.Count);
             
             Assert.AreEqual(ReferenceType.CellRange, result[0].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[0].FileName);
+            Assert.AreEqual("Book1.xlsx", result[0].FileName);
             Assert.AreEqual("Sheet1", result[0].Worksheet);
 
             Assert.AreEqual(ReferenceType.CellRange, result[1].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[1].FileName);
+            Assert.AreEqual("Book1.xlsx", result[1].FileName);
             Assert.AreEqual("Sheet1", result[1].Worksheet);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameLocalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!FirstItem,'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!SecondItem)").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!SecondItem)").ParserReferences().ToList();
             Assert.AreEqual(2, result.Count);
             
             Assert.AreEqual(ReferenceType.UserDefinedName, result[0].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[0].FileName);
+            Assert.AreEqual("Book1.xlsx", result[0].FileName);
             Assert.AreEqual("Sheet1", result[0].Worksheet);
             Assert.AreEqual("FirstItem", result[0].Name);
 
             Assert.AreEqual(ReferenceType.UserDefinedName, result[1].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[1].FileName);
+            Assert.AreEqual("Book1.xlsx", result[1].FileName);
             Assert.AreEqual("Sheet1", result[1].Worksheet);
             Assert.AreEqual("SecondItem", result[1].Name);
         }
@@ -402,15 +402,15 @@ namespace XLParser.Tests
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameGlobalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items,'C:\Users\Willem-Jan\Desktop\Data.xlsx'!Items2)").ParserReferences().ToList();
+            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items,'C:\Users\Test\Desktop\Book1.xlsx'!Items2)").ParserReferences().ToList();
             Assert.AreEqual(2, result.Count);
             
             Assert.AreEqual(ReferenceType.UserDefinedName, result[0].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[0].FileName);
+            Assert.AreEqual("Book1.xlsx", result[0].FileName);
             Assert.AreEqual("Items", result[0].Name);
 
             Assert.AreEqual(ReferenceType.UserDefinedName, result[1].ReferenceType);
-            Assert.AreEqual("Data.xlsx", result[1].FileName);
+            Assert.AreEqual("Book1.xlsx", result[1].FileName);
             Assert.AreEqual("Items2", result[1].Name);
         }
 
