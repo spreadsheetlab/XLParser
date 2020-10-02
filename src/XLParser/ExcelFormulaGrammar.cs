@@ -184,7 +184,7 @@ namespace XLParser
         
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
-        private const string filePathRegex = @"(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
+        private const string filePathRegex = @"(?:[a-zA-Z]:|https?:\\|\\?\\?[\w\.-]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);
         #endregion
 
