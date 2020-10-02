@@ -722,6 +722,33 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbook()
+        {
+            Test(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookNetworkPath()
+        {
+            // See [#107](https://github.com/spreadsheetlab/XLParser/issues/107)
+            Test(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPath()
+        {
+            // See [#107](https://github.com/spreadsheetlab/XLParser/issues/108)
+            Test(@"='http:\\example.com\test\[Book1.xlsx]Sheet1'!$A$1");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookRelativePath()
+        {
+            // See [#107](https://github.com/spreadsheetlab/XLParser/issues/109)
+            Test(@"='Test\Folder\[Book1.xlsx]Sheet1'!$A$1");
+        }
+
+        [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
             Test(@"'C:\Users\Willem-Jan\Desktop\[Data.xlsx]Sheet1'!$A$1");
