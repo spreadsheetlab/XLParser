@@ -23,18 +23,20 @@ namespace XLParser
         public string LocationString { get; set; }
         public string Worksheet { get; set; }
         public string LastWorksheet { get; set; }
+        public string FilePath { get; set; }
         public string FileName { get; set; }
         public string Name { get; private set; }
         public string MinLocation { get; set; } //Location as appearing in the formula, eg $A$1
         public string MaxLocation { get; set; }
 
         public ParserReference(ReferenceType referenceType, string locationString = null, string worksheet = null, string lastWorksheet = null,
-            string fileName = null, string name = null, string minLocation = null, string maxLocation = null)
+            string filePath = null, string fileName = null, string name = null, string minLocation = null, string maxLocation = null)
         {
             ReferenceType = referenceType;
             LocationString = locationString;
             Worksheet = worksheet;
             LastWorksheet = lastWorksheet;
+            FilePath = filePath;
             FileName = fileName;
             Name = name;
             MinLocation = minLocation;
@@ -68,6 +70,11 @@ namespace XLParser
                         LastWorksheet = sheets[1];
                     }
 
+                    if (prefix.HasFilePath)
+                    {
+                        FilePath = prefix.FilePath;
+                    }
+
                     if (prefix.HasFileNumber)
                     {
                         FileName = prefix.FileNumber.ToString();
@@ -75,10 +82,6 @@ namespace XLParser
                     else if (prefix.HasFileName)
                     {
                         FileName = prefix.FileName;
-                    }
-                    else
-                    {
-                        FileName = null;
                     }
 
                     InitializeReference(node.ChildNodes[1]);
