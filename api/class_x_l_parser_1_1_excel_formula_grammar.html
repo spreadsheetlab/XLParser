@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.4.1</span>
+   &#160;<span id="projectnumber">1.4.2</span>
    </div>
   </td>
  </tr>
@@ -193,8 +193,8 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>RefErrorToken</b>
 <tr class="separator:ad8ac351e722c47f45ba286eb667f4853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76b39eb34c732e337fa1d85dfbeefa0d"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>MultipleSheetsQuotedToken</b></td></tr>
 <tr class="separator:a76b39eb34c732e337fa1d85dfbeefa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f5ba6ff01d3868bee17efb6ff7b96ee"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileToken</b></td></tr>
-<tr class="separator:a2f5ba6ff01d3868bee17efb6ff7b96ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a425c38681253e891fa437a57912bf51f"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileNameNumericToken</b></td></tr>
+<tr class="separator:a425c38681253e891fa437a57912bf51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -236,13 +236,13 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>HRangeToken</b> =
 <tr class="separator:a9755ef8d53f8e045dd0eb42ba2991c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8380d9e40fbdb41548d147393f1e337"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>NamedRangeCombinationToken</b><code> [get]</code></td></tr>
 <tr class="separator:ae8380d9e40fbdb41548d147393f1e337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4e952b685c44c120dfbeb74ea2f3a28"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>EnclosedInBracketsToken</b><code> [get]</code></td></tr>
-<tr class="separator:ab4e952b685c44c120dfbeb74ea2f3a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b139e6801bdddde1818fa70ea1a21de"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileNameWindowsToken</b><code> [get]</code></td></tr>
-<tr class="separator:a5b139e6801bdddde1818fa70ea1a21de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a981d28bdafffbd4375f24ccae1a826bd"><td class="memItemLeft" align="right" valign="top"><a id="a981d28bdafffbd4375f24ccae1a826bd"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FilePathWindowsToken</b> = new RegexBasedTerminal(GrammarNames.TokenFilePathWindows, filePathRegex)<code> [get]</code></td></tr>
-<tr class="separator:a981d28bdafffbd4375f24ccae1a826bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94ef45c9e5a3bdc0d123ce7ddf47ed6e"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileNameEnclosedInBracketsToken</b><code> [get]</code></td></tr>
+<tr class="separator:a94ef45c9e5a3bdc0d123ce7ddf47ed6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d60e16e4056d7086270912b91fca40"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileName</b><code> [get]</code></td></tr>
+<tr class="separator:a46d60e16e4056d7086270912b91fca40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9872e5bb695427495087d4de7d2899"><td class="memItemLeft" align="right" valign="top"><a id="a8d9872e5bb695427495087d4de7d2899"></a>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FilePathToken</b> = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)<code> [get]</code></td></tr>
+<tr class="separator:a8d9872e5bb695427495087d4de7d2899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02491867f4f5d7cbb5645ea6e0ccea43"><td class="memItemLeft" align="right" valign="top"><a id="a02491867f4f5d7cbb5645ea6e0ccea43"></a>
 NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Argument</b> = new NonTerminal(GrammarNames.Argument)<code> [get]</code></td></tr>
 <tr class="separator:a02491867f4f5d7cbb5645ea6e0ccea43"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -376,14 +376,14 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains the <a class="el" href="namespace_x_l_parser.html">XLParser</a> grammar </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2f5ba6ff01d3868bee17efb6ff7b96ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f5ba6ff01d3868bee17efb6ff7b96ee">&#9670;&nbsp;</a></span>FileToken</h2>
+<a id="a425c38681253e891fa437a57912bf51f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a425c38681253e891fa437a57912bf51f">&#9670;&nbsp;</a></span>FileNameNumericToken</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileToken</td>
+          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileNameNumericToken</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -539,30 +539,6 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ab4e952b685c44c120dfbeb74ea2f3a28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4e952b685c44c120dfbeb74ea2f3a28">&#9670;&nbsp;</a></span>EnclosedInBracketsToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.EnclosedInBracketsToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenEnclosedInBrackets, fileNameInBracketsRegex)</div>
-<div class="line">            { Priority = TerminalPriority.FileName }</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a8a8b06cf69bd66290a3aa910825cb0f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a8b06cf69bd66290a3aa910825cb0f3">&#9670;&nbsp;</a></span>ExcelConditionalRefFunctionToken</h2>
 
@@ -635,8 +611,8 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a5b139e6801bdddde1818fa70ea1a21de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b139e6801bdddde1818fa70ea1a21de">&#9670;&nbsp;</a></span>FileNameWindowsToken</h2>
+<a id="a46d60e16e4056d7086270912b91fca40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d60e16e4056d7086270912b91fca40">&#9670;&nbsp;</a></span>FileName</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -645,7 +621,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileNameWindowsToken</td>
+          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileName</td>
         </tr>
       </table>
   </td>
@@ -654,7 +630,31 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileNameWindows, fileNameRegex)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)</div>
+<div class="line">            { Priority = TerminalPriority.FileName }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a94ef45c9e5a3bdc0d123ce7ddf47ed6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94ef45c9e5a3bdc0d123ce7ddf47ed6e">&#9670;&nbsp;</a></span>FileNameEnclosedInBracketsToken</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileNameEnclosedInBracketsToken</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)</div>
 <div class="line">            { Priority = TerminalPriority.FileName }</div>
 </div><!-- fragment -->
 </div>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_x_l_parser_1_1_prefix_info.html#ac28e8a7c48a23be1a57461cab9a15b04":[1,0,0,5,5],
 "class_x_l_parser_1_1_prefix_info.html#ac7d7e760b934b7e06ff023a1852f833e":[1,0,0,5,15],
 "class_x_l_parser_1_1_prefix_info.html#adaa4b9796cdbc215690021cd80ebd6bf":[1,0,0,5,0],
 "class_x_l_parser_1_1_prefix_info.html#adc4b16d8e7d6fa1f73d72ce12ef7364a":[1,0,0,5,4],
@@ -11,8 +12,8 @@ var NAVTREEINDEX1 =
 "functions_prop.html":[1,3,2],
 "hierarchy.html":[1,2],
 "index.html":[],
-"namespace_x_l_parser.html":[1,0,0],
 "namespace_x_l_parser.html":[0,0,0],
+"namespace_x_l_parser.html":[1,0,0],
 "namespaces.html":[0,0],
 "pages.html":[]
 };
