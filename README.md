@@ -54,7 +54,7 @@ The `ExcelFormulaParser` class is your main entry point. You can parse a formula
 ### Debugging
 
 Irony, the parser framework XLParser uses, includes a tool called the "grammar explorer". This is a great way to play around with the grammar and parse trees.
-To use this tool, you first need to build it once by opening the Irony solution (`lib/Irony/Irony_All.2012.sln`) and building it with release configuration. After that you can use the binary in `lib/Irony/Irony.GrammarExplorer/bin/Release/Irony.GrammarExplorer.exe`.
+To use this tool, you first need to build it once by opening the IronyExplorer solution (`lib/IronyExplorer/IronyExplorer.sln`) and building it with release configuration. After that you can use the binary in `lib/IronyExplorer/src/IronyExplorer.GrammarExplorer/bin/Release/IronyExplorer.GrammarExplorer.exe`.
 
 To load the XLParser grammar, first make sure you have built XLParser. Then open the GrammarExplorer and add the grammar (`...` button) from `src/XLParser/bin/Debug/XLParser.dll`.
 
