@@ -6,11 +6,15 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.4.1.0</AssemblyVersion>
-    <FileVersion>1.4.1.0</FileVersion>
-    <Version>1.4.1.0</Version>
+    <AssemblyVersion>1.4.2.0</AssemblyVersion>
+    <FileVersion>1.4.2.0</FileVersion>
+    <Version>1.4.2.0</Version>
     <PackageReleaseNotes>
-- Improved detection of external file names (#105)
+- Parse defined names with euro sign (#106)
+- Fixed problems with dashes in external file paths (#107)
+- Fixed problems with URLs in external file paths (#108)
+- Fixed problems with relative external file paths (#109)
+- Add file path to the parser references of the formula analyzer
 </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
