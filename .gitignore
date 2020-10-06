@@ -1,6 +1,7 @@
-/src
 /app
 /doc
+/lib
+/src
 
 # Private file
 /nuget-sign.bat
