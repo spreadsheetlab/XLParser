@@ -7,7 +7,7 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>http://mozilla.org/MPL/2.0/</licenseUrl>
-    <projectUrl>https://github.com/PerfectXL/XLParser</projectUrl>
+    <projectUrl>https://github.com/spreadsheetlab/XLParser</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>
