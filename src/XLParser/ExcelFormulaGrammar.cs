@@ -18,6 +18,7 @@ namespace XLParser
         public Terminal at => ToTerm("@");
         public Terminal comma => ToTerm(",");
         public Terminal colon => ToTerm(":");
+        public Terminal hash => ToTerm("#");
         public Terminal semicolon => ToTerm(";");
         public Terminal OpenParen => ToTerm("(");
         public Terminal CloseParen => ToTerm(")");
@@ -69,7 +70,7 @@ namespace XLParser
             StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes)
         { Priority = TerminalPriority.SingleQuotedString };
 
-        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A");
+        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#SPILL!");
         public Terminal RefErrorToken => ToTerm("#REF!", GrammarNames.TokenRefError);
 
         #endregion
@@ -313,7 +314,8 @@ namespace XLParser
 
             PrefixOp.Rule =
                 ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
-                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + minop;
+                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + minop
+                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + at;
             MarkTransient(PrefixOp);
 
             InfixOp.Rule =
@@ -351,6 +353,7 @@ namespace XLParser
                 | Reference + intersectop + Reference
                 | OpenParen + Union + CloseParen
                 | RefFunctionName + Arguments + CloseParen
+                | Reference + hash;
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
@@ -446,8 +449,8 @@ namespace XLParser
             RegisterOperators(Precedence.Concatenation, Associativity.Left, concatop);
             RegisterOperators(Precedence.Addition, Associativity.Left, plusop, minop);
             RegisterOperators(Precedence.Multiplication, Associativity.Left, mulop, divop);
-            RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop);
-            RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop);
+            RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop, at);
+            RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop, hash);
             RegisterOperators(Precedence.Union, Associativity.Left, comma);
             RegisterOperators(Precedence.Intersection, Associativity.Left, intersectop);
             RegisterOperators(Precedence.Range, Associativity.Left, colon);

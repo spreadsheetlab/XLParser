@@ -900,5 +900,30 @@ namespace XLParser.Tests
 
             Test("Module1.R()", "N()", "T()", "Ñ()");
         }
+
+        [TestMethod]
+        public void ImplicitIntersection()
+        {
+            Test("=@B10:B20");
+            Test("=@namedRange");
+            Test("=SQRT(A1:A4)+ SQRT(@A1:A4)");
+            Test("=SQRT(A1:A4)+ @SQRT(A1:A4)");
+            Test("=SQRT(A1:A4)+ SQRT(@namedRange)");
+            Test("=IF(J131=1,@Index($F125:$F129,J132)/$F130,0)");            
+        }
+
+        [TestMethod]
+        public void SpillError()
+        {
+            Test("#SPILL!");
+        }
+
+        [TestMethod]
+        public void SpillRangeReference()
+        {
+            Test("=B10#");
+            Test("=(B10)#");
+            Test("=OFFSET(\"A1\",10,1)#");
+        }
     }
 }
