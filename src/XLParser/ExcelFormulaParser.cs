@@ -551,13 +551,10 @@ namespace XLParser
                     if (input.IsBinaryOperation())
                     {
                         // format string for "normal" binary operation
-                        string format = "{0} {1} {2}";
+                        string format = "{0}{1}{2}";
                         if (input.IsIntersection())
                         {
                             format = "{0} {2}";
-                        }else if (input.IsBinaryReferenceOperation())
-                        {
-                            format = "{0}{1}{2}";
                         }
 
                         return string.Format(format, childrenList[0], childrenList[1], childrenList[2]);

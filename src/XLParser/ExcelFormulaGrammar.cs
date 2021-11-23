@@ -70,7 +70,9 @@ namespace XLParser
             StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes)
         { Priority = TerminalPriority.SingleQuotedString };
 
-        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#SPILL!");
+
+        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#SPILL!|#GETTING_DATA");
+
         public Terminal RefErrorToken => ToTerm("#REF!", GrammarNames.TokenRefError);
 
         #endregion
