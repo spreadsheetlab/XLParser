@@ -157,92 +157,103 @@ namespace XLParser.Tests
         [TestMethod]
         public void SimpleReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("B1").ParserReferences().ToList();
-
-            //we get a cell reference
-            Assert.AreEqual(true, References.First().ReferenceType == ReferenceType.Cell);
-
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("B1", References.First().MinLocation.ToString());
+            List<ParserReference> references = new FormulaAnalyzer("B1").ParserReferences().ToList();
+            
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("B1", references.First().MinLocation);
         }
 
         [TestMethod]
         public void RangeReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(B1:C5)").ParserReferences().ToList();
-
-            //we get a range reference
-            Assert.AreEqual(false, References.First().ReferenceType == ReferenceType.Cell);
+            List<ParserReference> references = new FormulaAnalyzer("SUM(B1:C5)").ParserReferences().ToList();
+            
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("B1", references.First().MinLocation);
+            Assert.AreEqual("C5", references.First().MaxLocation);
         }
 
         [TestMethod]
         public void NamedRangeReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(TestRange)").ParserReferences().ToList();
-            List<ParserReference> PrefixedReferences = new FormulaAnalyzer("SUM(Sheet1!TestRange)").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("SUM(TestRange)").ParserReferences().ToList();
 
-            //we get a range reference
-            Assert.AreEqual(false, References.First().ReferenceType == ReferenceType.Cell);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("TestRange", references.First().Name);
+        }
 
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("TestRange", References.First().Name);
-
-            Assert.AreEqual(false, PrefixedReferences.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("TestRange", PrefixedReferences.First().Name);
+        [TestMethod]
+        public void NamedRangeWithPrefixReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Sheet1!TestRange)").ParserReferences().ToList();
+            
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("TestRange", references.First().Name);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void NamedRangeWithUnderscoreReference()
         {
-            List<ParserReference> result = new FormulaAnalyzer("_XX1/100").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.IsFalse(result.First().ReferenceType == ReferenceType.Cell);
-            Assert.IsTrue(result.First().ReferenceType == ReferenceType.UserDefinedName);
+            List<ParserReference> references = new FormulaAnalyzer("_XX1/100").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("_XX1", references.First().Name);
         }
 
         [TestMethod]
         public void TableReference()
         {
-            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1)").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
-            Assert.AreEqual("Table1", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
         }
 
         [TestMethod]
         public void StructuredTableReferenceHeader()
         {
-            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[#Header])").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
-            Assert.AreEqual("Table1", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[#Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
         }
 
         [TestMethod]
         public void StructuredTableReferenceCurrentRow()
         {
-            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[@])").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
-            Assert.AreEqual("Table1", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[@])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
         }
 
         [TestMethod]
         public void StructuredTableReferenceColumns()
         {
-            List<ParserReference> result = new FormulaAnalyzer("COUNTA(Table1[[Date]:[Color]])").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
-            Assert.AreEqual("Table1", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[[Date]:[Color]])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
         }
 
         [TestMethod]
         public void StructuredTableReferenceRowAndColumn()
         {
-            List<ParserReference> result = new FormulaAnalyzer("Table1[[#Totals],[Qty]]").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.Table, result.First().ReferenceType);
-            Assert.AreEqual("Table1", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer("Table1[[#Totals],[Qty]]").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
         }
 
         [TestMethod]
@@ -255,17 +266,17 @@ namespace XLParser.Tests
             Assert.AreEqual(GrammarNames.Formula, parseResult.Root.Term.Name);
             Assert.AreNotEqual(ParseTreeStatus.Error, parseResult.Status);
 
-            Assert.AreEqual(1, parseResult.Root.ChildNodes.Count());
+            Assert.AreEqual(1, parseResult.Root.ChildNodes.Count);
             ParseTreeNode reference = parseResult.Root.ChildNodes.First();
             Assert.AreEqual(GrammarNames.Reference, reference.Term.Name);
 
-            Assert.AreEqual(2, reference.ChildNodes.Count());
+            Assert.AreEqual(2, reference.ChildNodes.Count);
             ParseTreeNode prefix = reference.ChildNodes.First();
             Assert.AreEqual(GrammarNames.Prefix, prefix.Term.Name);
             ParseTreeNode cellOrRange = reference.ChildNodes.ElementAt(1);
             Assert.AreEqual(GrammarNames.Cell, cellOrRange.Term.Name);
 
-            Assert.AreEqual(1, prefix.ChildNodes.Count());
+            Assert.AreEqual(1, prefix.ChildNodes.Count);
             ParseTreeNode sheet = prefix.ChildNodes.First();
             Assert.AreEqual(GrammarNames.TokenSheet, sheet.Term.Name);
             Assert.AreEqual("aap_noot!", sheet.Token.Value);
@@ -288,226 +299,238 @@ namespace XLParser.Tests
         [TestMethod]
         public void SheetWithQuote()
         {
-            List<ParserReference> result = new FormulaAnalyzer("'Owner''s Engineer'!$A$2").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Owner's Engineer", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer("'Owner''s Engineer'!$A$2").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual("Owner's Engineer", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalSheetWithQuote()
         {
-            List<ParserReference> result = new FormulaAnalyzer("'[1]Stacey''s Reconciliation'!C3").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("1", result.First().FileName);
-            Assert.AreEqual("Stacey's Reconciliation", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer("'[1]Stacey''s Reconciliation'!C3").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual("1", references.First().FileName);
+            Assert.AreEqual("Stacey's Reconciliation", references.First().Worksheet);
         }
 
         [TestMethod]
         public void NonNumericExternalSheet()
         {
-            List<ParserReference> result = new FormulaAnalyzer("[externalFile.xlsx]Book1!C3").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("externalFile.xlsx", result.First().FileName);
-            Assert.AreEqual("Book1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer("[externalFile.xlsx]Book1!C3").ParserReferences().ToList();
+            
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual("externalFile.xlsx", references.First().FileName);
+            Assert.AreEqual("Book1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbook()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(@"C:\Users\Test\Desktop\", result.First().FilePath);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"C:\Users\Test\Desktop\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookNetworkPath()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(@"\\TEST-01\Folder\", result.First().FilePath);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"\\TEST-01\Folder\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookUrlPath()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='http:\\example.com\test\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(@"http:\\example.com\test\", result.First().FilePath);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='http:\\example.com\test\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http:\\example.com\test\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookRelativePath()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='Test\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(@"Test\Folder\", result.First().FilePath);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='Test\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"Test\Folder\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.Cell, result.First().ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookCellRange()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.CellRange, result.First().ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
         [TestMethod]
         public void ExternalWorkbookDefinedNameLocalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Sheet1", result.First().Worksheet);
-            Assert.AreEqual("FirstItem", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("FirstItem", references.First().Name);
         }
 
         [TestMethod]
         public void ExternalWorkbookDefinedNameGlobalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\Book1.xlsx'!Items").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(ReferenceType.UserDefinedName, result.First().ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result.First().FileName);
-            Assert.AreEqual("Items", result.First().Name);
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\Book1.xlsx'!Items").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Items", references.First().Name);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookSingleCell()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$2)").ParserReferences().ToList();
-            Assert.AreEqual(2, result.Count);
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1, 'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$2)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
             
-            Assert.AreEqual(ReferenceType.Cell, result[0].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[0].FileName);
-            Assert.AreEqual("Sheet1", result[0].Worksheet);
+            Assert.AreEqual(ReferenceType.Cell, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+            Assert.AreEqual("Sheet1", references[0].Worksheet);
+            Assert.AreEqual("$A$1", references[0].MinLocation);
 
-            Assert.AreEqual(ReferenceType.Cell, result[1].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[1].FileName);
-            Assert.AreEqual("Sheet1", result[1].Worksheet);
+            Assert.AreEqual(ReferenceType.Cell, references[1].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[1].FileName);
+            Assert.AreEqual("Sheet1", references[1].Worksheet);
+            Assert.AreEqual("$A$2", references[1].MinLocation);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookCellRange()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$11:$A$20)").ParserReferences().ToList();
-            Assert.AreEqual(2, result.Count);
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1:$A$10, 'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$11:$A$20)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
             
-            Assert.AreEqual(ReferenceType.CellRange, result[0].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[0].FileName);
-            Assert.AreEqual("Sheet1", result[0].Worksheet);
+            Assert.AreEqual(ReferenceType.CellRange, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+            Assert.AreEqual("Sheet1", references[0].Worksheet);
+            Assert.AreEqual("$A$1", references[0].MinLocation);
+            Assert.AreEqual("$A$10", references[0].MaxLocation);
 
-            Assert.AreEqual(ReferenceType.CellRange, result[1].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[1].FileName);
-            Assert.AreEqual("Sheet1", result[1].Worksheet);
+            Assert.AreEqual(ReferenceType.CellRange, references[1].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[1].FileName);
+            Assert.AreEqual("Sheet1", references[1].Worksheet);
+            Assert.AreEqual("$A$11", references[1].MinLocation);
+            Assert.AreEqual("$A$20", references[1].MaxLocation);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameLocalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem,'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!SecondItem)").ParserReferences().ToList();
-            Assert.AreEqual(2, result.Count);
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!FirstItem, 'C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!SecondItem)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
             
-            Assert.AreEqual(ReferenceType.UserDefinedName, result[0].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[0].FileName);
-            Assert.AreEqual("Sheet1", result[0].Worksheet);
-            Assert.AreEqual("FirstItem", result[0].Name);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+            Assert.AreEqual("Sheet1", references[0].Worksheet);
+            Assert.AreEqual("FirstItem", references[0].Name);
 
-            Assert.AreEqual(ReferenceType.UserDefinedName, result[1].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[1].FileName);
-            Assert.AreEqual("Sheet1", result[1].Worksheet);
-            Assert.AreEqual("SecondItem", result[1].Name);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[1].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[1].FileName);
+            Assert.AreEqual("Sheet1", references[1].Worksheet);
+            Assert.AreEqual("SecondItem", references[1].Name);
         }
 
         [TestMethod]
         public void MultipleExternalWorkbookDefinedNameGlobalScope()
         {
-            List<ParserReference> result = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items,'C:\Users\Test\Desktop\Book1.xlsx'!Items2)").ParserReferences().ToList();
-            Assert.AreEqual(2, result.Count);
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items, 'C:\Users\Test\Desktop\Book1.xlsx'!Items2)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
             
-            Assert.AreEqual(ReferenceType.UserDefinedName, result[0].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[0].FileName);
-            Assert.AreEqual("Items", result[0].Name);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+            Assert.AreEqual("Items", references[0].Name);
 
-            Assert.AreEqual(ReferenceType.UserDefinedName, result[1].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", result[1].FileName);
-            Assert.AreEqual("Items2", result[1].Name);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[1].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[1].FileName);
+            Assert.AreEqual("Items2", references[1].Name);
         }
 
         [TestMethod]
         public void DirectSheetReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("Sheet1!F7").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("Sheet1!F7").ParserReferences().ToList();
 
-            //we get a cell reference
-            Assert.AreEqual(true, References.First().ReferenceType == ReferenceType.Cell);
-
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("F7", References.First().MinLocation.ToString());
-            Assert.AreEqual("Sheet1", References.First().Worksheet);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("F7", references.First().MinLocation);
         }
 
         [TestMethod]
         public void SheetReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(Sheet1!X1)").ParserReferences().ToList();
-
-            //we get a cell reference
-            Assert.AreEqual(true, References.First().ReferenceType == ReferenceType.Cell);
-
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("X1", References.First().MinLocation.ToString());
-            Assert.AreEqual("Sheet1", References.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Sheet1!X1)").ParserReferences().ToList();
+            
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("X1", references.First().MinLocation);
         }
 
         [TestMethod]
         public void FileReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("[2]Sheet1!X1").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("[2]Sheet1!X1").ParserReferences().ToList();
 
-            //we get a cell reference
-            Assert.IsTrue(References.First().ReferenceType == ReferenceType.Cell);
-            var cellref = References.First();
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
 
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("X1", cellref.MinLocation.ToString());
-            Assert.AreEqual("Sheet1", cellref.Worksheet);
-            Assert.AreEqual("2", cellref.FileName);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("2", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("X1", references.First().MinLocation);
         }
 
         [TestMethod]
         public void FileReferenceInRange()
         {
-            List<ParserReference> References = new FormulaAnalyzer("[2]Sheet1!X1:X10").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("[2]Sheet1!X1:X10").ParserReferences().ToList();
 
-            //we get a cell reference
-            Assert.IsFalse(References.First().ReferenceType == ReferenceType.Cell);
-            var cellref = References.First();
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
 
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual("X1", cellref.MinLocation.ToString());
-            Assert.AreEqual("Sheet1", cellref.Worksheet);
-            Assert.AreEqual("2", cellref.FileName);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("2", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("X1", references.First().MinLocation);
+            Assert.AreEqual("X10", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -515,98 +538,134 @@ namespace XLParser.Tests
         {
             List<ParserReference> references = new FormulaAnalyzer("'[2]Sheet1'!X1").ParserReferences().ToList();
 
-            //we get a cell reference
-            Assert.IsNotNull(references);
-            Assert.IsTrue(references.First().ReferenceType == ReferenceType.Cell);
-            var cellref = references.First();
-
             Assert.AreEqual(1, references.Count);
-            Assert.AreEqual("X1", cellref.MinLocation.ToString());
-            Assert.AreEqual("2", cellref.FileName);
-            Assert.AreEqual("Sheet1", cellref.Worksheet);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("2", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("X1", references.First().MinLocation);
         }
 
 
         [TestMethod]
         public void SheetReferenceRange()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(Sheet1!X1:X6)").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Sheet1!X1:X6)").ParserReferences().ToList();
 
-            //we get a cell reference
-            Assert.IsFalse(References.First().ReferenceType == ReferenceType.Cell);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("X1", references.First().MinLocation);
+            Assert.AreEqual("X6", references.First().MaxLocation);
         }
 
         [TestMethod]
         public void MultipleSheetsReferenceCell()
         {
-            String formula = "SUM(Sheet1:Sheet2!A1)";
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Sheet1:Sheet2!A1)").ParserReferences().ToList();
 
-            List<ParserReference> References = new FormulaAnalyzer(formula).ParserReferences().ToList();
-
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual(true, References.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("A1", References.First().MinLocation.ToString());
-            Assert.AreEqual("Sheet1", References.First().Worksheet);
-            Assert.AreEqual("Sheet2", References.First().LastWorksheet);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("Sheet2", references.First().LastWorksheet);
+            Assert.AreEqual("A1", references.First().MinLocation);
         }
 
         [TestMethod]
         public void MultipleSheetsReferenceRange()
         {
-            String formula = "SUM(Sheet1:Sheet2!A1:A3)";
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Sheet1:Sheet2!A1:A3)").ParserReferences().ToList();
 
-            List<ParserReference> References = new FormulaAnalyzer(formula).ParserReferences().ToList();
-
-            Assert.AreEqual(1, References.Count);
-            Assert.IsTrue(References.First().ReferenceType == ReferenceType.CellRange);
-            Assert.AreEqual("A1", References.First().MinLocation.ToString());
-            Assert.AreEqual("A3", References.First().MaxLocation.ToString());
-            Assert.AreEqual("Sheet1", References.First().Worksheet);
-            Assert.AreEqual("Sheet2", References.First().LastWorksheet);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("Sheet2", references.First().LastWorksheet);
+            Assert.AreEqual("A1", references.First().MinLocation);
+            Assert.AreEqual("A3", references.First().MaxLocation);
         }
 
         [TestMethod]
         public void MultipleSheetsInFileReferenceCell()
         {
-            String formula = "SUM([1]Sheet1:Sheet2!B15)";
+            List<ParserReference> references = new FormulaAnalyzer("SUM([1]Sheet1:Sheet2!B15)").ParserReferences().ToList();
 
-            List<ParserReference> References = new FormulaAnalyzer(formula).ParserReferences().ToList();
-
-            Assert.AreEqual(1, References.Count);
-            Assert.AreEqual(true, References.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("B15", References.First().MinLocation.ToString());
-            Assert.AreEqual("Sheet1", References.First().Worksheet);
-            Assert.AreEqual("Sheet2", References.First().LastWorksheet);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("Sheet2", references.First().LastWorksheet);
+            Assert.AreEqual("B15", references.First().MinLocation);
         }
 
         [TestMethod]
         public void RangeWithPrefixedRightLimitReference()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(Deals!F9:Deals!F16)").ParserReferences().ToList();
-            Assert.IsFalse(References.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("Deals!F9:Deals!F16", References.First().LocationString);
-            Assert.AreEqual("Deals", References.First().Worksheet);
+            List<ParserReference> references = new FormulaAnalyzer("SUM(Deals!F9:Deals!F16)").ParserReferences().ToList();
+
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("Deals", references.First().Worksheet);
+            Assert.AreEqual("Deals!F9:Deals!F16", references.First().LocationString);
 
             //quotes should be omitted
-            References = new FormulaAnalyzer("SUM(Deals!F9:'Deals'!F16)").ParserReferences().ToList();
-            Assert.IsFalse(References.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("Deals!F9:'Deals'!F16", References.First().LocationString);
-            Assert.AreEqual("Deals", References.First().Worksheet);
+            references = new FormulaAnalyzer("SUM(Deals!F9:'Deals'!F16)").ParserReferences().ToList();
+
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("Deals", references.First().Worksheet);
+            Assert.AreEqual("Deals!F9:'Deals'!F16", references.First().LocationString);
 
             //external file references
-            References = new FormulaAnalyzer("SUM([1]Deals!F9:[1]Deals!F16)").ParserReferences().ToList();
-            Assert.IsFalse(References.First().ReferenceType == ReferenceType.Cell);
-            Assert.AreEqual("[1]Deals!F9:[1]Deals!F16", References.First().LocationString);
-            Assert.AreEqual("Deals", References.First().Worksheet);
-            Assert.AreEqual("1", References.First().FileName);
+            references = new FormulaAnalyzer("SUM([1]Deals!F9:[1]Deals!F16)").ParserReferences().ToList();
+
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("1", references.First().FileName);
+            Assert.AreEqual("Deals", references.First().Worksheet);
+            Assert.AreEqual("[1]Deals!F9:[1]Deals!F16", references.First().LocationString);
         }
 
         [TestMethod]
         public void ReferencesInSingleColumn()
         {
-            List<ParserReference> result = new FormulaAnalyzer("Sheet1!A:A").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.IsFalse(result.First().ReferenceType == ReferenceType.Cell);
+            List<ParserReference> references = new FormulaAnalyzer("Sheet1!A:A").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("A1", references.First().MinLocation);
+            Assert.AreEqual("A1048576", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void ReferencesInMultipleColumns()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("Sheet1!B:F").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("B1", references.First().MinLocation);
+            Assert.AreEqual("F1048576", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void ReferencesInSingleRow()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("Sheet1!1:1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("A1", references.First().MinLocation);
+            Assert.AreEqual("XFD1", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void ReferencesInMultipleRows()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("Sheet1!2:36").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+            Assert.AreEqual("A2", references.First().MinLocation);
+            Assert.AreEqual("XFD36", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -614,42 +673,68 @@ namespace XLParser.Tests
         {
             // expanding large range completely may lead to out of 
             // memory exception. Verify this is not the case.
-            List<ParserReference> result = new FormulaAnalyzer("'B-Com'!A1:Z1048576").ParserReferences().ToList();
-            Assert.AreEqual(1, result.Count());
-            Assert.IsFalse(result.First().ReferenceType == ReferenceType.Cell);
+            List<ParserReference> references = new FormulaAnalyzer("'B-Com'!A1:Z1048576").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.CellRange, references.First().ReferenceType);
+            Assert.AreEqual("B-Com", references.First().Worksheet);
+            Assert.AreEqual("A1", references.First().MinLocation);
+            Assert.AreEqual("Z1048576", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void AbsoluteColumnReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("$A:$A").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("$A$1", references.First().MinLocation);
+            Assert.AreEqual("$A$1048576", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void AbsoluteRowReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("$1:$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
+            Assert.AreEqual("$A$1", references.First().MinLocation);
+            Assert.AreEqual("$XFD$1", references.First().MaxLocation);
         }
 
         [TestMethod]
         public void ReferenceFunctionAsArgument()
         {
-            List<ParserReference> References = new FormulaAnalyzer("ROUND(INDEX(A:A,1,1:1),1)").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("ROUND(INDEX(A:A,1,1:1),1)").ParserReferences().ToList();
 
             //no reference for the index function
-            Assert.AreEqual(2, References.Count);
-            Assert.AreEqual("A:A", References.First().LocationString);
-            Assert.AreEqual("1:1", References.Last().LocationString);
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual("A:A", references.First().LocationString);
+            Assert.AreEqual("1:1", references.Last().LocationString);
         }
 
         [TestMethod]
         public void RangeWithReferenceFunction()
         {
-            List<ParserReference> References = new FormulaAnalyzer("SUM(A1:INDEX(A:A,1,1:1))").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("SUM(A1:INDEX(A:A,1,1:1))").ParserReferences().ToList();
 
             //no reference for the range with the index function
-            Assert.AreEqual(3, References.Count);
-            Assert.AreEqual("A1", References[0].LocationString);
-            Assert.AreEqual("A:A", References[1].LocationString);
-            Assert.AreEqual("1:1", References[2].LocationString);
+            Assert.AreEqual(3, references.Count);
+            Assert.AreEqual("A1", references[0].LocationString);
+            Assert.AreEqual("A:A", references[1].LocationString);
+            Assert.AreEqual("1:1", references[2].LocationString);
         }
 
         [TestMethod]
         public void ArrayAsArgument()
         {
-            List<ParserReference> References = new FormulaAnalyzer("LARGE((F38,C38:C48),1)").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("LARGE((F38,C38:C48),1)").ParserReferences().ToList();
 
-            Assert.AreEqual(2, References.Count);
-            Assert.AreEqual("F38", References.First().MinLocation.ToString());
-            Assert.AreEqual("C38:C48", References.Last().LocationString);
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual("F38", references.First().MinLocation);
+            Assert.AreEqual("C38:C48", references.Last().LocationString);
         }
 
         #endregion
