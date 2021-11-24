@@ -15,6 +15,8 @@ namespace XLParser
     {
         public string FilePath { get; }
         public bool HasFilePath => FilePath != null;
+        public string UrlPath { get; }
+        public bool HasUrlPath => UrlPath != null;
 
         private readonly int? _fileNumber;
         public int FileNumber => _fileNumber.GetValueOrDefault();
@@ -33,12 +35,13 @@ namespace XLParser
 
         public bool IsQuoted { get; }
 
-        public PrefixInfo(string sheet = null, int? fileNumber = null, string fileName = null, string filePath = null, string multipleSheets = null, bool isQuoted = false)
+        public PrefixInfo(string sheet = null, int? fileNumber = null, string fileName = null, string filePath = null, string urlPath = null, string multipleSheets = null, bool isQuoted = false)
         {
             Sheet = sheet;
             _fileNumber = fileNumber;
             FileName = fileName;
             FilePath = filePath;
+            UrlPath = urlPath;
             MultipleSheets = multipleSheets;
             IsQuoted = isQuoted;
         }
@@ -53,6 +56,7 @@ namespace XLParser
                 throw new ArgumentException("Not a prefix", nameof(prefix));
             }
 
+            string urlPath = null;
             string filePath = null;
             int? fileNumber = null;
             string fileName = null;
@@ -87,6 +91,11 @@ namespace XLParser
                     if (file.ChildNodes[iCur].Is(GrammarNames.TokenFilePath))
                     {
                         filePath = file.ChildNodes[iCur].Print();
+                        iCur++;
+                    }
+                    else if (file.ChildNodes[iCur].Is(GrammarNames.TokenUrlPath))
+                    {
+                        urlPath = file.ChildNodes[iCur].Print();
                         iCur++;
                     }
 
@@ -127,7 +136,7 @@ namespace XLParser
                 multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
             }
 
-            return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);
+            return new PrefixInfo(sheetName, fileNumber, fileName, filePath, urlPath, multipleSheets, isQuoted);
         }
 
         internal static void FixQuotedSheetNodeForWhitespace(ParseTreeNode quotedSheetNode, string sourceText)
