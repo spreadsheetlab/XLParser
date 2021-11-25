@@ -15,8 +15,6 @@ namespace XLParser
     {
         public string FilePath { get; }
         public bool HasFilePath => FilePath != null;
-        public string UrlPath { get; }
-        public bool HasUrlPath => UrlPath != null;
 
         private readonly int? _fileNumber;
         public int FileNumber => _fileNumber.GetValueOrDefault();
@@ -41,7 +39,6 @@ namespace XLParser
             _fileNumber = fileNumber;
             FileName = fileName;
             FilePath = filePath;
-            UrlPath = urlPath;
             MultipleSheets = multipleSheets;
             IsQuoted = isQuoted;
         }
@@ -91,11 +88,6 @@ namespace XLParser
                     if (file.ChildNodes[iCur].Is(GrammarNames.TokenFilePath))
                     {
                         filePath = file.ChildNodes[iCur].Print();
-                        iCur++;
-                    }
-                    else if (file.ChildNodes[iCur].Is(GrammarNames.TokenUrlPath))
-                    {
-                        urlPath = file.ChildNodes[iCur].Print();
                         iCur++;
                     }
 

@@ -183,12 +183,10 @@ namespace XLParser
             { Priority = TerminalPriority.FileName };
         
         // Source: http://stackoverflow.com/a/6416209/572635
-        private const string fileNameForbiddenCharacter = @"<>:""/\|?*";
-        private const string filePathRegex = @"(?:[a-zA-Z]:|https?:\\|\\?\\?[\w\.-]+\\[\w.$]+)\\(([^" + fileNameForbiddenCharacter + @"\\]| )+\\)*";
-        public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);
-
+        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\.-]+\\[\w.$]+)\\(([^<>:""/\|?*\\]| )+\\)*";
         private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?";
-        public Terminal UrlPathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUrlPath, urlPathRegex);
+        private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
+        public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);
         #endregion
 
         #endregion
@@ -383,8 +381,6 @@ namespace XLParser
                 | FileNameEnclosedInBracketsToken
                 | FilePathToken + FileNameEnclosedInBracketsToken
                 | FilePathToken + FileName
-                | UrlPathToken + FileNameEnclosedInBracketsToken
-                | UrlPathToken + FileName
                 ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
@@ -626,7 +622,6 @@ namespace XLParser
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
-        public const string TokenUrlPath = "UrlPathToken";
         public const string TokenVRange = "VRangeToken";
 
         #endregion

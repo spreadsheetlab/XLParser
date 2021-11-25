@@ -738,7 +738,7 @@ namespace XLParser.Tests
         public void ExternalWorkbookUrlPath()
         {
             // See [#107](https://github.com/spreadsheetlab/XLParser/issues/108)
-            Test(@"='http:\\example.com\test\[Book1.xlsx]Sheet1'!$A$1");
+            Test(@"='http://example.com/test/[Book1.xlsx]Sheet1'!$A$1");
         }
 
         [TestMethod]

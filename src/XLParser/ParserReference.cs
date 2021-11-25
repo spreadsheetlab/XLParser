@@ -23,7 +23,6 @@ namespace XLParser
         public string LocationString { get; set; }
         public string Worksheet { get; set; }
         public string LastWorksheet { get; set; }
-        public string UrlPath { get; set; }
         public string FilePath { get; set; }
         public string FileName { get; set; }
         public string Name { get; private set; }
@@ -74,11 +73,6 @@ namespace XLParser
                     if (prefix.HasFilePath)
                     {
                         FilePath = prefix.FilePath;
-                    }
-
-                    if (prefix.HasUrlPath)
-                    {
-                        UrlPath = prefix.UrlPath;
                     }
 
                     if (prefix.HasFileNumber)
