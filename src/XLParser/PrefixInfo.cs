@@ -33,7 +33,7 @@ namespace XLParser
 
         public bool IsQuoted { get; }
 
-        public PrefixInfo(string sheet = null, int? fileNumber = null, string fileName = null, string filePath = null, string urlPath = null, string multipleSheets = null, bool isQuoted = false)
+        public PrefixInfo(string sheet = null, int? fileNumber = null, string fileName = null, string filePath = null, string multipleSheets = null, bool isQuoted = false)
         {
             Sheet = sheet;
             _fileNumber = fileNumber;
@@ -53,7 +53,6 @@ namespace XLParser
                 throw new ArgumentException("Not a prefix", nameof(prefix));
             }
 
-            string urlPath = null;
             string filePath = null;
             int? fileNumber = null;
             string fileName = null;
@@ -128,7 +127,7 @@ namespace XLParser
                 multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
             }
 
-            return new PrefixInfo(sheetName, fileNumber, fileName, filePath, urlPath, multipleSheets, isQuoted);
+            return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);
         }
 
         internal static void FixQuotedSheetNodeForWhitespace(ParseTreeNode quotedSheetNode, string sourceText)
