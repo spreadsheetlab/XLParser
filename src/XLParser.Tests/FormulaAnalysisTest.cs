@@ -348,7 +348,7 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void ExternalWorkbookUrlPath()
+        public void ExternalWorkbookUrlPathHttp()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/test/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
 
@@ -356,6 +356,17 @@ namespace XLParser.Tests
             Assert.AreEqual(@"http://example.com/test/", references.First().FilePath);
             Assert.AreEqual("Book1.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPathHttps()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='https://d.docs.live.net/3fade139bf25879f/Documents/[Tracer.xlsx]Sheet2'!$C$5+Sheet10!J44").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual(@"https://d.docs.live.net/3fade139bf25879f/Documents/", references.First().FilePath);
+            Assert.AreEqual("Tracer.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet2", references.First().Worksheet);
         }
 
         [TestMethod]
