@@ -133,4 +133,7 @@
   <data name="ExcelBuiltinFunctionList_v142" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExcelBuiltinFunctionList-v142.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="ExcelBuiltinFunctionList_v150" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExcelBuiltinFunctionList-v150.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
