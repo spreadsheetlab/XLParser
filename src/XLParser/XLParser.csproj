@@ -6,15 +6,18 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.4.2.0</AssemblyVersion>
-    <FileVersion>1.4.2.0</FileVersion>
-    <Version>1.4.2.0</Version>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
+    <Version>1.5.0.0</Version>
     <PackageReleaseNotes>
-- Parse defined names with euro sign (#106)
-- Fixed problems with dashes in external file paths (#107)
-- Fixed problems with URLs in external file paths (#108)
-- Fixed problems with relative external file paths (#109)
-- Add file path to the parser references of the formula analyzer
+- Support for implicit intersection operator, spill range operator, spill error (#113)
+- Accept references to file paths with URL (#114)
+- Include dynamic array and spill functions (#120)
+- Include some new Office 365 functions
+- Remove some invalid Excel functions
+- Fix invalid MinLocation and MaxLocation of row and column references (#123)
+- Add #GETTING_DATA error token (#125)
+- Fix incorrect whitespace in Print method (#128)
 </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
