@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.4.2</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -112,6 +112,9 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>comma</b> =&gt; T
 <tr class="memitem:a7af30e6a1bf3e1561d35165a51848889"><td class="memItemLeft" align="right" valign="top"><a id="a7af30e6a1bf3e1561d35165a51848889"></a>
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>colon</b> =&gt; ToTerm(&quot;:&quot;)</td></tr>
 <tr class="separator:a7af30e6a1bf3e1561d35165a51848889"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67cbaca18f9ad19612d028f1412948c"><td class="memItemLeft" align="right" valign="top"><a id="ae67cbaca18f9ad19612d028f1412948c"></a>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>hash</b> =&gt; ToTerm(&quot;#&quot;)</td></tr>
+<tr class="separator:ae67cbaca18f9ad19612d028f1412948c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cb6cde7b75e0955b868ccfa2adf9147"><td class="memItemLeft" align="right" valign="top"><a id="a3cb6cde7b75e0955b868ccfa2adf9147"></a>
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>semicolon</b> =&gt; ToTerm(&quot;;&quot;)</td></tr>
 <tr class="separator:a3cb6cde7b75e0955b868ccfa2adf9147"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,7 +213,7 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>intersectop</b> =
 <tr class="memitem:a0cbd0829ed6375553083b05b406ab36c"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SingleQuotedStringToken</b><code> [get]</code></td></tr>
 <tr class="separator:a0cbd0829ed6375553083b05b406ab36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a690af07417eda562f28abdd1e546c14f"><td class="memItemLeft" align="right" valign="top"><a id="a690af07417eda562f28abdd1e546c14f"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToken</b> = new RegexBasedTerminal(GrammarNames.TokenError, &quot;#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A&quot;)<code> [get]</code></td></tr>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToken</b> = new RegexBasedTerminal(GrammarNames.TokenError, &quot;#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#GETTING_DATA|#SPILL!&quot;)<code> [get]</code></td></tr>
 <tr class="separator:a690af07417eda562f28abdd1e546c14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80e244f5c1fd4a8d616c54af49954f57"><td class="memItemLeft" align="right" valign="top"><a id="a80e244f5c1fd4a8d616c54af49954f57"></a>
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b> = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF}<code> [get]</code></td></tr>
