@@ -639,8 +639,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
-            Assert.AreEqual("A1", references.First().MinLocation);
-            Assert.AreEqual("A1048576", references.First().MaxLocation);
+            Assert.AreEqual("A", references.First().MinLocation);
+            Assert.AreEqual("A", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -651,8 +651,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
-            Assert.AreEqual("B1", references.First().MinLocation);
-            Assert.AreEqual("F1048576", references.First().MaxLocation);
+            Assert.AreEqual("B", references.First().MinLocation);
+            Assert.AreEqual("F", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -663,8 +663,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
-            Assert.AreEqual("A1", references.First().MinLocation);
-            Assert.AreEqual("XFD1", references.First().MaxLocation);
+            Assert.AreEqual("1", references.First().MinLocation);
+            Assert.AreEqual("1", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -675,8 +675,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
-            Assert.AreEqual("A2", references.First().MinLocation);
-            Assert.AreEqual("XFD36", references.First().MaxLocation);
+            Assert.AreEqual("2", references.First().MinLocation);
+            Assert.AreEqual("36", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -700,8 +700,8 @@ namespace XLParser.Tests
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
-            Assert.AreEqual("$A$1", references.First().MinLocation);
-            Assert.AreEqual("$A$1048576", references.First().MaxLocation);
+            Assert.AreEqual("$A", references.First().MinLocation);
+            Assert.AreEqual("$A", references.First().MaxLocation);
         }
 
         [TestMethod]
@@ -711,8 +711,8 @@ namespace XLParser.Tests
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.HorizontalRange, references.First().ReferenceType);
-            Assert.AreEqual("$A$1", references.First().MinLocation);
-            Assert.AreEqual("$XFD$1", references.First().MaxLocation);
+            Assert.AreEqual("$1", references.First().MinLocation);
+            Assert.AreEqual("$1", references.First().MaxLocation);
         }
 
         [TestMethod]
