@@ -67,6 +67,7 @@ var class_x_l_parser_1_1_excel_formula_grammar =
     [ "HRangeToken", "class_x_l_parser_1_1_excel_formula_grammar.html#a6efde686ddab1143aeba22370e7ddd72", null ],
     [ "InfixOp", "class_x_l_parser_1_1_excel_formula_grammar.html#a831703b48ab8d625b6b765fe45628316", null ],
     [ "intersectop", "class_x_l_parser_1_1_excel_formula_grammar.html#ab043e967377eaa4a6daed50846daf336", null ],
+    [ "MultiRangeFormula", "class_x_l_parser_1_1_excel_formula_grammar.html#a20305747328b2ca672d56ea3de655c15", null ],
     [ "NamedRange", "class_x_l_parser_1_1_excel_formula_grammar.html#ad448de2a4eec8c4e3bf4f4e8c34484cf", null ],
     [ "NamedRangeCombinationToken", "class_x_l_parser_1_1_excel_formula_grammar.html#ae8380d9e40fbdb41548d147393f1e337", null ],
     [ "NameToken", "class_x_l_parser_1_1_excel_formula_grammar.html#a9755ef8d53f8e045dd0eb42ba2991c06", null ],

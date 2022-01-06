@@ -20,6 +20,7 @@ var class_x_l_parser_1_1_grammar_names =
     [ "FunctionCall", "class_x_l_parser_1_1_grammar_names.html#a73b3912528997c3ea08ae7df952d33d5", null ],
     [ "FunctionName", "class_x_l_parser_1_1_grammar_names.html#a8f25196df03af29cd7f37f23b9cf9375", null ],
     [ "HorizontalRange", "class_x_l_parser_1_1_grammar_names.html#a9182276d39e3de7de4dd4e89ed36482f", null ],
+    [ "MultiRangeFormula", "class_x_l_parser_1_1_grammar_names.html#aceeb284d28ee2aa376687a9045dabb8e", null ],
     [ "NamedRange", "class_x_l_parser_1_1_grammar_names.html#acf0341ff56e66c5aea76033db8ad39f9", null ],
     [ "Number", "class_x_l_parser_1_1_grammar_names.html#a6892265feb6893b035996e6c43227e76", null ],
     [ "Prefix", "class_x_l_parser_1_1_grammar_names.html#a38aeefa4952c47aa234d56bb2cd7980f", null ],
