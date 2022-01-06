@@ -226,7 +226,6 @@ namespace XLParser
         public NonTerminal PrefixOp{ get; } = new NonTerminal(GrammarNames.TransientPrefixOp);
         public NonTerminal QuotedFileSheet{ get; } = new NonTerminal(GrammarNames.QuotedFileSheet);
         public NonTerminal Reference{ get; } = new NonTerminal(GrammarNames.Reference);
-        //public NonTerminal ReferenceFunction{ get; } = new NonTerminal(GrammarNames.ReferenceFunction);
         public NonTerminal ReferenceItem{ get; } = new NonTerminal(GrammarNames.TransientReferenceItem);
         public NonTerminal ReferenceFunctionCall{ get; } = new NonTerminal(GrammarNames.ReferenceFunctionCall);
         public NonTerminal RefError{ get; } = new NonTerminal(GrammarNames.RefError);
@@ -237,7 +236,6 @@ namespace XLParser
         public NonTerminal StructuredReference { get; } = new NonTerminal(GrammarNames.StructuredReference);
         public NonTerminal StructuredReferenceElement { get; } = new NonTerminal(GrammarNames.StructuredReferenceElement);
         public NonTerminal StructuredReferenceExpression { get; } = new NonTerminal(GrammarNames.StructuredReferenceExpression);
-        //public NonTerminal StructuredReferenceKeyword { get; } = new NonTerminal(GrammarNames.StructuredReferenceKeyword);
         public NonTerminal StructuredReferenceTable { get; } = new NonTerminal(GrammarNames.StructuredReferenceTable);
         public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
         public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
@@ -253,7 +251,6 @@ namespace XLParser
             MarkPunctuation(OpenParen, CloseParen);
             MarkPunctuation(OpenSquareParen, CloseSquareParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
-            //exclamationMark.SetFlag(TermFlags.IsDelimiter);
             #endregion
             
             #region Rules
@@ -282,7 +279,6 @@ namespace XLParser
                 | OpenParen + Formula + CloseParen
                 | ReservedName
                 ;
-            //MarkTransient(Formula);
 
             ReservedName.Rule = ReservedNameToken;
 
@@ -311,11 +307,9 @@ namespace XLParser
             FunctionName.Rule = ExcelFunction;
 
             Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
-            //Arguments.Rule = Argument | Argument + comma + Arguments;
 
             EmptyArgument.Rule = EmptyArgumentToken;
             Argument.Rule = Formula | EmptyArgument;
-            //MarkTransient(Argument);
 
             PrefixOp.Rule =
                 ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
@@ -338,7 +332,6 @@ namespace XLParser
                 | lteop;
             MarkTransient(InfixOp);
 
-            //PostfixOp.Rule = ImplyPrecedenceHere(Precedence.UnaryPostFix) + percentop;
             // ImplyPrecedenceHere doesn't seem to work for this rule, but postfix has such a high priority shift will nearly always be the correct action
             PostfixOp.Rule = PreferShiftHere() + percentop;
             MarkTransient(PostfixOp);
@@ -358,7 +351,7 @@ namespace XLParser
                 | Reference + intersectop + Reference
                 | OpenParen + Union + CloseParen
                 | RefFunctionName + Arguments + CloseParen
-                | Reference + hash;
+                | Reference + hash
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
@@ -410,8 +403,6 @@ namespace XLParser
                   OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
                 | FileNameEnclosedInBracketsToken;
-
-            //StructuredReferenceKeyword.Rule = EnclosedInBracketsToken;
 
             StructuredReferenceTable.Rule = NameToken;
 
