@@ -218,6 +218,7 @@ namespace XLParser
         public NonTerminal FunctionName{ get; } = new NonTerminal(GrammarNames.FunctionName);
         public NonTerminal HRange{ get; } = new NonTerminal(GrammarNames.HorizontalRange);
         public NonTerminal InfixOp{ get; } = new NonTerminal(GrammarNames.TransientInfixOp);
+        public NonTerminal MultiRangeFormula{ get; } = new NonTerminal(GrammarNames.MultiRangeFormula);
         public NonTerminal NamedRange{ get; } = new NonTerminal(GrammarNames.NamedRange);
         public NonTerminal Number{ get; } = new NonTerminal(GrammarNames.Number);
         public NonTerminal PostfixOp{ get; } = new NonTerminal(GrammarNames.TransientPostfixOp);
@@ -263,15 +264,18 @@ namespace XLParser
             Start.Rule = FormulaWithEq
                          | Formula
                          | ArrayFormula
+                         | MultiRangeFormula
                          ;
             MarkTransient(Start);
 
             ArrayFormula.Rule = OpenCurlyParen + eqop + Formula + CloseCurlyParen;
 
+            MultiRangeFormula.Rule = eqop + Union;
+
             FormulaWithEq.Rule = eqop + Formula;
 
             Formula.Rule =
-                Reference
+                Reference + ReduceHere()
                 | Constant
                 | FunctionCall
                 | ConstantArray
@@ -563,6 +567,7 @@ namespace XLParser
         public const string FunctionCall = "FunctionCall";
         public const string FunctionName = "FunctionName";
         public const string HorizontalRange = "HRange";
+        public const string MultiRangeFormula = "MultiRangeFormula";
         public const string NamedRange = "NamedRange";
         public const string Number = "Number";
         public const string Prefix = "Prefix";

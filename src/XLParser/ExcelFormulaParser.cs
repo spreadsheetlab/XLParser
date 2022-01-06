@@ -618,6 +618,7 @@ namespace XLParser
                 case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                 case GrammarNames.File:
+                case GrammarNames.MultiRangeFormula:
                 case GrammarNames.StructuredReferenceExpression:
                     return string.Join("", children);
 
