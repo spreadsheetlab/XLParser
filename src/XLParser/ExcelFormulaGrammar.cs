@@ -258,11 +258,12 @@ namespace XLParser
             #region Base rules
             Root = Start;
 
-            Start.Rule = FormulaWithEq
-                         | Formula
-                         | ArrayFormula
-                         | MultiRangeFormula
-                         ;
+            Start.Rule =
+                  FormulaWithEq
+                | Formula
+                | ArrayFormula
+                | MultiRangeFormula
+                ;
             MarkTransient(Start);
 
             ArrayFormula.Rule = OpenCurlyParen + eqop + Formula + CloseCurlyParen;
@@ -272,7 +273,7 @@ namespace XLParser
             FormulaWithEq.Rule = eqop + Formula;
 
             Formula.Rule =
-                Reference + ReduceHere()
+                  Reference + ReduceHere()
                 | Constant
                 | FunctionCall
                 | ConstantArray
@@ -282,11 +283,12 @@ namespace XLParser
 
             ReservedName.Rule = ReservedNameToken;
 
-            Constant.Rule = Number
-                            | Text
-                            | Bool
-                            | Error
-                            ;
+            Constant.Rule = 
+                  Number 
+                | Text
+                | Bool
+                | Error
+                ;
 
             Text.Rule = TextToken;
             Number.Rule = NumberToken;
@@ -312,7 +314,7 @@ namespace XLParser
             Argument.Rule = Formula | EmptyArgument;
 
             PrefixOp.Rule =
-                ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
+                  ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
                 | ImplyPrecedenceHere(Precedence.UnaryPreFix) + minop
                 | ImplyPrecedenceHere(Precedence.UnaryPreFix) + at;
             MarkTransient(PrefixOp);
@@ -339,7 +341,8 @@ namespace XLParser
 
             #region References
 
-            Reference.Rule = ReferenceItem
+            Reference.Rule =
+                  ReferenceItem
                 | ReferenceFunctionCall
                 | OpenParen + Reference + PreferShiftHere() + CloseParen
                 | Prefix + ReferenceItem
@@ -359,7 +362,7 @@ namespace XLParser
             Union.Rule = MakePlusRule(Union, comma, Reference);
 
             ReferenceItem.Rule =
-                Cell
+                  Cell
                 | NamedRange
                 | VRange
                 | HRange
@@ -377,7 +380,8 @@ namespace XLParser
 
             Cell.Rule = CellToken;
 
-            File.Rule = FileNameNumericToken
+            File.Rule =
+                  FileNameNumericToken
                 | FileNameEnclosedInBracketsToken
                 | FilePathToken + FileNameEnclosedInBracketsToken
                 | FilePathToken + FileName
@@ -386,8 +390,9 @@ namespace XLParser
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
             NamedRange.Rule = NameToken | NamedRangeCombinationToken;
+
             Prefix.Rule =
-                SheetToken
+                  SheetToken
                 | QuoteS + SheetQuotedToken
                 | File + SheetToken
                 | QuoteS + File + SheetQuotedToken
