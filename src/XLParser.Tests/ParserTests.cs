@@ -932,5 +932,16 @@ namespace XLParser.Tests
             Test("=(B10)#");
             Test("=OFFSET(\"A1\",10,1)#");
         }
+
+        [TestMethod]
+        public void UnionOperator()
+        {
+            // See [#98](https://github.com/spreadsheetlab/XLParser/issues/98)
+            // See [#124](https://github.com/spreadsheetlab/XLParser/issues/124)
+            Test("=(A1:A3,C1:C3)");
+            Test("=A1:A3,C1:C3");
+            Test("=A1:A5,C1:C5,E1:E5");
+            Test("=Sheet1!$A$1,Sheet1!$B$2");
+        }
     }
 }

@@ -748,6 +748,36 @@ namespace XLParser.Tests
             Assert.AreEqual("C38:C48", references.Last().LocationString);
         }
 
+        [TestMethod]
+        public void UnionWithinParentheses()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"=(A1:A3,C1:C3)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual("A1:A3", references[0].LocationString);
+            Assert.AreEqual("C1:C3", references[1].LocationString);
+        }
+
+        [TestMethod]
+        public void UnionWithoutParentheses()
+        {
+            // Valid when defining a name or conditional format range
+            List<ParserReference> references = new FormulaAnalyzer(@"=A1:A3,C1:C3").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual("A1:A3", references[0].LocationString);
+            Assert.AreEqual("C1:C3", references[1].LocationString);
+        }
+
+        [TestMethod]
+        public void MultiAreaRangeFormula()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"=Sheet1!$A$1,Sheet1!$B$2").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual("Sheet1!$A$1", references[0].LocationString);
+            Assert.AreEqual("Sheet1!$B$2", references[1].LocationString);
+        }
         #endregion
 
         #region Depth() and ConditionalComplexity()
