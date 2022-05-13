@@ -359,6 +359,32 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithSpaceInPath()
+        {
+            // See [#138](https://github.com/spreadsheetlab/XLParser/issues/138)
+
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/test folder/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://example.com/test folder/", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithSpaceInDocument()
+        {
+            // See [#138](https://github.com/spreadsheetlab/XLParser/issues/138)
+
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/testfolder/[Book 1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://example.com/testfolder/", references.First().FilePath);
+            Assert.AreEqual("Book 1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
         public void ExternalWorkbookUrlPathHttps()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='https://d.docs.live.net/3fade139bf25879f/Documents/[Tracer.xlsx]Sheet2'!$C$5+Sheet10!J44").ParserReferences().ToList();
