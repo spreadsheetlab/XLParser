@@ -185,7 +185,7 @@ namespace XLParser
         
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\.-]+\\[\w.$]+)\\(([^<>:""/\|?*\\]| )+\\)*";
-        private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_ ]*)?";
+        private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*[/]([a-zA-Z0-9\-\.\?\,\'+&%\$#_ ]*[/])*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);
         #endregion
@@ -385,7 +385,7 @@ namespace XLParser
                 | FileNameEnclosedInBracketsToken
                 | FilePathToken + FileNameEnclosedInBracketsToken
                 | FilePathToken + FileName
-                ;
+                  ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
@@ -494,6 +494,7 @@ namespace XLParser
             public const int ReservedName = -700;
 
             public const int FileName = -500;
+            public const int FilePathToken = -501;
 
             public const int SingleQuotedString = -100;
 

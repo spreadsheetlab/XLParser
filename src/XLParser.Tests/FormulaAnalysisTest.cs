@@ -387,12 +387,34 @@ namespace XLParser.Tests
         [TestMethod]
         public void ExternalWorkbookUrlPathHttps()
         {
-            List<ParserReference> references = new FormulaAnalyzer(@"='https://d.docs.live.net/3fade139bf25879f/Documents/[Tracer.xlsx]Sheet2'!$C$5+Sheet10!J44").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer(@"='https://d.docs.live.net/3fade139bf25879f/Documents/[Tracer.xlsx]Sheet2'!$C$5").ParserReferences().ToList();
 
-            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual(1, references.Count);
             Assert.AreEqual(@"https://d.docs.live.net/3fade139bf25879f/Documents/", references.First().FilePath);
             Assert.AreEqual("Tracer.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet2", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDocumentWithoutBracketsWithSpace()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='https://preview.perfectxl.com/Financial Sample.xlsx'!financials").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"https://preview.perfectxl.com/", references.First().FilePath);
+            Assert.AreEqual("Financial Sample.xlsx", references.First().FileName);
+            Assert.AreEqual("financials", references.First().Name);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookDocumentWithoutBrackets()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='https://preview.perfectxl.com/FinancialSample.xlsx'!financials").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"https://preview.perfectxl.com/", references.First().FilePath);
+                Assert.AreEqual("FinancialSample.xlsx", references.First().FileName);
+            Assert.AreEqual("financials", references.First().Name);
         }
 
         [TestMethod]
