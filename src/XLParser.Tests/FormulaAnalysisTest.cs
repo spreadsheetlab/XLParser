@@ -370,6 +370,19 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithBracketsInDocument()
+        {
+            // See [#140](https://github.com/spreadsheetlab/XLParser/issues/140)
+
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/testfolder(brackets)/[Book 1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://example.com/testfolder(brackets)/", references.First().FilePath);
+            Assert.AreEqual("Book 1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
         public void ExternalWorkbookRelativePath()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='Test\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
