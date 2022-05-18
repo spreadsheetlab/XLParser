@@ -179,12 +179,12 @@ namespace XLParser
             { Priority = TerminalPriority.FileName };
         
         // Source: https://stackoverflow.com/a/14632579
-        private const string fileNameRegex = @"[^\.]+\..{1,4}";
+        private const string fileNameRegex = @"[^\.\\]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
             { Priority = TerminalPriority.FileName };
         
         // Source: http://stackoverflow.com/a/6416209/572635
-        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\.-]+\\[\w.$]+)\\(([^<>:""/\|?*\\]| )+\\)*";
+        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ ]+)\\(([^<>:\""/\|?*\\]| )+\\)*";
         private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*[/]([a-zA-Z0-9\-\.\?\,\'+&%\$#_ ]*[/])*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex);

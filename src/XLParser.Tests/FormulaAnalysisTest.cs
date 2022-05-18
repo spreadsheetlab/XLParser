@@ -383,6 +383,7 @@ namespace XLParser.Tests
             Assert.AreEqual("Book 1.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
+
         [TestMethod]
         public void ExternalWorkbookNetworkPathWithSpace()
         {
@@ -394,6 +395,35 @@ namespace XLParser.Tests
             Assert.AreEqual(@"\\networkshare\test folder$\", references.First().FilePath);
             Assert.AreEqual("Book 1.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+
+        [TestMethod]
+        public void ExternalWorkbookNetworkPathWithQuotes()
+        {
+            // See [#135](https://github.com/spreadsheetlab/XLParser/issues/135)
+
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\SRV01\[TestFile.xls]TestSheet'!#REF!").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"\\SRV01\", references.First().FilePath);
+            Assert.AreEqual("TestFile.xls", references.First().FileName);
+            Assert.AreEqual("TestSheet", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookNetworkPathWithQuotesAndFolder()
+        {
+            // See [#135](https://github.com/spreadsheetlab/XLParser/issues/135)
+
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\SRV01\Test Folder\[Test File.xls]Test Sheet'!#REF!
+
+").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"\\SRV01\Test Folder\", references.First().FilePath);
+            Assert.AreEqual("Test File.xls", references.First().FileName);
+            Assert.AreEqual("Test Sheet", references.First().Worksheet);
         }
 
         [TestMethod]
