@@ -385,7 +385,7 @@ namespace XLParser
                 | FileNameEnclosedInBracketsToken
                 | FilePathToken + FileNameEnclosedInBracketsToken
                 | FilePathToken + FileName
-                  ;
+                ;
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
@@ -494,7 +494,6 @@ namespace XLParser
             public const int ReservedName = -700;
 
             public const int FileName = -500;
-            public const int FilePathToken = -501;
 
             public const int SingleQuotedString = -100;
 
