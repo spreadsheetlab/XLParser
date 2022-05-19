@@ -176,12 +176,12 @@ namespace XLParser
         
         private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
-            { Priority = TerminalPriority.FileName };
+        { Priority = TerminalPriority.FileName };
         
         // Source: https://stackoverflow.com/a/14632579
         private const string fileNameRegex = @"[^\.\\]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
-            { Priority = TerminalPriority.FileName };
+        { Priority = TerminalPriority.FileName };
         
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ ]+)\\(([^<>:\""/\|?*\\]| )+\\)*";
@@ -391,10 +391,7 @@ namespace XLParser
 
             DynamicDataExchange.Rule = File + exclamationMark + SingleQuotedStringToken;
 
-            NamedRange.Rule =
-                    NameToken
-                  | NamedRangeCombinationToken
-                  ;
+            NamedRange.Rule = NameToken | NamedRangeCombinationToken;
 
             Prefix.Rule =
                   SheetToken
