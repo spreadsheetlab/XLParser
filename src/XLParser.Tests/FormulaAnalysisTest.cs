@@ -471,6 +471,16 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void ExternalWorkbookRelativePathIsDefinedName()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"=Test\Folder").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"Test\Folder", references.First().Name);
+            Assert.AreEqual(ReferenceType.UserDefinedName, references.First().ReferenceType);
+        }
+
+        [TestMethod]
         public void ExternalWorkbookSingleCell()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\Test\Desktop\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
