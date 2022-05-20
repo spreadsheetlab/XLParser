@@ -6,13 +6,12 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.5.1.0</AssemblyVersion>
-    <FileVersion>1.5.1.0</FileVersion>
-    <Version>1.5.1.0</Version>
+    <AssemblyVersion>1.5.2.0</AssemblyVersion>
+    <FileVersion>1.5.2.0</FileVersion>
+    <Version>1.5.2.0</Version>
     <PackageReleaseNotes>
-- Support for multi range formulas (#98, #124)
-- Fix: incorrect operator precedence
-- Fix: MinLocation and MaxLocation of row/column references
+- Improved parsing of external links with URLs (#137, #138, #140)
+- Improved parsing of external links with network paths (#135, #142)
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
