@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.5.1</span>
+   &#160;<span id="projectnumber">1.5.2</span>
    </div>
   </td>
  </tr>
@@ -243,8 +243,7 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>HRangeToken</b> =
 <tr class="separator:a94ef45c9e5a3bdc0d123ce7ddf47ed6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46d60e16e4056d7086270912b91fca40"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileName</b><code> [get]</code></td></tr>
 <tr class="separator:a46d60e16e4056d7086270912b91fca40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d9872e5bb695427495087d4de7d2899"><td class="memItemLeft" align="right" valign="top"><a id="a8d9872e5bb695427495087d4de7d2899"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FilePathToken</b> = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)<code> [get]</code></td></tr>
+<tr class="memitem:a8d9872e5bb695427495087d4de7d2899"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FilePathToken</b><code> [get]</code></td></tr>
 <tr class="separator:a8d9872e5bb695427495087d4de7d2899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02491867f4f5d7cbb5645ea6e0ccea43"><td class="memItemLeft" align="right" valign="top"><a id="a02491867f4f5d7cbb5645ea6e0ccea43"></a>
 NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Argument</b> = new NonTerminal(GrammarNames.Argument)<code> [get]</code></td></tr>
@@ -637,7 +636,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)</div>
-<div class="line">            { Priority = TerminalPriority.FileName }</div>
+<div class="line">        { Priority = TerminalPriority.FileName }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -661,7 +660,31 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)</div>
-<div class="line">            { Priority = TerminalPriority.FileName }</div>
+<div class="line">        { Priority = TerminalPriority.FileName }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8d9872e5bb695427495087d4de7d2899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d9872e5bb695427495087d4de7d2899">&#9670;&nbsp;</a></span>FilePathToken</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FilePathToken</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)</div>
+<div class="line">        { Priority = TerminalPriority.FileNamePath }</div>
 </div><!-- fragment -->
 </div>
 </div>
