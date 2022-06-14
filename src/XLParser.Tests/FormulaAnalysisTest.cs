@@ -227,6 +227,46 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterPound()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,Table1[column header with '[])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterBracketOpen()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1['[Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterBracketClose()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[']Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterQuote()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[''Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
         public void StructuredTableReferenceCurrentRow()
         {
             List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[@])").ParserReferences().ToList();
@@ -255,6 +295,29 @@ namespace XLParser.Tests
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
         }
+
+        [TestMethod]
+        public void UnqualifiedStructuredTableReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[Sales Amount])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+        }
+
+
+        [TestMethod]
+        public void UnqualifiedStructuredTableReferenceWithNumbers()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[2016])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+        }
+
+
 
         [TestMethod]
         public void SheetWithUnderscore()

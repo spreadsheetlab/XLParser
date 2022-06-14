@@ -173,8 +173,8 @@ namespace XLParser
         private const string fileNameNumericRegex = @"\[[0-9]+\]";
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
-        
-        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
+
+        private const string fileNameInBracketsRegex = @"\[([^\[\]']|('['\[\]#@]))+\]";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
         
@@ -407,10 +407,11 @@ namespace XLParser
                 ;
 
             StructuredReferenceElement.Rule =
-                  OpenSquareParen + SRColumnToken + CloseSquareParen
+                OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
-                | FileNameEnclosedInBracketsToken;
-
+                | FileNameEnclosedInBracketsToken
+                | FileNameNumericToken;
+                
             StructuredReferenceTable.Rule = NameToken;
 
             StructuredReferenceExpression.Rule =
