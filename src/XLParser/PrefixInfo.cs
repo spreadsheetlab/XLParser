@@ -90,7 +90,8 @@ namespace XLParser
                         iCur++;
                     }
 
-                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenFileNameEnclosedInBrackets))
+                    if (file.ChildNodes[iCur].Is(GrammarNames.TokenFileNameEnclosedInBrackets) ||
+                        file.ChildNodes[iCur].Is(GrammarNames.TokenStructuredReferenceEnclosedInBrackets))
                     {
                         fileName = Substr(file.ChildNodes[iCur].Print(), 1, 1);
                     }

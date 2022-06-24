@@ -174,12 +174,17 @@ namespace XLParser
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
+        private const string fileNameInBracketsRegex = @"\[[^\.\\\[\]]+\..{1,4}\]";
+        private const string structuredReferenceInBracketsRegex = @"\[([^\[\]']|('['\[\]#@]))+\]";
+
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
-        
+
+        public Terminal StructuredReferenceEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenStructuredReferenceEnclosedInBrackets, structuredReferenceInBracketsRegex)
+            { Priority =  TerminalPriority.SRColumn };
+
         // Source: https://stackoverflow.com/a/14632579
-        private const string fileNameRegex = @"[^\.\\]+\..{1,4}";
+        private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
         { Priority = TerminalPriority.FileName };
         
@@ -188,7 +193,7 @@ namespace XLParser
         private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*[/]([a-zA-Z0-9\-\.\?\,\'+&%\$#_ ()]*[/])*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)
-        { Priority = TerminalPriority.FileNamePath };
+            { Priority = TerminalPriority.FileNamePath };
 
         #endregion
 
@@ -407,9 +412,9 @@ namespace XLParser
                 ;
 
             StructuredReferenceElement.Rule =
-                  OpenSquareParen + SRColumnToken + CloseSquareParen
+                OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
-                | FileNameEnclosedInBracketsToken;
+                | StructuredReferenceEnclosedInBracketsToken;
 
             StructuredReferenceTable.Rule = NameToken;
 
@@ -624,6 +629,7 @@ namespace XLParser
         public const string TokenSRKeyword = "SRKeyword";
         public const string TokenSRColumn = "SRColumn";
         public const string TokenSREnclosedColumn = "SREnclosedColumn";
+        public const string TokenStructuredReferenceEnclosedInBrackets = "StructuredReferenceEnclosedInBracketsToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
