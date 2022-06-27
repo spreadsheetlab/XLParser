@@ -671,6 +671,42 @@ namespace XLParser.Tests
             Assert.AreEqual("Items2", references[1].Name);
         }
 
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[1].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[1].FileName);
+            Assert.AreEqual("Items2", references[1].Name);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithNetworkQuoteInPath()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('\\Users\Test\Desktop''s\Book1.xlsx'!Items").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+            Assert.AreEqual("Items", references[0].Name);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithQuoteInSheet()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='[Book1''s.xlsm]Sheet1'!$A$1").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.Cell, references[0].ReferenceType);
+            Assert.AreEqual("Book1''s.xlsm", references[0].FileName);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbooksWithATSign()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\example.com@ssl\sites\[Data.xls]Hoi'!$A$1:$B$1").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.CellRange, references[0].ReferenceType);
+            Assert.AreEqual("Data.xls", references[0].FileName);
+        }
+
         [TestMethod]
         public void DirectSheetReference()
         {
