@@ -671,11 +671,6 @@ namespace XLParser.Tests
             Assert.AreEqual("Items2", references[1].Name);
         }
 
-            Assert.AreEqual(ReferenceType.UserDefinedName, references[1].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", references[1].FileName);
-            Assert.AreEqual("Items2", references[1].Name);
-        }
-
         [TestMethod]
         public void ExternalWorkbookWithNetworkQuoteInPath()
         {

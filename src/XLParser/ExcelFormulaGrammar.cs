@@ -181,7 +181,7 @@ namespace XLParser
         { Priority = TerminalPriority.FileName };
 
         public Terminal StructuredReferenceEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenStructuredReferenceEnclosedInBrackets, structuredReferenceInBracketsRegex)
-            { Priority = TerminalPriority.FileName };
+            { Priority = TerminalPriority.SRColumn };
 
         // Source: https://stackoverflow.com/a/14632579
         private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
