@@ -257,6 +257,69 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterPound()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,Table1[column header with '[])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterBracketOpen()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1['[Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterBracketClose()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[']Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceWithEscapedCharacterQuote()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[''Header])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceUnqualified()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[Sales Amount])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+        }
+
+
+        [TestMethod]
+        public void StructuredTableReferenceUnqualifiedWithNumbers()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[2016])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+        }
+
+
+
+        [TestMethod]
         public void SheetWithUnderscore()
         {
             ParseTree parseResult = ExcelFormulaParser.ParseToTree("aap_noot!B12");
@@ -672,17 +735,6 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void ExternalWorkbookWithNetworkQuoteInPath()
-        {
-            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('\\Users\Test\Desktop''s\Book1.xlsx'!Items").ParserReferences().ToList();
-            Assert.AreEqual(1, references.Count);
-
-            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
-            Assert.AreEqual("Book1.xlsx", references[0].FileName);
-            Assert.AreEqual("Items", references[0].Name);
-        }
-
-        [TestMethod]
         public void ExternalWorkbookWithQuoteInSheet()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='[Book1''s.xlsm]Sheet1'!$A$1").ParserReferences().ToList();
@@ -700,6 +752,16 @@ namespace XLParser.Tests
 
             Assert.AreEqual(ReferenceType.CellRange, references[0].ReferenceType);
             Assert.AreEqual("Data.xls", references[0].FileName);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithColonAndSlash()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\Users\somebody\http:\\\my.sharepoint.com\docs\[Articles.xlsx]My Articles'!A1:D24").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.CellRange, references[0].ReferenceType);
+            Assert.AreEqual("Articles.xlsx", references[0].FileName);
         }
 
         [TestMethod]
@@ -986,6 +1048,17 @@ namespace XLParser.Tests
 
             Assert.AreEqual("Sheet1!$A$1", references[0].LocationString);
             Assert.AreEqual("Sheet1!$B$2", references[1].LocationString);
+        }
+
+        [TestMethod]
+        public void SomeTests()
+        {
+            // DDE
+            List<ParserReference> references11 = new FormulaAnalyzer(@"=REUTER!'1,2'").ParserReferences().ToList();
+            /*
+            // table reference with numbers
+            List<ParserReference> references10 = new FormulaAnalyzer(@"=SUBTOTAL(109,[2018])").ParserReferences().ToList();
+            */
         }
         #endregion
 
