@@ -297,7 +297,7 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void StructuredTableReferenceUnqualified()
+        public void StructuredTableReferenceUnqualifiedWithSpaceInName()
         {
             List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[Sales Amount])").ParserReferences().ToList();
 
@@ -306,6 +306,15 @@ namespace XLParser.Tests
             Assert.AreEqual(null, references.First().Name);
         }
 
+        [TestMethod]
+        public void StructuredTableReferenceUnqualified()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[SalesAmount])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+        }
 
         [TestMethod]
         public void StructuredTableReferenceUnqualifiedWithNumbers()

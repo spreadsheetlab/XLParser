@@ -399,11 +399,12 @@ namespace XLParser
             NamedRange.Rule = NameToken | NamedRangeCombinationToken;
 
             Prefix.Rule =
-                  SheetToken
+                SheetToken
                 | QuoteS + SheetQuotedToken
                 | File + SheetToken
                 | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
+                | StructuredReferenceEnclosedInBracketsToken + exclamationMark
                 | MultipleSheetsToken
                 | QuoteS + MultipleSheetsQuotedToken
                 | File + MultipleSheetsToken

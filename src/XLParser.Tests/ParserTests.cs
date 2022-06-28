@@ -719,8 +719,13 @@ namespace XLParser.Tests
         [TestMethod]
         public void TestFileNameString()
         {
-            //Test("=[sheet]!A1"); //is fout???, kan niet intypen
             Test("=[sheet.xls]!A1");
+        }
+
+        [TestMethod] 
+        public void TestFileNameStringWithoutExtension()
+        {
+            Test("=[sheet]!A1");
         }
 
         [TestMethod]
