@@ -176,6 +176,39 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void VRangeReferenceLong()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("SUM(XBC:ABC)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("XBC", references.First().MinLocation);
+            Assert.AreEqual("ABC", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void VRangeReferenceLarge()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("SUM(XEZ:XFD)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("XEZ", references.First().MinLocation);
+            Assert.AreEqual("XFD", references.First().MaxLocation);
+        }
+
+        [TestMethod]
+        public void VRangeReferenceShort()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("SUM(AB:ZZ)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.VerticalRange, references.First().ReferenceType);
+            Assert.AreEqual("AB", references.First().MinLocation);
+            Assert.AreEqual("ZZ", references.First().MaxLocation);
+        }
+
+        [TestMethod]
         public void NamedRangeReference()
         {
             List<ParserReference> references = new FormulaAnalyzer("SUM(TestRange)").ParserReferences().ToList();

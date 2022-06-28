@@ -102,7 +102,7 @@ namespace XLParser
 
         #region References and names
 
-        private const string ColumnPattern = @"(?:[A-Z]{1,2}|[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D])";
+        private const string ColumnPattern = @"(?:[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D]|[A-Z]{1,2})";
 
         public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern);
         public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
