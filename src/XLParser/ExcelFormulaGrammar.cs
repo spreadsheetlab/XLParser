@@ -177,7 +177,7 @@ namespace XLParser
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameInBracketsRegex = @"\[[^\.\\\[\]]+\..{1,4}\]";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
 
@@ -402,7 +402,6 @@ namespace XLParser
                 | File + SheetToken
                 | QuoteS + File + SheetQuotedToken
                 | File + exclamationMark
-                | StructuredReferenceEnclosedInBracketsToken + exclamationMark
                 | MultipleSheetsToken
                 | QuoteS + MultipleSheetsQuotedToken
                 | File + MultipleSheetsToken
