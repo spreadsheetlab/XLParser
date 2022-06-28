@@ -771,6 +771,30 @@ namespace XLParser.Tests
             Assert.AreEqual("Articles.xlsx", references[0].FileName);
         }
 
+
+        [TestMethod]
+        public void ExternalWorkbookQuotesInPath()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"=SUM('\\Users\Test\Desktop''s\Book1.xlsx'!Items)").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+        }
+
+        [TestMethod]
+        public void MultipleExternalWorkbooksQuoteInPath()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@" =SUM('\\Users\Test\Desktop\Book1.xlsx'!Items, '\\Users\Test\Desktop\Books''s2.xlsx'!Items2)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("Book1.xlsx", references[0].FileName);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[1].ReferenceType);
+            Assert.AreEqual("Books''s2.xlsx", references[1].FileName);
+        }
+
         [TestMethod]
         public void DirectSheetReference()
         {
