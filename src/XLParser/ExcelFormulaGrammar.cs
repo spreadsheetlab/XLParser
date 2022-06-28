@@ -136,7 +136,7 @@ namespace XLParser
         { Priority = TerminalPriority.ReservedName };
 
         #region Structured References
-        private const string structuredReferenceInBracketsRegex = @"\[([^\[\]']|('['\[\]#@]))+\]";
+        private const string structuredReferenceInBracketsRegex = @"\[(?:[^\[\]']|(?:'['\[\]#@]))+\]";
         public Terminal StructuredReferenceEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenStructuredReferenceEnclosedInBrackets, structuredReferenceInBracketsRegex)
         { Priority = TerminalPriority.SRColumn };
 
