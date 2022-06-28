@@ -1050,16 +1050,6 @@ namespace XLParser.Tests
             Assert.AreEqual("Sheet1!$B$2", references[1].LocationString);
         }
 
-        [TestMethod]
-        public void SomeTests()
-        {
-            // DDE
-            List<ParserReference> references11 = new FormulaAnalyzer(@"=REUTER!'1,2'").ParserReferences().ToList();
-            /*
-            // table reference with numbers
-            List<ParserReference> references10 = new FormulaAnalyzer(@"=SUBTOTAL(109,[2018])").ParserReferences().ToList();
-            */
-        }
         #endregion
 
         #region Depth() and ConditionalComplexity()
