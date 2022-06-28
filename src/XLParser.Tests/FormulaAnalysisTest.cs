@@ -317,8 +317,6 @@ namespace XLParser.Tests
             Assert.AreEqual(null, references.First().Name);
         }
 
-
-
         [TestMethod]
         public void SheetWithUnderscore()
         {

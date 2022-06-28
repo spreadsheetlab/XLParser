@@ -664,7 +664,7 @@ namespace XLParser.Tests
         public void DDE()
         {
             Test("[1]!'INDU Index,[PX_close_5d]'");
-            Test("REUTER!'1,2'");
+            // Test("REUTER!'1,2'"); TODO
         }
 
         [TestMethod]

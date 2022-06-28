@@ -414,7 +414,9 @@ namespace XLParser
             StructuredReferenceElement.Rule =
                 OpenSquareParen + SRColumnToken + CloseSquareParen
                 | OpenSquareParen + NameToken + CloseSquareParen
-                | StructuredReferenceEnclosedInBracketsToken;
+                | StructuredReferenceEnclosedInBracketsToken
+                | FileNameNumericToken
+                ;
 
             StructuredReferenceTable.Rule = NameToken;
 
