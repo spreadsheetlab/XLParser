@@ -250,9 +250,19 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void StructuredTableReferenceHeader()
+        public void StructuredTableReferenceHeaders()
         {
-            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[#Header])").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[#Headers])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceThisRow()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[[#This Row],[b]])").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
