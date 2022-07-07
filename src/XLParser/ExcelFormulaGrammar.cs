@@ -167,11 +167,11 @@ namespace XLParser
         public Terminal MultipleSheetsQuotedToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheetsQuoted, multiSheetQuotedRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
-        private const string fileNameNumericRegex = @"\[[0-9]+\]";
+        private const string fileNameNumericRegex = @"\[[0-9]+\](?=[^\[\]]*!)";
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?=[^\[\]]*!)";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
 
@@ -486,11 +486,11 @@ namespace XLParser
         {
             // Irony Low value
             //public const int Low = -1000;
-
-            public const int SRColumn = -900;
-
+            
             public const int Name = -800;
             public const int ReservedName = -700;
+            
+            public const int SRColumn = -500;
 
             public const int FileName = -500;
             public const int FileNamePath = -800;
