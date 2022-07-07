@@ -32,3 +32,19 @@
 VLOOKUP(GroupVertices[[#This Row],[Vertex]], Vertices[], MATCH("ID", Vertices[#Headers], 0), FALSE)
 IFERROR(VLOOKUP($A4,TABLA_AHORRO[],6,FALSE),"")
 SUM(Table[1])
+=SUM(Sales[@[Jan]:[Mar]])
+=SUM(Regions[@South], Regions[@West])
+=SUM(Regions[@[South sales]], Regions[@[West sales]])
+=SUM(Regions[[South]:[East]])
+=SUM(Regions[South], Regions[West])
+=Regions[#Totals] Regions[[#All],[West]]
+=Regions[[South]:[East]]
+=Regions[[#Headers],[South]]
+=AVERAGE(Regions[South],Regions[West],Regions[North])
+=SUBTOTAL(103,Sales[Jan])
+=SUBTOTAL(109,[Jan])
+=SUM(Sales[Jan])
+=SUMIF(Sales[Item],$F$2,Sales[Jan])
+=SUMIF(Sales[[Item]:[Item]],$F$2,Sales[Jan])
+=SUM(Sales[@[Jan]:[Feb]])
+=SUM(Sales[@Jan]:Sales[@Feb])

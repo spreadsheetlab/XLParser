@@ -102,7 +102,7 @@ namespace XLParser
 
         #region References and names
 
-        private const string ColumnPattern = @"(?:[A-Z]{1,2}|[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D])";
+        private const string ColumnPattern = @"(?:[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D]|[A-Z]{1,2})";
 
         public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern);
         public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
@@ -136,16 +136,13 @@ namespace XLParser
         { Priority = TerminalPriority.ReservedName };
 
         #region Structured References
-
-        //public Terminal SRTableNameToken = new RegexBasedTerminal(GrammarNames.TokenSRTableName, @"[\w\\.]+\[")
-        //{Priority = 0};
-
-        public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, @"[\w\\.]+")
+        private const string SRColumnRegex = @"\[@?(?:[^\[\]'#@]|(?:'['\[\]#@]))+\]";
+        public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)
         { Priority = TerminalPriority.SRColumn };
 
-        //public Terminal SREnclosedColumnToken = new RegexBasedTerminal(GrammarNames.TokenSREnclosedColumn, @"\[( )*[\w+\\.,:#'""{}$^&*+=-></]+( )*\]")
-        //{Priority = 0};
-
+        private const string SRKeywordRegex = @"\[#(All|Data|Headers|Totals|This Row)\]";
+        public Terminal SRKeywordToken = new RegexBasedTerminal(GrammarNames.TokenSRKeyword, SRKeywordRegex)
+        { Priority = TerminalPriority.SRColumn };
         #endregion
 
         #region Prefixes
@@ -170,21 +167,21 @@ namespace XLParser
         public Terminal MultipleSheetsQuotedToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheetsQuoted, multiSheetQuotedRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
-        private const string fileNameNumericRegex = @"\[[0-9]+\]";
+        private const string fileNameNumericRegex = @"\[[0-9]+\](?=[^\[\]]*!)";
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?=[^\[\]]*!)";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
-        
+
         // Source: https://stackoverflow.com/a/14632579
-        private const string fileNameRegex = @"[^\.\\]+\..{1,4}";
+        private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
         { Priority = TerminalPriority.FileName };
         
         // Source: http://stackoverflow.com/a/6416209/572635
-        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ ]+)\\(([^<>:\""/\|?*\\]| )+\\)*";
+        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ @]+)\\(([^<>\"" /\|?*\\']|( |''))*\\)*";
         private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*[/]([a-zA-Z0-9\-\.\?\,\'+&%\$#_ ()]*[/])*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)
@@ -406,12 +403,9 @@ namespace XLParser
                 | RefErrorToken
                 ;
 
-            StructuredReferenceElement.Rule =
-                  OpenSquareParen + SRColumnToken + CloseSquareParen
-                | OpenSquareParen + NameToken + CloseSquareParen
-                | FileNameEnclosedInBracketsToken;
-
             StructuredReferenceTable.Rule = NameToken;
+
+            StructuredReferenceElement.Rule = SRColumnToken | SRKeywordToken;
 
             StructuredReferenceExpression.Rule =
                   StructuredReferenceElement
@@ -489,11 +483,11 @@ namespace XLParser
         {
             // Irony Low value
             //public const int Low = -1000;
-
-            public const int SRColumn = -900;
-
+            
             public const int Name = -800;
             public const int ReservedName = -700;
+            
+            public const int SRColumn = -500;
 
             public const int FileName = -500;
             public const int FileNamePath = -800;
@@ -620,15 +614,12 @@ namespace XLParser
         public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
         public const string TokenSheetQuoted = "SheetNameQuotedToken";
-        public const string TokenSRTableName = "SRTableName";
-        public const string TokenSRKeyword = "SRKeyword";
         public const string TokenSRColumn = "SRColumn";
-        public const string TokenSREnclosedColumn = "SREnclosedColumn";
+        public const string TokenSRKeyword = "SRKeyword";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
         public const string TokenVRange = "VRangeToken";
-
         #endregion
 
     }

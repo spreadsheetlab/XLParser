@@ -659,11 +659,11 @@ namespace XLParser.Tests
             Test("LARGE((F38,C38:C48),1)");
         }
 
-
         [TestMethod]
         public void DDE()
         {
             Test("[1]!'INDU Index,[PX_close_5d]'");
+            // Test("=REUTER|IDN!'NGH2,PRIM ACT 1,1'"); TODO
         }
 
         [TestMethod]
@@ -713,12 +713,6 @@ namespace XLParser.Tests
         public void TestQuotedFileSheetWithPath()
         {
             Test(@"='C:\mypath\[myfile.xlsm]Sheet'!A1");
-        }
-
-        [TestMethod]
-        public void TestFileNameString()
-        {
-            Test("=[sheet]!A1", "=[sheet.xls]!A1");
         }
 
         [TestMethod]
@@ -802,6 +796,20 @@ namespace XLParser.Tests
         public void MultipleExternalWorkbookDefinedNameGlobalScope()
         {
             Test(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items,'C:\Users\Test\Desktop\Book1.xlsx'!Items2)");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithoutPath()
+        {
+            Test("=[Book1.xlsx]Sheet!A1");
+            Test("=[Book1.xlsx]!Salary");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithoutPathAndExtension()
+        {
+            Test("=[Book1]Sheet!A1");
+            Test("=[Book1]!Salary");
         }
 
         [TestMethod]
@@ -942,6 +950,24 @@ namespace XLParser.Tests
             Test("=A1:A3,C1:C3");
             Test("=A1:A5,C1:C5,E1:E5");
             Test("=Sheet1!$A$1,Sheet1!$B$2");
+        }
+
+
+        [TestMethod]
+        public void SmbPaths()
+        {
+            // See [#136](https://github.com/spreadsheetlab/XLParser/issues/136)
+            Test("='\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1", tree =>
+                tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 1);
+            Test("='C:\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1+'C:\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$2",
+                tree =>
+                    tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 2);
+            Test("='\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1+'\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$2",
+                tree =>
+                    tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 2);
+            Test("='\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1+'\\\\TEST-01\\[Folder]\\[Book1.xlsx]Sheet1'!$A$2",
+                tree =>
+                    tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 2);
         }
     }
 }
