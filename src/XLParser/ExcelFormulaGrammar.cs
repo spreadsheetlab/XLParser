@@ -403,12 +403,9 @@ namespace XLParser
                 | RefErrorToken
                 ;
 
-            StructuredReferenceElement.Rule =
-                    SRColumnToken
-                  | SRKeywordToken
-                  ;
-
             StructuredReferenceTable.Rule = NameToken;
+
+            StructuredReferenceElement.Rule = SRColumnToken | SRKeywordToken;
 
             StructuredReferenceExpression.Rule =
                   StructuredReferenceElement
@@ -617,8 +614,8 @@ namespace XLParser
         public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
         public const string TokenSheetQuoted = "SheetNameQuotedToken";
-        public const string TokenSRKeyword = "SRKeyword";
         public const string TokenSRColumn = "SRColumn";
+        public const string TokenSRKeyword = "SRKeyword";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
