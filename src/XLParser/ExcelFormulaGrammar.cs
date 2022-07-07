@@ -136,14 +136,13 @@ namespace XLParser
         { Priority = TerminalPriority.ReservedName };
 
         #region Structured References
-        private const string SRColumnRegex = @"(?:[^\[\]'#@]|(?:'['\[\]#@]))+";
+        private const string SRColumnRegex = @"\[@?(?:[^\[\]'#@]|(?:'['\[\]#@]))+\]";
         public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)
         { Priority = TerminalPriority.SRColumn };
 
-        private const string SRKeywordRegex = @"(?:#All)|(?:#Data)|(?:#Headers)|(?:#Totals)|(?:#This Row)|(?:[@])";
+        private const string SRKeywordRegex = @"\[#(All|Data|Headers|Totals|This Row)\]";
         public Terminal SRKeywordToken = new RegexBasedTerminal(GrammarNames.TokenSRKeyword, SRKeywordRegex)
-            { Priority = TerminalPriority.SRColumn };
-
+        { Priority = TerminalPriority.SRColumn };
         #endregion
 
         #region Prefixes
@@ -172,7 +171,7 @@ namespace XLParser
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
         { Priority = TerminalPriority.FileNameNumericToken };
         
-        private const string fileNameInBracketsRegex = @"\[([^\[\]@#:']|(''))+\]";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\]";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
         { Priority = TerminalPriority.FileName };
 
@@ -405,8 +404,8 @@ namespace XLParser
                 ;
 
             StructuredReferenceElement.Rule =
-                  OpenSquareParen + SRColumnToken + CloseSquareParen
-                  | OpenSquareParen + SRKeywordToken + CloseSquareParen
+                    SRColumnToken
+                  | SRKeywordToken
                   ;
 
             StructuredReferenceTable.Rule = NameToken;
@@ -515,7 +514,7 @@ namespace XLParser
 
             public const int ExcelFunction = 1200;
             public const int ExcelRefFunction = 1200;
-            public const int FileNameNumericToken = -1000;
+            public const int FileNameNumericToken = 1200;
             public const int SheetToken = 1200;
             public const int SheetQuotedToken = 1200;
         }
@@ -620,12 +619,10 @@ namespace XLParser
         public const string TokenSheetQuoted = "SheetNameQuotedToken";
         public const string TokenSRKeyword = "SRKeyword";
         public const string TokenSRColumn = "SRColumn";
-        public const string TokenStructuredReferenceEnclosedInBrackets = "StructuredReferenceEnclosedInBracketsToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
         public const string TokenVRange = "VRangeToken";
-
         #endregion
 
     }

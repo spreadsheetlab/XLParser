@@ -659,12 +659,11 @@ namespace XLParser.Tests
             Test("LARGE((F38,C38:C48),1)");
         }
 
-
         [TestMethod]
         public void DDE()
         {
             Test("[1]!'INDU Index,[PX_close_5d]'");
-            // Test("REUTER!'1,2'"); TODO
+            // Test("=REUTER|IDN!'NGH2,PRIM ACT 1,1'"); TODO
         }
 
         [TestMethod]
@@ -714,18 +713,6 @@ namespace XLParser.Tests
         public void TestQuotedFileSheetWithPath()
         {
             Test(@"='C:\mypath\[myfile.xlsm]Sheet'!A1");
-        }
-
-        [TestMethod]
-        public void TestFileNameString()
-        {
-            Test("=[sheet.xls]!A1");
-        }
-
-        [TestMethod] 
-        public void TestFileNameStringWithoutExtension()
-        {
-            Test("=[sheet]!A1");
         }
 
         [TestMethod]
@@ -809,6 +796,20 @@ namespace XLParser.Tests
         public void MultipleExternalWorkbookDefinedNameGlobalScope()
         {
             Test(@"=SUM('C:\Users\Test\Desktop\Book1.xlsx'!Items,'C:\Users\Test\Desktop\Book1.xlsx'!Items2)");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithoutPath()
+        {
+            Test("=[Book1.xlsx]Sheet!A1");
+            Test("=[Book1.xlsx]!Salary");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithoutPathAndExtension()
+        {
+            Test("=[Book1]Sheet!A1");
+            Test("=[Book1]!Salary");
         }
 
         [TestMethod]
