@@ -28,9 +28,12 @@ namespace XLParser
         public string Name { get; private set; }
         public string MinLocation { get; set; } //Location as appearing in the formula, eg $A$1
         public string MaxLocation { get; set; }
+        public string[] TableSpecifiers { get; set; }
+        public string[] TableColumns { get; set; }
 
         public ParserReference(ReferenceType referenceType, string locationString = null, string worksheet = null, string lastWorksheet = null,
-            string filePath = null, string fileName = null, string name = null, string minLocation = null, string maxLocation = null)
+            string filePath = null, string fileName = null, string name = null, string minLocation = null, string maxLocation = null,
+            string[] tableSpecifiers = null, string[] tableColumns = null)
         {
             ReferenceType = referenceType;
             LocationString = locationString;
@@ -41,6 +44,8 @@ namespace XLParser
             Name = name;
             MinLocation = minLocation;
             MaxLocation = maxLocation != null ? maxLocation : minLocation;
+            TableColumns = tableColumns;
+            TableSpecifiers = tableSpecifiers;
         }
 
         public ParserReference(ParseTreeNode node)
@@ -97,7 +102,9 @@ namespace XLParser
                     break;
                 case GrammarNames.StructuredReference:
                     ReferenceType = ReferenceType.Table;
-                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceTable)?.ChildNodes[0].Token.ValueString;
+                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceQualifier)?.ChildNodes[0].Token.ValueString;
+                    TableSpecifiers = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRSpecifier) || x.Is("@")).Select(x => UnEscape(x.Token.ValueString, "'")).ToArray();
+                    TableColumns = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRColumn)).Select(x => UnEscape(x.Token.ValueString, "'")).ToArray();
                     break;
                 case GrammarNames.HorizontalRange:
                     string[] horizontalLimits = node.ChildNodes[0].Token.ValueString.Split(':');
@@ -117,6 +124,11 @@ namespace XLParser
             }
 
             LocationString = node.Print();
+        }
+
+        private string UnEscape(string value, string escapeCharacter)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(value, $"{escapeCharacter}(?!{escapeCharacter})", "");
         }
 
         /// <summary>

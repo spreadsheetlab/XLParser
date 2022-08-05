@@ -587,39 +587,16 @@ namespace XLParser
                 case GrammarNames.ArrayFormula:
                     return "{=" + children.ElementAt(1) + "}";
 
-                case GrammarNames.StructuredReference:
-                    var sb = new StringBuilder();
-                    var hashtable = input.ChildNodes.Count >= 1 && input.ChildNodes[0].Is(GrammarNames.StructuredReferenceTable);
-                    var contentsNode = hashtable ? 1 : 0;
-                    childrenList = children.ToList();
-                    if (hashtable)
-                    {
-                        sb.Append(childrenList[0]);
-                    }
-
-                    if (hashtable && input.ChildNodes.Count == 1)
-                    {
-                        // Full table reference
-                        sb.Append("[]");
-                    }
-                    else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceElement))
-                    {
-                        sb.Append(childrenList[contentsNode]);
-                    }
-                    else
-                    {
-                        sb.Append($"[{childrenList[contentsNode]}]");
-                    }
-
-                    return sb.ToString();
-
                 // Terms for which to print all child nodes concatenated
                 case GrammarNames.ArrayConstant:
                 case GrammarNames.DynamicDataExchange:
                 case GrammarNames.FormulaWithEq:
                 case GrammarNames.File:
                 case GrammarNames.MultiRangeFormula:
+                case GrammarNames.StructuredReference:
+                case GrammarNames.StructuredReferenceColumn:
                 case GrammarNames.StructuredReferenceExpression:
+                case GrammarNames.StructuredReferenceSpecifier:
                     return string.Join("", children);
 
                 // Terms for which we print the children comma-separated

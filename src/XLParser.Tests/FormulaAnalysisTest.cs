@@ -257,6 +257,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"#Headers"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -267,6 +269,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"#This Row"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"b"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -277,6 +281,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Region"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -287,6 +293,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Date", "Color"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -297,46 +305,56 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"#Totals"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Qty"}, references.First().TableColumns);
         }
 
         [TestMethod]
         public void StructuredTableReferenceWithEscapedCharacterPound()
         {
-            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,Table1[column header with '[])").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,Table1['#NumItems])").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"#NumItems"}, references.First().TableColumns);
         }
 
         [TestMethod]
-        public void StructuredTableReferenceWithEscapedCharacterBracketOpen()
+        public void StructuredTableReferenceWithEscapedCharacterBracket()
         {
-            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1['[Header])").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1['[Header']])").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
-        }
-
-        [TestMethod]
-        public void StructuredTableReferenceWithEscapedCharacterBracketClose()
-        {
-            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[']Header])").ParserReferences().ToList();
-
-            Assert.AreEqual(1, references.Count);
-            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
-            Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"[Header]"}, references.First().TableColumns);
         }
 
         [TestMethod]
         public void StructuredTableReferenceWithEscapedCharacterQuote()
         {
-            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[''Header])").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("COUNTA(Table1[''Test''])").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"'Test'"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceUnqualified()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[Sales])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Sales"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -347,16 +365,8 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual(null, references.First().Name);
-        }
-
-        [TestMethod]
-        public void StructuredTableReferenceUnqualified()
-        {
-            List<ParserReference> references = new FormulaAnalyzer("=SUBTOTAL(109,[SalesAmount])").ParserReferences().ToList();
-
-            Assert.AreEqual(1, references.Count);
-            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
-            Assert.AreEqual(null, references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Sales Amount"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -367,6 +377,89 @@ namespace XLParser.Tests
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
             Assert.AreEqual(null, references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"2016"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceSpecifierAndColumns()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=DeptSales[[#All],[Sales Amount]:[Commission Amount]]").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("DeptSales", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"#All"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Sales Amount", "Commission Amount"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceSpecifiersAndColumn()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=DeptSales[[#Headers],[#Data],[% Commission]]").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("DeptSales", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"#Headers", "#Data"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"% Commission"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceMultipleRows()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUM([@Jan]:[@Feb])").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
+            Assert.AreEqual(null, references[0].Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references[0].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan"}, references[0].TableColumns);
+
+            Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
+            Assert.AreEqual(null, references[1].Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references[1].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Feb"}, references[1].TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceMultipleColumns()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=XLOOKUP($G7,Sales[[Region]:[Region]],Sales[Mar])").ParserReferences().ToList();
+
+            Assert.AreEqual(3, references.Count);
+
+            Assert.AreEqual(ReferenceType.Cell, references[0].ReferenceType);
+            Assert.AreEqual("$G7", references[0].MinLocation);
+
+            Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
+            Assert.AreEqual("Sales", references[1].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[1].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Region", "Region"}, references[1].TableColumns);
+
+            Assert.AreEqual(ReferenceType.Table, references[2].ReferenceType);
+            Assert.AreEqual("Sales", references[2].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[2].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Mar"}, references[2].TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceMultipleHeaders()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_5[[#Headers],[Jan]]:Sales_5[[#Headers],[Mar]])").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
+            Assert.AreEqual("Sales_5", references[0].Name);
+            CollectionAssert.AreEqual(new[] {"#Headers"}, references[0].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan"}, references[0].TableColumns);
+
+            Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
+            Assert.AreEqual("Sales_5", references[1].Name);
+            CollectionAssert.AreEqual(new[] {"#Headers"}, references[1].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Mar"}, references[1].TableColumns);
         }
 
         [TestMethod]
