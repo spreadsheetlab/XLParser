@@ -97,7 +97,7 @@ namespace XLParser
                     break;
                 case GrammarNames.StructuredReference:
                     ReferenceType = ReferenceType.Table;
-                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceTable)?.ChildNodes[0].Token.ValueString;
+                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceQualifier)?.ChildNodes[0].Token.ValueString;
                     break;
                 case GrammarNames.HorizontalRange:
                     string[] horizontalLimits = node.ChildNodes[0].Token.ValueString.Split(':');

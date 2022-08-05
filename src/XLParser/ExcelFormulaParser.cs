@@ -589,7 +589,7 @@ namespace XLParser
 
                 case GrammarNames.StructuredReference:
                     var sb = new StringBuilder();
-                    var hashtable = input.ChildNodes.Count >= 1 && input.ChildNodes[0].Is(GrammarNames.StructuredReferenceTable);
+                    var hashtable = input.ChildNodes.Count >= 1 && input.ChildNodes[0].Is(GrammarNames.StructuredReferenceQualifier);
                     var contentsNode = hashtable ? 1 : 0;
                     childrenList = children.ToList();
                     if (hashtable)
@@ -602,7 +602,7 @@ namespace XLParser
                         // Full table reference
                         sb.Append("[]");
                     }
-                    else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceElement))
+                    else if (input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceSpecifier) || input.ChildNodes[contentsNode].Is(GrammarNames.StructuredReferenceColumn))
                     {
                         sb.Append(childrenList[contentsNode]);
                     }

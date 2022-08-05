@@ -136,13 +136,13 @@ namespace XLParser
         { Priority = TerminalPriority.ReservedName };
 
         #region Structured References
-        private const string SRColumnRegex = @"\[@?(?:[^\[\]'#@]|(?:'['\[\]#@]))+\]";
-        public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)
-        { Priority = TerminalPriority.SRColumn };
+        private const string SRSpecifierRegex = @"#(All|Data|Headers|Totals|This Row)";
+        public Terminal SRSpecifierToken = new RegexBasedTerminal(GrammarNames.TokenSRSpecifier, SRSpecifierRegex)
+            { Priority = TerminalPriority.StructuredReference };
 
-        private const string SRKeywordRegex = @"\[#(All|Data|Headers|Totals|This Row)\]";
-        public Terminal SRKeywordToken = new RegexBasedTerminal(GrammarNames.TokenSRKeyword, SRKeywordRegex)
-        { Priority = TerminalPriority.SRColumn };
+        private const string SRColumnRegex = @"(?:[^\[\]'#@]|(?:'['\[\]#@]))+";
+        public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)
+        { Priority = TerminalPriority.StructuredReference };
         #endregion
 
         #region Prefixes
@@ -233,9 +233,10 @@ namespace XLParser
         public NonTerminal Sheet{ get; } = new NonTerminal(GrammarNames.Sheet);
         public NonTerminal Start{ get; } = new NonTerminal(GrammarNames.TransientStart);
         public NonTerminal StructuredReference { get; } = new NonTerminal(GrammarNames.StructuredReference);
-        public NonTerminal StructuredReferenceElement { get; } = new NonTerminal(GrammarNames.StructuredReferenceElement);
+        public NonTerminal StructuredReferenceColumn { get; } = new NonTerminal(GrammarNames.StructuredReferenceColumn);
         public NonTerminal StructuredReferenceExpression { get; } = new NonTerminal(GrammarNames.StructuredReferenceExpression);
-        public NonTerminal StructuredReferenceTable { get; } = new NonTerminal(GrammarNames.StructuredReferenceTable);
+        public NonTerminal StructuredReferenceSpecifier { get; } = new NonTerminal(GrammarNames.StructuredReferenceSpecifier);
+        public NonTerminal StructuredReferenceQualifier { get; } = new NonTerminal(GrammarNames.StructuredReferenceQualifier);
         public NonTerminal Text{ get; } = new NonTerminal(GrammarNames.Text);
         public NonTerminal UDFName{ get; } = new NonTerminal(GrammarNames.UDFName);
         public NonTerminal UDFunctionCall{ get; } = new NonTerminal(GrammarNames.UDFunctionCall);
@@ -248,7 +249,6 @@ namespace XLParser
             
             #region Punctuation
             MarkPunctuation(OpenParen, CloseParen);
-            MarkPunctuation(OpenSquareParen, CloseSquareParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
             #endregion
             
@@ -403,27 +403,32 @@ namespace XLParser
                 | RefErrorToken
                 ;
 
-            StructuredReferenceTable.Rule = NameToken;
+            StructuredReferenceQualifier.Rule = NameToken;
 
-            StructuredReferenceElement.Rule = SRColumnToken | SRKeywordToken;
+            StructuredReferenceSpecifier.Rule =
+                  SRSpecifierToken
+                | OpenSquareParen + SRSpecifierToken + CloseSquareParen;
+
+            StructuredReferenceColumn.Rule =
+                  SRColumnToken
+                | OpenSquareParen + SRColumnToken + CloseSquareParen;
 
             StructuredReferenceExpression.Rule =
-                  StructuredReferenceElement
-                | at + StructuredReferenceElement
-                | StructuredReferenceElement + colon + StructuredReferenceElement
-                | at + StructuredReferenceElement + colon + StructuredReferenceElement
-                | StructuredReferenceElement + comma + StructuredReferenceElement
-                | StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
-                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement
-                | StructuredReferenceElement + comma + StructuredReferenceElement + comma + StructuredReferenceElement + colon + StructuredReferenceElement
+                  StructuredReferenceColumn
+                | StructuredReferenceColumn + colon + StructuredReferenceColumn
+                | at + StructuredReferenceColumn
+                | at + StructuredReferenceColumn + colon + StructuredReferenceColumn
+                | StructuredReferenceSpecifier
+                | StructuredReferenceSpecifier + comma + StructuredReferenceColumn
+                | StructuredReferenceSpecifier + comma + StructuredReferenceColumn + colon + StructuredReferenceColumn
+                | StructuredReferenceSpecifier + comma + StructuredReferenceSpecifier + comma + StructuredReferenceColumn
+                | StructuredReferenceSpecifier + comma + StructuredReferenceSpecifier + comma + StructuredReferenceColumn + colon + StructuredReferenceColumn
                 ;
 
             StructuredReference.Rule =
-                  StructuredReferenceElement
-                | OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
-                | StructuredReferenceTable + StructuredReferenceElement
-                | StructuredReferenceTable + OpenSquareParen + CloseSquareParen
-                | StructuredReferenceTable + OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
+                  OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
+                | StructuredReferenceQualifier + OpenSquareParen + CloseSquareParen
+                | StructuredReferenceQualifier + OpenSquareParen + StructuredReferenceExpression + CloseSquareParen
                 ;
             #endregion
 
@@ -487,7 +492,7 @@ namespace XLParser
             public const int Name = -800;
             public const int ReservedName = -700;
             
-            public const int SRColumn = -500;
+            public const int StructuredReference = -500;
 
             public const int FileName = -500;
             public const int FileNamePath = -800;
@@ -573,9 +578,10 @@ namespace XLParser
         public const string ReservedName = "ReservedName";
         public const string Sheet = "Sheet";
         public const string StructuredReference = "StructuredReference";
-        public const string StructuredReferenceElement = "StructuredReferenceElement";
+        public const string StructuredReferenceColumn = "StructuredReferenceColumn";
         public const string StructuredReferenceExpression = "StructuredReferenceExpression";
-        public const string StructuredReferenceTable = "StructuredReferenceTable";
+        public const string StructuredReferenceSpecifier = "StructuredReferenceSpecifier";
+        public const string StructuredReferenceQualifier = "StructuredReferenceQualifier";
         public const string Text = "Text";
         public const string UDFName = "UDFName";
         public const string UDFunctionCall = "UDFunctionCall";
@@ -614,8 +620,8 @@ namespace XLParser
         public const string TokenSingleQuotedString = "SingleQuotedString";
         public const string TokenSheet = "SheetNameToken";
         public const string TokenSheetQuoted = "SheetNameQuotedToken";
-        public const string TokenSRColumn = "SRColumn";
-        public const string TokenSRKeyword = "SRKeyword";
+        public const string TokenSRColumn = "SRColumnToken";
+        public const string TokenSRSpecifier = "SRSpecifierToken";
         public const string TokenText = "TextToken";
         public const string TokenUDF = "UDFToken";
         public const string TokenUnionOperator = ",";
