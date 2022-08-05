@@ -1,6 +1,6 @@
 var class_x_l_parser_1_1_parser_reference =
 [
-    [ "ParserReference", "class_x_l_parser_1_1_parser_reference.html#a91ee55bc70b52686a125c8a843c7a936", null ],
+    [ "ParserReference", "class_x_l_parser_1_1_parser_reference.html#acfa41373c34b921ab53241eecde39fca", null ],
     [ "ParserReference", "class_x_l_parser_1_1_parser_reference.html#a5fdd2e31f1031520f56d53b21ba6ed0c", null ],
     [ "InitializeReference", "class_x_l_parser_1_1_parser_reference.html#a6e09c843abc888a1c90a6b932c9af15d", null ],
     [ "ToString", "class_x_l_parser_1_1_parser_reference.html#aa4125418b3eb02b89989d0f0072b1301", null ],
@@ -14,5 +14,7 @@ var class_x_l_parser_1_1_parser_reference =
     [ "MinLocation", "class_x_l_parser_1_1_parser_reference.html#ae7bf819bf4f7117090c9329e69acfaca", null ],
     [ "Name", "class_x_l_parser_1_1_parser_reference.html#aa0b24180f0319484ee44eb0154e6c957", null ],
     [ "ReferenceType", "class_x_l_parser_1_1_parser_reference.html#a4cb88a33e89f4ca02e1d9ad8d3d6d831", null ],
+    [ "TableColumns", "class_x_l_parser_1_1_parser_reference.html#a0ff927322774c83961fe8df7a459fc83", null ],
+    [ "TableSpecifiers", "class_x_l_parser_1_1_parser_reference.html#af094490d4e59656cc1ce80a1c22d7bfa", null ],
     [ "Worksheet", "class_x_l_parser_1_1_parser_reference.html#a197e8eeaac0d3386f0a30bd29d8ddf39", null ]
 ];
