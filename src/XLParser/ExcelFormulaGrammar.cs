@@ -421,6 +421,7 @@ namespace XLParser
                 | StructuredReferenceSpecifier
                 | StructuredReferenceSpecifier + comma + StructuredReferenceColumn
                 | StructuredReferenceSpecifier + comma + StructuredReferenceColumn + colon + StructuredReferenceColumn
+                | StructuredReferenceSpecifier + comma + StructuredReferenceSpecifier
                 | StructuredReferenceSpecifier + comma + StructuredReferenceSpecifier + comma + StructuredReferenceColumn
                 | StructuredReferenceSpecifier + comma + StructuredReferenceSpecifier + comma + StructuredReferenceColumn + colon + StructuredReferenceColumn
                 ;
