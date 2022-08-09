@@ -452,6 +452,48 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void StructuredTableReferenceIntersectColumns()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUM(Sales_2[Jan]:Sales_2[Feb])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Sales_2", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Feb"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceIntersectDifferentSpecifiers()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_2[[#Headers],[Jan]]:Sales_2[[#Data],[Feb]])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Sales_2", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Feb"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceIntersectDifferentTables()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_2[Jan]:Sales_4[Feb])").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
+            Assert.AreEqual("Sales_2", references[0].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[0].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan"}, references[0].TableColumns);
+
+            Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
+            Assert.AreEqual("Sales_4", references[1].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[1].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Feb"}, references[1].TableColumns);
+        }
+
+        [TestMethod]
         public void SheetWithUnderscore()
         {
             ParseTree parseResult = ExcelFormulaParser.ParseToTree("aap_noot!B12");
