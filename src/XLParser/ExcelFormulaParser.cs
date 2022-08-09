@@ -435,6 +435,13 @@ namespace XLParser
                             range.LocationString = node.Print();
                             list.Add(range);
                         }
+                        else if (IsTableReference(rangeStart) && IsTableReference(rangeEnd) && rangeStart.First().Name == rangeEnd.First().Name && rangeStart.First().TableColumns.Length == 1 && rangeEnd.First().TableColumns.Length == 1)
+                        {
+                            ParserReference range = rangeStart.First();
+                            range.TableColumns = rangeStart.First().TableColumns.Concat(rangeEnd.First().TableColumns).ToArray();
+                            range.TableSpecifiers = rangeStart.First().TableSpecifiers.SequenceEqual(rangeEnd.First().TableSpecifiers) ? range.TableSpecifiers : new string[0];
+                            list.Add(range);
+                        }
                         else
                         {
                             list.AddRange(rangeStart);
@@ -455,13 +462,17 @@ namespace XLParser
             return references.Count == 1 && references.First().ReferenceType == ReferenceType.Cell;
         }
 
+        private static bool IsTableReference(IList<ParserReference> references)
+        {
+            return references.Count == 1 && references.First().ReferenceType == ReferenceType.Table;
+        }
+
         /// <summary>
         /// Whether or not this node represents a range
         /// </summary>
         public static bool IsRange(this ParseTreeNode input)
         {
-            return input.IsBinaryReferenceOperation() &&
-                       input.ChildNodes[1].Is(":");
+            return input.IsBinaryReferenceOperation() && input.ChildNodes[1].Is(":");
         }
 
         /// <summary>
