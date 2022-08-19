@@ -6,14 +6,12 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.6.0.0</AssemblyVersion>
-    <FileVersion>1.6.0.0</FileVersion>
-    <Version>1.6.0.0</Version>
+    <AssemblyVersion>1.6.1.0</AssemblyVersion>
+    <FileVersion>1.6.1.0</FileVersion>
+    <Version>1.6.1.0</Version>
     <PackageReleaseNotes>
-- Improved support for structured (table) references (#116, #132, #147)
-- Add table specifiers and table columns in parser reference
-- Fix: escape characters in external links (#136, #152)
-- Fix: large range incorrectly parsed (#154, #156)
+- Fix: missing rule in structured references grammar (#158)
+- Improve intersection of table references (#160)
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
