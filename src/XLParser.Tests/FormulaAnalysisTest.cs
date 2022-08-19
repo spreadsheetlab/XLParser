@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Irony.Parsing;
-using System.Globalization;
-using XLParser;
 
 namespace XLParser.Tests
 {
@@ -410,17 +406,11 @@ namespace XLParser.Tests
         {
             List<ParserReference> references = new FormulaAnalyzer("=SUM([@Jan]:[@Feb])").ParserReferences().ToList();
 
-            Assert.AreEqual(2, references.Count);
-
-            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
-            Assert.AreEqual(null, references[0].Name);
-            CollectionAssert.AreEqual(new[] {"@"}, references[0].TableSpecifiers);
-            CollectionAssert.AreEqual(new[] {"Jan"}, references[0].TableColumns);
-
-            Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
-            Assert.AreEqual(null, references[1].Name);
-            CollectionAssert.AreEqual(new[] {"@"}, references[1].TableSpecifiers);
-            CollectionAssert.AreEqual(new[] {"Feb"}, references[1].TableColumns);
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual(null, references.First().Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Feb"}, references.First().TableColumns);
         }
 
         [TestMethod]
@@ -449,17 +439,54 @@ namespace XLParser.Tests
         {
             List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_5[[#Headers],[Jan]]:Sales_5[[#Headers],[Mar]])").ParserReferences().ToList();
 
-            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual(1, references.Count);
 
             Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
             Assert.AreEqual("Sales_5", references[0].Name);
             CollectionAssert.AreEqual(new[] {"#Headers"}, references[0].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Mar"}, references[0].TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceIntersectColumns()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=SUM(Sales_2[Jan]:Sales_2[Feb])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Sales_2", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Feb"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceIntersectDifferentSpecifiers()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_2[[#Headers],[Jan]]:Sales_2[[#Data],[Feb]])").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Sales_2", references.First().Name);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Jan", "Feb"}, references.First().TableColumns);
+        }
+
+        [TestMethod]
+        public void StructuredTableReferenceIntersectDifferentTables()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=COUNTA(Sales_2[Jan]:Sales_4[Feb])").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
+            Assert.AreEqual("Sales_2", references[0].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[0].TableSpecifiers);
             CollectionAssert.AreEqual(new[] {"Jan"}, references[0].TableColumns);
 
             Assert.AreEqual(ReferenceType.Table, references[1].ReferenceType);
-            Assert.AreEqual("Sales_5", references[1].Name);
-            CollectionAssert.AreEqual(new[] {"#Headers"}, references[1].TableSpecifiers);
-            CollectionAssert.AreEqual(new[] {"Mar"}, references[1].TableColumns);
+            Assert.AreEqual("Sales_4", references[1].Name);
+            CollectionAssert.AreEqual(new string[] {}, references[1].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"Feb"}, references[1].TableColumns);
         }
 
         [TestMethod]
