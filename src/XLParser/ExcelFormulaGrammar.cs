@@ -1,6 +1,9 @@
 ﻿using Irony.Parsing;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace XLParser
@@ -53,14 +56,14 @@ namespace XLParser
 
         #region Literals
 
-        public Terminal BoolToken { get; } = new RegexBasedTerminal(GrammarNames.TokenBool, "TRUE|FALSE")
+        public Terminal BoolToken { get; } = new RegexBasedTerminal(GrammarNames.TokenBool, "TRUE|FALSE", "T", "F")
         {
             Priority = TerminalPriority.Bool
         };
 
         public Terminal NumberToken { get; } = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None)
         {
-            DefaultIntTypes = new[] {TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt}
+            DefaultIntTypes = new[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt }
         };
 
         public Terminal TextToken { get; } = new StringLiteral(GrammarNames.TokenText, "\"",
@@ -70,7 +73,7 @@ namespace XLParser
             StringOptions.AllowsDoubledQuote | StringOptions.AllowsLineBreak | StringOptions.NoEscapes)
         { Priority = TerminalPriority.SingleQuotedString };
 
-        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#GETTING_DATA|#SPILL!");
+        public Terminal ErrorToken { get; } = new RegexBasedTerminal(GrammarNames.TokenError, "#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#GETTING_DATA|#SPILL!", "#");
         public Terminal RefErrorToken => ToTerm("#REF!", GrammarNames.TokenRefError);
 
         #endregion
@@ -84,15 +87,15 @@ namespace XLParser
         // https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#CharacterClassSubtraction
         private static readonly string UdfTokenRegex = $@"([{AllUdfChars}-[CcRr]]|{UdfPrefixRegex}[{AllUdfChars}]|{UdfPrefixRegex}?[{AllUdfChars}]{{2,1023}})\(";
 
-        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF};
+        public Terminal UDFToken { get; } = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) { Priority = TerminalPriority.UDF };
 
-        public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(")
+        public Terminal ExcelRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, "(INDEX|OFFSET|INDIRECT)\\(", "I", "O")
         { Priority = TerminalPriority.ExcelRefFunction };
 
-        public Terminal ExcelConditionalRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(")
+        public Terminal ExcelConditionalRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(", "I", "C")
         { Priority = TerminalPriority.ExcelRefFunction };
 
-        public Terminal ExcelFunction { get; } = new RegexBasedTerminal(GrammarNames.ExcelFunction,  "(" + string.Join("|", excelFunctionList) + ")\\(")
+        public Terminal ExcelFunction { get; } = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + string.Join("|", excelFunctionList) + ")\\(", excelFunctionList.Select(f => f.Substring(0, 1)).Distinct().ToArray())
         { Priority = TerminalPriority.ExcelFunction };
 
         // Using this instead of Empty allows a more accurate tree
@@ -104,24 +107,40 @@ namespace XLParser
 
         private const string ColumnPattern = @"(?:[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D]|[A-Z]{1,2})";
 
-        public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern);
-        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*");
+        private static readonly string[] ColumnPrefix = Enumerable.Range('A', 'Z' - 'A' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
+        private static readonly string[] RowPrefix = Enumerable.Range('1', '9' - '1' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
+
+        public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern, ColumnPrefix);
+        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*", RowPrefix);
 
         private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?[1-9][0-9]*";
-        public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)
+        public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex, ColumnPrefix)
         { Priority = TerminalPriority.CellToken };
+
+        private static readonly HashSet<UnicodeCategory> UnicodeLetterCategories = new HashSet<UnicodeCategory>
+        {
+            UnicodeCategory.UppercaseLetter,
+            UnicodeCategory.LowercaseLetter,
+            UnicodeCategory.TitlecaseLetter,
+            UnicodeCategory.ModifierLetter,
+            UnicodeCategory.OtherLetter
+        };
+
+        // 48718 letters, but it allows parser to from tokens starting with digits, parentheses, operators...
+        private static readonly string[] UnicodeLetters = Enumerable.Range(0, ushort.MaxValue).Where(codePoints => UnicodeLetterCategories.Contains(CharUnicodeInfo.GetUnicodeCategory((char)codePoints))).Select(codePoint => char.ToString((char)codePoint)).ToArray();
+        private static readonly string[] NameStartCharPrefix = UnicodeLetters.Concat(new[] { @"\", "_" }).ToArray();
 
         // Start with a letter or underscore, continue with word character (letters, numbers and underscore), dot or question mark 
         private const string NameStartCharRegex = @"[\p{L}\\_]";
         private const string NameValidCharacterRegex = @"[\w\\_\.\?€]";
 
-        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + "*")
+        public Terminal NameToken { get; } = new RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + "*", NameStartCharPrefix)
         { Priority = TerminalPriority.Name };
 
         // Words that are valid names, but are disallowed by Excel. E.g. "A1" is a valid name, but it is not because it is also a cell reference.
         // If we ever parse R1C1 references, make sure to include them here
         // TODO: Add all function names here
-        
+
         private const string NameInvalidWordsRegex =
               "((TRUE|FALSE)" + NameValidCharacterRegex + "+)"
             // \w is equivalent to [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Nd}\p{Pc}], we want the decimal left out here because otherwise "A11" would be a combination token
@@ -129,16 +148,17 @@ namespace XLParser
             ;
 
         // To prevent e.g. "A1A1" being parsed as 2 cell tokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+")
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+",
+                ColumnPrefix.Concat(new[] { "T", "F" }).ToArray())
         { Priority = TerminalPriority.NamedRangeCombination };
 
-        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+")
+        public Terminal ReservedNameToken = new RegexBasedTerminal(GrammarNames.TokenReservedName, @"_xlnm\.[a-zA-Z_]+", "_")
         { Priority = TerminalPriority.ReservedName };
 
         #region Structured References
         private const string SRSpecifierRegex = @"#(All|Data|Headers|Totals|This Row)";
-        public Terminal SRSpecifierToken = new RegexBasedTerminal(GrammarNames.TokenSRSpecifier, SRSpecifierRegex)
-            { Priority = TerminalPriority.StructuredReference };
+        public Terminal SRSpecifierToken = new RegexBasedTerminal(GrammarNames.TokenSRSpecifier, SRSpecifierRegex, "#")
+        { Priority = TerminalPriority.StructuredReference };
 
         private const string SRColumnRegex = @"(?:[^\[\]'#@]|(?:'['\[\]#@]))+";
         public Terminal SRColumnToken = new RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)
@@ -168,18 +188,18 @@ namespace XLParser
         { Priority = TerminalPriority.MultipleSheetsToken };
 
         private const string fileNameNumericRegex = @"\[[0-9]+\](?=[^\[\]]*!)";
-        public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)
+        public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex, "[")
         { Priority = TerminalPriority.FileNameNumericToken };
-        
+
         private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?=[^\[\]]*!)";
-        public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)
+        public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex, "[")
         { Priority = TerminalPriority.FileName };
 
         // Source: https://stackoverflow.com/a/14632579
         private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
         { Priority = TerminalPriority.FileName };
-        
+
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ @]+)\\(([^<>\"" /\|?*\\']|( |''))*\\)*";
         private const string urlPathRegex = @"http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*[/]([a-zA-Z0-9\-\.\?\,\'+&%\$#_ ()]*[/])*";
@@ -244,14 +264,14 @@ namespace XLParser
         public NonTerminal VRange{ get; } = new NonTerminal(GrammarNames.VerticalRange);
         #endregion
 
-        public ExcelFormulaGrammar() : base(false)
+        public ExcelFormulaGrammar(bool caseSensitive = true) : base(caseSensitive)
         {
-            
+
             #region Punctuation
             MarkPunctuation(OpenParen, CloseParen);
             MarkPunctuation(OpenCurlyParen, CloseCurlyParen);
             #endregion
-            
+
             #region Rules
 
             #region Base rules
@@ -282,8 +302,8 @@ namespace XLParser
 
             ReservedName.Rule = ReservedNameToken;
 
-            Constant.Rule = 
-                  Number 
+            Constant.Rule =
+                  Number
                 | Text
                 | Bool
                 | Error
@@ -304,7 +324,7 @@ namespace XLParser
                 | Formula + PostfixOp
                 | Formula + InfixOp + Formula
                 ;
-                
+
             FunctionName.Rule = ExcelFunction;
 
             Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
@@ -461,7 +481,7 @@ namespace XLParser
             #endregion
         }
 
-        
+
 
         #region Precedence and Priority constants
         // Source: https://support.office.com/en-us/article/Calculation-operators-and-precedence-48be406d-4975-4d31-b2b8-7af9e0e2878a
@@ -489,10 +509,10 @@ namespace XLParser
         {
             // Irony Low value
             //public const int Low = -1000;
-            
+
             public const int Name = -800;
             public const int ReservedName = -700;
-            
+
             public const int StructuredReference = -500;
 
             public const int FileName = -500;
