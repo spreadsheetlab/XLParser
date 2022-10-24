@@ -148,7 +148,7 @@ namespace XLParser
             ;
 
         // To prevent e.g. "A1A1" being parsed as 2 cell tokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + "+",
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex,
                 ColumnPrefix.Concat(new[] { "T", "F" }).ToArray())
         { Priority = TerminalPriority.NamedRangeCombination };
 
