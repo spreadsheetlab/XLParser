@@ -26,10 +26,14 @@ namespace XLParser
             base.Init(grammarData);
             _caseSensitive = Grammar.CaseSensitive;
             foreach (var word in _words)
+            {
                 AddWordToTree(_caseSensitive ? word : word.ToUpperInvariant());
+            }
 
             if (EditorInfo == null)
+            {
                 EditorInfo = new TokenEditorInfo(TokenType.Unknown, TokenColor.Text, TokenTriggers.None);
+            }
         }
 
         public override IList<string> GetFirsts() => _words;
@@ -43,13 +47,17 @@ namespace XLParser
                 var c = _caseSensitive ? input[i] : char.ToUpperInvariant(input[i]);
                 var nextNode = node[c];
                 if (nextNode is null)
+                {
                     break;
+                }
 
                 node = nextNode;
             }
 
             if (!node.IsTerminal)
+            {
                 return null;
+            }
 
             source.PreviewPosition += node.Length;
             return source.CreateToken(OutputTerminal);
@@ -59,7 +67,9 @@ namespace XLParser
         {
             var node = _rootNode;
             foreach (var c in word)
+            {
                 node = node.GetOrAddChild(c);
+            }
 
             node.IsTerminal = true;
         }
@@ -84,9 +94,14 @@ namespace XLParser
                 get
                 {
                     if (_children is null)
+                    {
                         return null;
+                    }
+
                     if (c < _lowChar || c > _highChar)
+                    {
                         return null;
+                    }
 
                     return _children[c - _lowChar];
                 }
@@ -127,7 +142,10 @@ namespace XLParser
                 var charIdx = c - _lowChar;
                 var child = _children[charIdx];
                 if (child is null)
+                {
                     return _children[charIdx] = new Node(Length + 1);
+                }
+
                 return child;
             }
         }

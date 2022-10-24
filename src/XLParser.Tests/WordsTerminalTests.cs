@@ -12,7 +12,7 @@ namespace XLParser.Tests
         {
             var words = new[] { "PROC", "FUNC" };
             TestTerminalMatching("FUNC(1)", true, words);
-            TestTerminalMatching("PROD(1)", true, words);
+            TestTerminalMatching("PROC(1)", true, words);
         }
 
         [TestMethod]
