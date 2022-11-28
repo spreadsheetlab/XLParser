@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.6.1</span>
+   &#160;<span id="projectnumber">1.6.2</span>
    </div>
   </td>
  </tr>
@@ -83,7 +83,6 @@ $(document).ready(function(){initNavTree('class_x_l_parser_1_1_excel_formula_gra
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_x_l_parser_1_1_excel_formula_grammar-members.html">List of all members</a>  </div>
@@ -184,22 +183,6 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>lteop</b> =&gt; T
 <tr class="memitem:ad094921e122fe8492336a66abb548f4d"><td class="memItemLeft" align="right" valign="top"><a id="ad094921e122fe8492336a66abb548f4d"></a>
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>RefErrorToken</b> =&gt; ToTerm(&quot;#REF!&quot;, GrammarNames.TokenRefError)</td></tr>
 <tr class="separator:ad094921e122fe8492336a66abb548f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b8e8ce058c1d2c067ff5eeae3db2f9"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ReservedNameToken</b></td></tr>
-<tr class="separator:ac4b8e8ce058c1d2c067ff5eeae3db2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcfa3550ee44ea8b690c794d5533099a"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SRSpecifierToken</b></td></tr>
-<tr class="separator:afcfa3550ee44ea8b690c794d5533099a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2eb1eacc44ee0691e4cfe539541cefc"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SRColumnToken</b></td></tr>
-<tr class="separator:af2eb1eacc44ee0691e4cfe539541cefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf125f7947710494d1468c439dd94817"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SheetToken</b></td></tr>
-<tr class="separator:aaf125f7947710494d1468c439dd94817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a250a1ff39bd908a36608acc1db44854a"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SheetQuotedToken</b></td></tr>
-<tr class="separator:a250a1ff39bd908a36608acc1db44854a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8ac351e722c47f45ba286eb667f4853"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>MultipleSheetsToken</b></td></tr>
-<tr class="separator:ad8ac351e722c47f45ba286eb667f4853"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76b39eb34c732e337fa1d85dfbeefa0d"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>MultipleSheetsQuotedToken</b></td></tr>
-<tr class="separator:a76b39eb34c732e337fa1d85dfbeefa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a425c38681253e891fa437a57912bf51f"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileNameNumericToken</b></td></tr>
-<tr class="separator:a425c38681253e891fa437a57912bf51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -215,10 +198,10 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>intersectop</b> =
 <tr class="memitem:a0cbd0829ed6375553083b05b406ab36c"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>SingleQuotedStringToken</b><code> [get]</code></td></tr>
 <tr class="separator:a0cbd0829ed6375553083b05b406ab36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a690af07417eda562f28abdd1e546c14f"><td class="memItemLeft" align="right" valign="top"><a id="a690af07417eda562f28abdd1e546c14f"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToken</b> = new RegexBasedTerminal(GrammarNames.TokenError, &quot;#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#GETTING_DATA|#SPILL!&quot;)<code> [get]</code></td></tr>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToken</b> = new RegexBasedTerminal(GrammarNames.TokenError, &quot;#NULL!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!|#N/A|#GETTING_DATA|#SPILL!&quot;, &quot;#&quot;)<code> [get]</code></td></tr>
 <tr class="separator:a690af07417eda562f28abdd1e546c14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80e244f5c1fd4a8d616c54af49954f57"><td class="memItemLeft" align="right" valign="top"><a id="a80e244f5c1fd4a8d616c54af49954f57"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b> = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) {Priority = TerminalPriority.UDF}<code> [get]</code></td></tr>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b> = new RegexBasedTerminal(GrammarNames.TokenUDF, UdfTokenRegex) { Priority = TerminalPriority.UDF }<code> [get]</code></td></tr>
 <tr class="separator:a80e244f5c1fd4a8d616c54af49954f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9344c414206fee416f99bbbde70dab4a"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>ExcelRefFunctionToken</b><code> [get]</code></td></tr>
 <tr class="separator:a9344c414206fee416f99bbbde70dab4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,291 +213,17 @@ Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFToken</b> = ne
 Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>EmptyArgumentToken</b> = new ImpliedSymbolTerminal(GrammarNames.TokenEmptyArgument)<code> [get]</code></td></tr>
 <tr class="separator:a0bf9edacc5da08fed5b71a136f204abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab99dcb7d18620747cc5d896f44070a8f"><td class="memItemLeft" align="right" valign="top"><a id="ab99dcb7d18620747cc5d896f44070a8f"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRangeToken</b> = new RegexBasedTerminal(GrammarNames.TokenVRange, &quot;[$]?&quot; + ColumnPattern + &quot;:[$]?&quot; + ColumnPattern)<code> [get]</code></td></tr>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRangeToken</b> = new RegexBasedTerminal(GrammarNames.TokenVRange, &quot;[$]?&quot; + ColumnPattern + &quot;:[$]?&quot; + ColumnPattern, ColumnPrefix)<code> [get]</code></td></tr>
 <tr class="separator:ab99dcb7d18620747cc5d896f44070a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6efde686ddab1143aeba22370e7ddd72"><td class="memItemLeft" align="right" valign="top"><a id="a6efde686ddab1143aeba22370e7ddd72"></a>
-Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>HRangeToken</b> = new RegexBasedTerminal(GrammarNames.TokenHRange, &quot;[$]?[1-9][0-9]*:[$]?[1-9][0-9]*&quot;)<code> [get]</code></td></tr>
+Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>HRangeToken</b> = new RegexBasedTerminal(GrammarNames.TokenHRange, &quot;[$]?[1-9][0-9]*:[$]?[1-9][0-9]*&quot;, RowPrefix)<code> [get]</code></td></tr>
 <tr class="separator:a6efde686ddab1143aeba22370e7ddd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ff4a0f128222d14e7522f82146c735d"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>CellToken</b><code> [get]</code></td></tr>
 <tr class="separator:a3ff4a0f128222d14e7522f82146c735d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9755ef8d53f8e045dd0eb42ba2991c06"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>NameToken</b><code> [get]</code></td></tr>
-<tr class="separator:a9755ef8d53f8e045dd0eb42ba2991c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8380d9e40fbdb41548d147393f1e337"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>NamedRangeCombinationToken</b><code> [get]</code></td></tr>
-<tr class="separator:ae8380d9e40fbdb41548d147393f1e337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94ef45c9e5a3bdc0d123ce7ddf47ed6e"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileNameEnclosedInBracketsToken</b><code> [get]</code></td></tr>
-<tr class="separator:a94ef45c9e5a3bdc0d123ce7ddf47ed6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46d60e16e4056d7086270912b91fca40"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FileName</b><code> [get]</code></td></tr>
-<tr class="separator:a46d60e16e4056d7086270912b91fca40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d9872e5bb695427495087d4de7d2899"><td class="memItemLeft" align="right" valign="top">Terminal&#160;</td><td class="memItemRight" valign="bottom"><b>FilePathToken</b><code> [get]</code></td></tr>
-<tr class="separator:a8d9872e5bb695427495087d4de7d2899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02491867f4f5d7cbb5645ea6e0ccea43"><td class="memItemLeft" align="right" valign="top"><a id="a02491867f4f5d7cbb5645ea6e0ccea43"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Argument</b> = new NonTerminal(GrammarNames.Argument)<code> [get]</code></td></tr>
-<tr class="separator:a02491867f4f5d7cbb5645ea6e0ccea43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9815e8e0d8a724828f62f5779a9aaf9d"><td class="memItemLeft" align="right" valign="top"><a id="a9815e8e0d8a724828f62f5779a9aaf9d"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Arguments</b> = new NonTerminal(GrammarNames.Arguments)<code> [get]</code></td></tr>
-<tr class="separator:a9815e8e0d8a724828f62f5779a9aaf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4647154bfa4609ec858d4dcd2dc34bff"><td class="memItemLeft" align="right" valign="top"><a id="a4647154bfa4609ec858d4dcd2dc34bff"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ArrayColumns</b> = new NonTerminal(GrammarNames.ArrayColumns)<code> [get]</code></td></tr>
-<tr class="separator:a4647154bfa4609ec858d4dcd2dc34bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9323c587fc8ffd66e04b1e24e7b63221"><td class="memItemLeft" align="right" valign="top"><a id="a9323c587fc8ffd66e04b1e24e7b63221"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ArrayConstant</b> = new NonTerminal(GrammarNames.ArrayConstant)<code> [get]</code></td></tr>
-<tr class="separator:a9323c587fc8ffd66e04b1e24e7b63221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac78a734e4d2251f498313f47820c2d8"><td class="memItemLeft" align="right" valign="top"><a id="aac78a734e4d2251f498313f47820c2d8"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ArrayFormula</b> = new NonTerminal(GrammarNames.ArrayFormula)<code> [get]</code></td></tr>
-<tr class="separator:aac78a734e4d2251f498313f47820c2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf6f73aa40e234f1fa55dfff0d026b7"><td class="memItemLeft" align="right" valign="top"><a id="afbf6f73aa40e234f1fa55dfff0d026b7"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ArrayRows</b> = new NonTerminal(GrammarNames.ArrayRows)<code> [get]</code></td></tr>
-<tr class="separator:afbf6f73aa40e234f1fa55dfff0d026b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1c8dda5d005fa152884385f5662ac5b"><td class="memItemLeft" align="right" valign="top"><a id="ad1c8dda5d005fa152884385f5662ac5b"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Bool</b> = new NonTerminal(GrammarNames.Bool)<code> [get]</code></td></tr>
-<tr class="separator:ad1c8dda5d005fa152884385f5662ac5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a944d1fffb9a94040c7a7f4d314aa3873"><td class="memItemLeft" align="right" valign="top"><a id="a944d1fffb9a94040c7a7f4d314aa3873"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Cell</b> = new NonTerminal(GrammarNames.Cell)<code> [get]</code></td></tr>
-<tr class="separator:a944d1fffb9a94040c7a7f4d314aa3873"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85704490bffe2a588f0a8339f92010d0"><td class="memItemLeft" align="right" valign="top"><a id="a85704490bffe2a588f0a8339f92010d0"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Constant</b> = new NonTerminal(GrammarNames.Constant)<code> [get]</code></td></tr>
-<tr class="separator:a85704490bffe2a588f0a8339f92010d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc68ee1660e85a2a4cfc56922969011d"><td class="memItemLeft" align="right" valign="top"><a id="afc68ee1660e85a2a4cfc56922969011d"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ConstantArray</b> = new NonTerminal(GrammarNames.ConstantArray)<code> [get]</code></td></tr>
-<tr class="separator:afc68ee1660e85a2a4cfc56922969011d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f1fad63226a395904ede8661b62877"><td class="memItemLeft" align="right" valign="top"><a id="ad6f1fad63226a395904ede8661b62877"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>DynamicDataExchange</b> = new NonTerminal(GrammarNames.DynamicDataExchange)<code> [get]</code></td></tr>
-<tr class="separator:ad6f1fad63226a395904ede8661b62877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253cb42ac1e52da606b21f04509e6a16"><td class="memItemLeft" align="right" valign="top"><a id="a253cb42ac1e52da606b21f04509e6a16"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>EmptyArgument</b> = new NonTerminal(GrammarNames.EmptyArgument)<code> [get]</code></td></tr>
-<tr class="separator:a253cb42ac1e52da606b21f04509e6a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a376167d8eb5699f81e07bc15aafb1c2d"><td class="memItemLeft" align="right" valign="top"><a id="a376167d8eb5699f81e07bc15aafb1c2d"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Error</b> = new NonTerminal(GrammarNames.Error)<code> [get]</code></td></tr>
-<tr class="separator:a376167d8eb5699f81e07bc15aafb1c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8121a16cb5b8f30ca0c797f27c0ac3e"><td class="memItemLeft" align="right" valign="top"><a id="aa8121a16cb5b8f30ca0c797f27c0ac3e"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> = new NonTerminal(GrammarNames.File)<code> [get]</code></td></tr>
-<tr class="separator:aa8121a16cb5b8f30ca0c797f27c0ac3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4295a2ce0b98670ea20e4e25853d7585"><td class="memItemLeft" align="right" valign="top"><a id="a4295a2ce0b98670ea20e4e25853d7585"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Formula</b> = new NonTerminal(GrammarNames.Formula)<code> [get]</code></td></tr>
-<tr class="separator:a4295a2ce0b98670ea20e4e25853d7585"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d297a8b4eb2c86f445b5da94ef50eff"><td class="memItemLeft" align="right" valign="top"><a id="a3d297a8b4eb2c86f445b5da94ef50eff"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>FormulaWithEq</b> = new NonTerminal(GrammarNames.FormulaWithEq)<code> [get]</code></td></tr>
-<tr class="separator:a3d297a8b4eb2c86f445b5da94ef50eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab58afd22c8fad0d10c750cd5d4edeb87"><td class="memItemLeft" align="right" valign="top"><a id="ab58afd22c8fad0d10c750cd5d4edeb87"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>FunctionCall</b> = new NonTerminal(GrammarNames.FunctionCall)<code> [get]</code></td></tr>
-<tr class="separator:ab58afd22c8fad0d10c750cd5d4edeb87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e8754158027891ad34f3aa472be4cb8"><td class="memItemLeft" align="right" valign="top"><a id="a3e8754158027891ad34f3aa472be4cb8"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>FunctionName</b> = new NonTerminal(GrammarNames.FunctionName)<code> [get]</code></td></tr>
-<tr class="separator:a3e8754158027891ad34f3aa472be4cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc9ce77eb2a9611217443278a03d8433"><td class="memItemLeft" align="right" valign="top"><a id="acc9ce77eb2a9611217443278a03d8433"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>HRange</b> = new NonTerminal(GrammarNames.HorizontalRange)<code> [get]</code></td></tr>
-<tr class="separator:acc9ce77eb2a9611217443278a03d8433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a831703b48ab8d625b6b765fe45628316"><td class="memItemLeft" align="right" valign="top"><a id="a831703b48ab8d625b6b765fe45628316"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>InfixOp</b> = new NonTerminal(GrammarNames.TransientInfixOp)<code> [get]</code></td></tr>
-<tr class="separator:a831703b48ab8d625b6b765fe45628316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20305747328b2ca672d56ea3de655c15"><td class="memItemLeft" align="right" valign="top"><a id="a20305747328b2ca672d56ea3de655c15"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>MultiRangeFormula</b> = new NonTerminal(GrammarNames.MultiRangeFormula)<code> [get]</code></td></tr>
-<tr class="separator:a20305747328b2ca672d56ea3de655c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad448de2a4eec8c4e3bf4f4e8c34484cf"><td class="memItemLeft" align="right" valign="top"><a id="ad448de2a4eec8c4e3bf4f4e8c34484cf"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>NamedRange</b> = new NonTerminal(GrammarNames.NamedRange)<code> [get]</code></td></tr>
-<tr class="separator:ad448de2a4eec8c4e3bf4f4e8c34484cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c59f08ce16f8d3d008bf278d5517d43"><td class="memItemLeft" align="right" valign="top"><a id="a1c59f08ce16f8d3d008bf278d5517d43"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Number</b> = new NonTerminal(GrammarNames.Number)<code> [get]</code></td></tr>
-<tr class="separator:a1c59f08ce16f8d3d008bf278d5517d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e4e713c162a257e21cf003a7880e16c"><td class="memItemLeft" align="right" valign="top"><a id="a5e4e713c162a257e21cf003a7880e16c"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>PostfixOp</b> = new NonTerminal(GrammarNames.TransientPostfixOp)<code> [get]</code></td></tr>
-<tr class="separator:a5e4e713c162a257e21cf003a7880e16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ee3bdbc5a369aa8a6afb14d244f7c4f"><td class="memItemLeft" align="right" valign="top"><a id="a5ee3bdbc5a369aa8a6afb14d244f7c4f"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Prefix</b> = new NonTerminal(GrammarNames.Prefix)<code> [get]</code></td></tr>
-<tr class="separator:a5ee3bdbc5a369aa8a6afb14d244f7c4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e2c763e3100db191abddc97a74ae719"><td class="memItemLeft" align="right" valign="top"><a id="a3e2c763e3100db191abddc97a74ae719"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>PrefixOp</b> = new NonTerminal(GrammarNames.TransientPrefixOp)<code> [get]</code></td></tr>
-<tr class="separator:a3e2c763e3100db191abddc97a74ae719"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a5a7590236e8994d99bd71d663fac52"><td class="memItemLeft" align="right" valign="top"><a id="a4a5a7590236e8994d99bd71d663fac52"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>QuotedFileSheet</b> = new NonTerminal(GrammarNames.QuotedFileSheet)<code> [get]</code></td></tr>
-<tr class="separator:a4a5a7590236e8994d99bd71d663fac52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb62d7c1741f9965bc2cd7d27059976"><td class="memItemLeft" align="right" valign="top"><a id="a2fb62d7c1741f9965bc2cd7d27059976"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Reference</b> = new NonTerminal(GrammarNames.Reference)<code> [get]</code></td></tr>
-<tr class="separator:a2fb62d7c1741f9965bc2cd7d27059976"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad52503f192cd694f7eb6a81727d55bfb"><td class="memItemLeft" align="right" valign="top"><a id="ad52503f192cd694f7eb6a81727d55bfb"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceItem</b> = new NonTerminal(GrammarNames.TransientReferenceItem)<code> [get]</code></td></tr>
-<tr class="separator:ad52503f192cd694f7eb6a81727d55bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42058baf6b22b932a74576e06e7e77db"><td class="memItemLeft" align="right" valign="top"><a id="a42058baf6b22b932a74576e06e7e77db"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceFunctionCall</b> = new NonTerminal(GrammarNames.ReferenceFunctionCall)<code> [get]</code></td></tr>
-<tr class="separator:a42058baf6b22b932a74576e06e7e77db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5fdbcdab39366c97f490d66e5e4f093"><td class="memItemLeft" align="right" valign="top"><a id="aa5fdbcdab39366c97f490d66e5e4f093"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>RefError</b> = new NonTerminal(GrammarNames.RefError)<code> [get]</code></td></tr>
-<tr class="separator:aa5fdbcdab39366c97f490d66e5e4f093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e65d00cba1c36199dd35af26b30766"><td class="memItemLeft" align="right" valign="top"><a id="a26e65d00cba1c36199dd35af26b30766"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>RefFunctionName</b> = new NonTerminal(GrammarNames.RefFunctionName)<code> [get]</code></td></tr>
-<tr class="separator:a26e65d00cba1c36199dd35af26b30766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a743cbf1f4736aed1fafde4dff7616193"><td class="memItemLeft" align="right" valign="top"><a id="a743cbf1f4736aed1fafde4dff7616193"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>ReservedName</b> = new NonTerminal(GrammarNames.ReservedName)<code> [get]</code></td></tr>
-<tr class="separator:a743cbf1f4736aed1fafde4dff7616193"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaee3164c74d0dabd580e18d665e66cc4"><td class="memItemLeft" align="right" valign="top"><a id="aaee3164c74d0dabd580e18d665e66cc4"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Sheet</b> = new NonTerminal(GrammarNames.Sheet)<code> [get]</code></td></tr>
-<tr class="separator:aaee3164c74d0dabd580e18d665e66cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff33da91db215c6c86fa88a78caa74f7"><td class="memItemLeft" align="right" valign="top"><a id="aff33da91db215c6c86fa88a78caa74f7"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Start</b> = new NonTerminal(GrammarNames.TransientStart)<code> [get]</code></td></tr>
-<tr class="separator:aff33da91db215c6c86fa88a78caa74f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0282163614c8bb76b149c2cd03f0191d"><td class="memItemLeft" align="right" valign="top"><a id="a0282163614c8bb76b149c2cd03f0191d"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>StructuredReference</b> = new NonTerminal(GrammarNames.StructuredReference)<code> [get]</code></td></tr>
-<tr class="separator:a0282163614c8bb76b149c2cd03f0191d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a945e17e3496e870e63b4aa2a830ed432"><td class="memItemLeft" align="right" valign="top"><a id="a945e17e3496e870e63b4aa2a830ed432"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>StructuredReferenceColumn</b> = new NonTerminal(GrammarNames.StructuredReferenceColumn)<code> [get]</code></td></tr>
-<tr class="separator:a945e17e3496e870e63b4aa2a830ed432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab28bb3cfe9c837e07b5c619fb46ae559"><td class="memItemLeft" align="right" valign="top"><a id="ab28bb3cfe9c837e07b5c619fb46ae559"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>StructuredReferenceExpression</b> = new NonTerminal(GrammarNames.StructuredReferenceExpression)<code> [get]</code></td></tr>
-<tr class="separator:ab28bb3cfe9c837e07b5c619fb46ae559"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a319d0f7d9933550fbc63d52d51508fc6"><td class="memItemLeft" align="right" valign="top"><a id="a319d0f7d9933550fbc63d52d51508fc6"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>StructuredReferenceSpecifier</b> = new NonTerminal(GrammarNames.StructuredReferenceSpecifier)<code> [get]</code></td></tr>
-<tr class="separator:a319d0f7d9933550fbc63d52d51508fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6605fbbd8f9b743330e3f598f5bfda20"><td class="memItemLeft" align="right" valign="top"><a id="a6605fbbd8f9b743330e3f598f5bfda20"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>StructuredReferenceQualifier</b> = new NonTerminal(GrammarNames.StructuredReferenceQualifier)<code> [get]</code></td></tr>
-<tr class="separator:a6605fbbd8f9b743330e3f598f5bfda20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0636481cd4325f08509f73ed113ed22c"><td class="memItemLeft" align="right" valign="top"><a id="a0636481cd4325f08509f73ed113ed22c"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Text</b> = new NonTerminal(GrammarNames.Text)<code> [get]</code></td></tr>
-<tr class="separator:a0636481cd4325f08509f73ed113ed22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87cead5a0f6c97374069482bda10721e"><td class="memItemLeft" align="right" valign="top"><a id="a87cead5a0f6c97374069482bda10721e"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFName</b> = new NonTerminal(GrammarNames.UDFName)<code> [get]</code></td></tr>
-<tr class="separator:a87cead5a0f6c97374069482bda10721e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72cfa02fb4defecb25042d2edca07692"><td class="memItemLeft" align="right" valign="top"><a id="a72cfa02fb4defecb25042d2edca07692"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>UDFunctionCall</b> = new NonTerminal(GrammarNames.UDFunctionCall)<code> [get]</code></td></tr>
-<tr class="separator:a72cfa02fb4defecb25042d2edca07692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0ccdb08d3ae2b60cc66ccf8472ae949"><td class="memItemLeft" align="right" valign="top"><a id="ac0ccdb08d3ae2b60cc66ccf8472ae949"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>Union</b> = new NonTerminal(GrammarNames.Union)<code> [get]</code></td></tr>
-<tr class="separator:ac0ccdb08d3ae2b60cc66ccf8472ae949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a798da7941b9f63c689de9ca9eb2d874d"><td class="memItemLeft" align="right" valign="top"><a id="a798da7941b9f63c689de9ca9eb2d874d"></a>
-NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = new NonTerminal(GrammarNames.VerticalRange)<code> [get]</code></td></tr>
-<tr class="separator:a798da7941b9f63c689de9ca9eb2d874d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains the <a class="el" href="namespace_x_l_parser.html">XLParser</a> grammar </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a425c38681253e891fa437a57912bf51f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a425c38681253e891fa437a57912bf51f">&#9670;&nbsp;</a></span>FileNameNumericToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileNameNumericToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex)</div>
-<div class="line">        { Priority = TerminalPriority.FileNameNumericToken }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a76b39eb34c732e337fa1d85dfbeefa0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b39eb34c732e337fa1d85dfbeefa0d">&#9670;&nbsp;</a></span>MultipleSheetsQuotedToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.MultipleSheetsQuotedToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenMultipleSheetsQuoted, multiSheetQuotedRegex)</div>
-<div class="line">        { Priority = TerminalPriority.MultipleSheetsToken }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ad8ac351e722c47f45ba286eb667f4853"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8ac351e722c47f45ba286eb667f4853">&#9670;&nbsp;</a></span>MultipleSheetsToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.MultipleSheetsToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenMultipleSheets, multiSheetRegex)</div>
-<div class="line">        { Priority = TerminalPriority.MultipleSheetsToken }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ac4b8e8ce058c1d2c067ff5eeae3db2f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4b8e8ce058c1d2c067ff5eeae3db2f9">&#9670;&nbsp;</a></span>ReservedNameToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.ReservedNameToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenReservedName, <span class="stringliteral">@&quot;_xlnm\.[a-zA-Z_]+&quot;</span>)</div>
-<div class="line">        { Priority = TerminalPriority.ReservedName }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a250a1ff39bd908a36608acc1db44854a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a250a1ff39bd908a36608acc1db44854a">&#9670;&nbsp;</a></span>SheetQuotedToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.SheetQuotedToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenSheetQuoted, $<span class="stringliteral">&quot;{quotedSheetName}&#39;!&quot;</span>)</div>
-<div class="line">        { Priority = TerminalPriority.SheetQuotedToken }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="aaf125f7947710494d1468c439dd94817"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf125f7947710494d1468c439dd94817">&#9670;&nbsp;</a></span>SheetToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.SheetToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenSheet, $<span class="stringliteral">&quot;{normalSheetName}!&quot;</span>)</div>
-<div class="line">        { Priority = TerminalPriority.SheetToken }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="af2eb1eacc44ee0691e4cfe539541cefc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2eb1eacc44ee0691e4cfe539541cefc">&#9670;&nbsp;</a></span>SRColumnToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.SRColumnToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenSRColumn, SRColumnRegex)</div>
-<div class="line">        { Priority = TerminalPriority.StructuredReference }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="afcfa3550ee44ea8b690c794d5533099a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcfa3550ee44ea8b690c794d5533099a">&#9670;&nbsp;</a></span>SRSpecifierToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.SRSpecifierToken</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenSRSpecifier, SRSpecifierRegex)</div>
-<div class="line">            { Priority = TerminalPriority.StructuredReference }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
+</div><h2 class="groupheader">Property Documentation</h2>
 <a id="a7efac366cdf422d6257a1c6aac1a1c9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7efac366cdf422d6257a1c6aac1a1c9d">&#9670;&nbsp;</a></span>BoolToken</h2>
 
@@ -534,7 +243,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenBool, <span class="stringliteral">&quot;TRUE|FALSE&quot;</span>)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenBool, <span class="stringliteral">&quot;TRUE|FALSE&quot;</span>, <span class="stringliteral">&quot;T&quot;</span>, <span class="stringliteral">&quot;F&quot;</span>)</div>
 <div class="line">        {</div>
 <div class="line">            Priority = TerminalPriority.Bool</div>
 <div class="line">        }</div>
@@ -560,7 +269,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex, ColumnPrefix)</div>
 <div class="line">        { Priority = TerminalPriority.CellToken }</div>
 </div><!-- fragment -->
 </div>
@@ -584,7 +293,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, <span class="stringliteral">&quot;(IF|CHOOSE)\\(&quot;</span>)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, <span class="stringliteral">&quot;(IF|CHOOSE)\\(&quot;</span>, <span class="stringliteral">&quot;I&quot;</span>, <span class="stringliteral">&quot;C&quot;</span>)</div>
 <div class="line">        { Priority = TerminalPriority.ExcelRefFunction }</div>
 </div><!-- fragment -->
 </div>
@@ -608,7 +317,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.ExcelFunction,  <span class="stringliteral">&quot;(&quot;</span> + <span class="keywordtype">string</span>.Join(<span class="stringliteral">&quot;|&quot;</span>, excelFunctionList) + <span class="stringliteral">&quot;)\\(&quot;</span>)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> WordsTerminal(GrammarNames.ExcelFunction,  excelFunctionList.Select(f =&gt; f + <span class="charliteral">&#39;(&#39;</span>))</div>
 <div class="line">        { Priority = TerminalPriority.ExcelFunction }</div>
 </div><!-- fragment -->
 </div>
@@ -632,128 +341,8 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, <span class="stringliteral">&quot;(INDEX|OFFSET|INDIRECT)\\(&quot;</span>)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenExcelRefFunction, <span class="stringliteral">&quot;(INDEX|OFFSET|INDIRECT)\\(&quot;</span>, <span class="stringliteral">&quot;I&quot;</span>, <span class="stringliteral">&quot;O&quot;</span>)</div>
 <div class="line">        { Priority = TerminalPriority.ExcelRefFunction }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a46d60e16e4056d7086270912b91fca40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46d60e16e4056d7086270912b91fca40">&#9670;&nbsp;</a></span>FileName</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileName</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)</div>
-<div class="line">        { Priority = TerminalPriority.FileName }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a94ef45c9e5a3bdc0d123ce7ddf47ed6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94ef45c9e5a3bdc0d123ce7ddf47ed6e">&#9670;&nbsp;</a></span>FileNameEnclosedInBracketsToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FileNameEnclosedInBracketsToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex)</div>
-<div class="line">        { Priority = TerminalPriority.FileName }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a8d9872e5bb695427495087d4de7d2899"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d9872e5bb695427495087d4de7d2899">&#9670;&nbsp;</a></span>FilePathToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.FilePathToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)</div>
-<div class="line">        { Priority = TerminalPriority.FileNamePath }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ae8380d9e40fbdb41548d147393f1e337"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8380d9e40fbdb41548d147393f1e337">&#9670;&nbsp;</a></span>NamedRangeCombinationToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.NamedRangeCombinationToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex + NameValidCharacterRegex + <span class="stringliteral">&quot;+&quot;</span>)</div>
-<div class="line">        { Priority = TerminalPriority.NamedRangeCombination }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a9755ef8d53f8e045dd0eb42ba2991c06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9755ef8d53f8e045dd0eb42ba2991c06">&#9670;&nbsp;</a></span>NameToken</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terminal XLParser.ExcelFormulaGrammar.NameToken</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> RegexBasedTerminal(GrammarNames.TokenName, NameStartCharRegex + NameValidCharacterRegex + <span class="stringliteral">&quot;*&quot;</span>)</div>
-<div class="line">        { Priority = TerminalPriority.Name }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -778,7 +367,7 @@ NonTerminal&#160;</td><td class="memItemRight" valign="bottom"><b>VRange</b> = n
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None)</div>
 <div class="line">        {</div>
-<div class="line">            DefaultIntTypes = <span class="keyword">new</span>[] {TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt}</div>
+<div class="line">            DefaultIntTypes = <span class="keyword">new</span>[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt }</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
 </div>

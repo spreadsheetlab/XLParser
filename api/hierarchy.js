@@ -9,5 +9,8 @@ var hierarchy =
     [ "IEquatable", null, [
       [ "XLParser.PrefixInfo", "class_x_l_parser_1_1_prefix_info.html", null ]
     ] ],
-    [ "XLParser.ParserReference", "class_x_l_parser_1_1_parser_reference.html", null ]
+    [ "XLParser.ParserReference", "class_x_l_parser_1_1_parser_reference.html", null ],
+    [ "Terminal", null, [
+      [ "XLParser.WordsTerminal", "class_x_l_parser_1_1_words_terminal.html", null ]
+    ] ]
 ];
