@@ -95,7 +95,7 @@ namespace XLParser
         public Terminal ExcelConditionalRefFunctionToken { get; } = new RegexBasedTerminal(GrammarNames.TokenExcelConditionalRefFunction, "(IF|CHOOSE)\\(", "I", "C")
         { Priority = TerminalPriority.ExcelRefFunction };
 
-        public Terminal ExcelFunction { get; } = new RegexBasedTerminal(GrammarNames.ExcelFunction, "(" + string.Join("|", excelFunctionList) + ")\\(", excelFunctionList.Select(f => f.Substring(0, 1)).Distinct().ToArray())
+        public Terminal ExcelFunction { get; } = new WordsTerminal(GrammarNames.ExcelFunction,  excelFunctionList.Select(f => f + '('))
         { Priority = TerminalPriority.ExcelFunction };
 
         // Using this instead of Empty allows a more accurate tree
