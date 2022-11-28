@@ -264,7 +264,7 @@ namespace XLParser.Web.XLParserVersions.v162
         public NonTerminal VRange{ get; } = new NonTerminal(GrammarNames.VerticalRange);
         #endregion
 
-        public ExcelFormulaGrammar(bool caseSensitive = true) : base(caseSensitive)
+        public ExcelFormulaGrammar()
         {
 
             #region Punctuation
