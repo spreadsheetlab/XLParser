@@ -880,7 +880,7 @@ namespace XLParser.Tests
         {
             // See [Issue 46](https://github.com/spreadsheetlab/XLParser/issues/46)
             // This concerns names beginning with non-name words.
-            var names = new[] {"A1ABC", "A1A1", "A2.PART_NUM", "A2?PART_NUM", "TRUEFOO", "FALSEFOO", "TRUEMODEL"};
+            var names = new[] {"A1ABC", "A1A1", "A2.PART_NUM", "A2?PART_NUM", "TRUEFOO", "FALSEFOO", "TRUEMODEL", "W1."};
             foreach (var name in names)
             {
                 Test(name, tree => tree.AllNodes(GrammarNames.NamedRange).Select(ExcelFormulaParser.Print).Contains(name));
