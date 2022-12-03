@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace XLParser
 {
@@ -327,7 +328,8 @@ namespace XLParser
 
             FunctionName.Rule = ExcelFunction;
 
-            Arguments.Rule = MakeStarRule(Arguments, comma, Argument);
+            var listSeparator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
+            Arguments.Rule = MakeStarRule(Arguments, listSeparator == ";" ? semicolon : comma, Argument);
 
             EmptyArgument.Rule = EmptyArgumentToken;
             Argument.Rule = Formula | EmptyArgument;

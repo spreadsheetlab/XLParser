@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using Irony.Parsing;
 
 namespace XLParser
@@ -16,11 +16,27 @@ namespace XLParser
         /// Thread-local singleton parser instance
         /// </summary>
         [ThreadStatic] private static Parser _p;
+        [ThreadStatic] private static string _culture;
 
         /// <summary>
         /// Thread-safe parser
         /// </summary>
-        private static Parser P => _p ?? (_p = new Parser(new ExcelFormulaGrammar()));
+        private static Parser P
+        {
+            get
+            {
+                var currentCulture = Thread.CurrentThread.CurrentCulture.Name;
+                
+                // If the culture change, invalidate the cached parser to update it.
+                if (_culture != currentCulture)
+                {
+                    _p = null;
+                    _culture = currentCulture;
+                }
+
+                return _p ?? (_p = new Parser(new ExcelFormulaGrammar()));
+            }
+        }
 
         /// <summary>
         /// Parse a formula, return the the tree's root node
@@ -612,6 +628,8 @@ namespace XLParser
 
                 // Terms for which we print the children comma-separated
                 case GrammarNames.Arguments:
+                    var listSeparator = Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator;
+                    return string.Join(listSeparator == ";" ? ";" : ",", children);
                 case GrammarNames.ArrayRows:
                 case GrammarNames.Union:
                     return string.Join(",", children);

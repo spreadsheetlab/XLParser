@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Irony.Parsing;
 
 namespace XLParser.Tests
@@ -968,6 +970,21 @@ namespace XLParser.Tests
             Test("='\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1+'\\\\TEST-01\\[Folder]\\[Book1.xlsx]Sheet1'!$A$2",
                 tree =>
                     tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 2);
+        }
+        
+        [TestMethod]
+        public void EnsureSupportDifferentSeparatorForArguments()
+        {
+            var previousCulture = Thread.CurrentThread.CurrentCulture;
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-CA");
+                Test("OR(A1=0;A2=2)");
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = previousCulture;
+            }
         }
     }
 }

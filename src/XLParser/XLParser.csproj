@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net452;net461;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net452;net461;netstandard2.0</TargetFrameworks>
     <Authors>TU Delft Spreadsheet Lab, Infotron</Authors>
     <Company>TU Delft Spreadsheet Lab, Infotron</Company>
     <PackageId>XLParser</PackageId>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <DefineConstants>$(DefineConstants);_NET461_</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
