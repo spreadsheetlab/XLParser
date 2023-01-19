@@ -106,14 +106,15 @@ namespace XLParser
         #region References and names
 
         private const string ColumnPattern = @"(?:[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D]|[A-Z]{1,2})";
+        private const string RowPattern = @"(?:104857[0-6]|10485[0-6][0-9]|1048[0-4][0-9]{2}|104[0-7][0-9]{3}|10[0-3][0-9]{4}|[1-9][0-9]{1,5}|[1-9])";
 
         private static readonly string[] ColumnPrefix = Enumerable.Range('A', 'Z' - 'A' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
         private static readonly string[] RowPrefix = Enumerable.Range('1', '9' - '1' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
 
         public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern, ColumnPrefix);
-        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*", RowPrefix);
+        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?" + RowPattern + ":[$]?" + RowPattern, RowPrefix);
 
-        private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?[1-9][0-9]*";
+        private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?" + RowPattern;
         public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex, ColumnPrefix)
         { Priority = TerminalPriority.CellToken };
 
@@ -141,14 +142,16 @@ namespace XLParser
         // If we ever parse R1C1 references, make sure to include them here
         // TODO: Add all function names here
 
-        private const string NameInvalidWordsRegex =
+        private const string NamedRangeCombinationRegex =
               "((TRUE|FALSE)" + NameValidCharacterRegex + "+)"
             // \w is equivalent to [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Nd}\p{Pc}], we want the decimal left out here because otherwise "A11" would be a combination token
             + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?]" + NameValidCharacterRegex + "*)"
+            // allow large cell references (e.g. A1048577) as named range
+            + "|(" + ColumnPattern + @"(104857[7-9]|10485[89][0-9]|1048[6-9][0-9]{2}|1049[0-9]{3}|10[5-9][0-9]{4}|1[1-9][0-9]{5}|[2-9][0-9]{6}|d{8,})" + NameValidCharacterRegex + "*)"
             ;
 
         // To prevent e.g. "A1A1" being parsed as 2 cell tokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex,
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NamedRangeCombinationRegex,
                 ColumnPrefix.Concat(new[] { "T", "F" }).ToArray())
         { Priority = TerminalPriority.NamedRangeCombination };
 

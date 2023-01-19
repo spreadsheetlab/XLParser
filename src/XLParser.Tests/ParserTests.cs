@@ -214,7 +214,29 @@ namespace XLParser.Tests
             }
         }
 
+        [TestMethod]
+        public void MaxRowAddress()
+        {
+            Test("A1048576", node => node.SkipToRelevant(true).Type() == GrammarNames.Cell);
+        }
 
+        [TestMethod]
+        public void InvalidRowAddress()
+        {
+            Test("A1048577", node => node.SkipToRelevant(true).Type() == GrammarNames.NamedRange);
+        }
+
+        [TestMethod]
+        public void MaxColumnAddress()
+        {
+            Test("XFD1", node => node.SkipToRelevant(true).Type() == GrammarNames.Cell);
+        }
+
+        [TestMethod]
+        public void InvalidColumnAddress()
+        {
+            Test("XFE1", node => node.SkipToRelevant(true).Type() == GrammarNames.NamedRange);
+        }
 
         [TestMethod]
         public void TestErrorCodeNull()
@@ -324,7 +346,7 @@ namespace XLParser.Tests
         [TestMethod]
         public void LongCellReference()
         {
-            Test("Sheet2!A1234567");
+            Test("Sheet2!A123456");
         }
 
         [TestMethod]
