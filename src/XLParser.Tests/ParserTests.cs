@@ -214,6 +214,17 @@ namespace XLParser.Tests
             }
         }
 
+        [TestMethod]
+        public void MaxRowAddress()
+        {
+            Test("A1048576", node => node.SkipToRelevant(true).Type() == GrammarNames.Cell);
+        }
+
+        [TestMethod]
+        public void InvalidRowAddress()
+        {
+            Test("A1048577", node => node.SkipToRelevant(true).Type() == GrammarNames.NamedRange);
+        }
 
 
         [TestMethod]
