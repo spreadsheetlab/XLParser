@@ -17,6 +17,7 @@ namespace XLParser
     public class ParserReference
     {
         public ReferenceType ReferenceType { get; set; }
+        public ParseTreeNode ReferenceNode { get; set; }
         public string LocationString { get; set; }
         public string Worksheet { get; set; }
         public string LastWorksheet { get; set; }
@@ -103,6 +104,7 @@ namespace XLParser
                     break;
             }
 
+            ReferenceNode = node;
             LocationString = node.Print();
         }
 
