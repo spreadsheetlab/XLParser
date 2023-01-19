@@ -19,7 +19,7 @@ namespace XLParser.Web.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -776,6 +776,71 @@ namespace XLParser.Web.Properties {
         internal static string ExcelBuiltinFunctionList_v162 {
             get {
                 return ResourceManager.GetString("ExcelBuiltinFunctionList_v162", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ABS
+        ///ACCRINT
+        ///ACCRINTM
+        ///ACOS
+        ///ACOSH
+        ///ACOT
+        ///ACOTH
+        ///ADDRESS
+        ///AGGREGATE
+        ///AMORDEGRC
+        ///AMORLINC
+        ///AND
+        ///ARABIC
+        ///AREAS
+        ///ARRAYTOTEXT
+        ///ASC
+        ///ASIN
+        ///ASINH
+        ///ATAN
+        ///ATAN2
+        ///ATANH
+        ///AVEDEV
+        ///AVERAGE
+        ///AVERAGEA
+        ///AVERAGEIF
+        ///AVERAGEIFS
+        ///BAHTTEXT
+        ///BASE
+        ///BESSELI
+        ///BESSELJ
+        ///BESSELK
+        ///BESSELY
+        ///BETA.DIST
+        ///BETA.INV
+        ///BETADIST
+        ///BETAINV
+        ///BIN2DEC
+        ///BIN2HEX
+        ///BIN2OCT
+        ///BINOM.DIST
+        ///BINOM.DIST.RANGE
+        ///BINOM.INV
+        ///BINOMDIST
+        ///BITAND
+        ///BITLSHIFT
+        ///BITOR
+        ///BITRSHIFT
+        ///BITXOR
+        ///CALL
+        ///CEILING
+        ///CEILING.MATH
+        ///CEILING.PRECISE
+        ///CELL
+        ///CHAR
+        ///CHIDIST
+        ///CHIINV
+        ///CHISQ.DIS [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExcelBuiltinFunctionList_v163 {
+            get {
+                return ResourceManager.GetString("ExcelBuiltinFunctionList_v163", resourceCulture);
             }
         }
     }
