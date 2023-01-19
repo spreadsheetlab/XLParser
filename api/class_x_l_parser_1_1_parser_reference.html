@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XLParser
-   &#160;<span id="projectnumber">1.6.2</span>
+   &#160;<span id="projectnumber">1.6.3</span>
    </div>
   </td>
  </tr>
@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('class_x_l_parser_1_1_parser_reference.
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_x_l_parser_1_1_parser_reference-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,9 +93,6 @@ $(document).ready(function(){initNavTree('class_x_l_parser_1_1_parser_reference.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acfa41373c34b921ab53241eecde39fca"><td class="memItemLeft" align="right" valign="top"><a id="acfa41373c34b921ab53241eecde39fca"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ParserReference</b> (ReferenceType referenceType, string locationString=null, string worksheet=null, string lastWorksheet=null, string filePath=null, string fileName=null, string name=null, string minLocation=null, string maxLocation=null, string[] tableSpecifiers=null, string[] tableColumns=null)</td></tr>
-<tr class="separator:acfa41373c34b921ab53241eecde39fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fdd2e31f1031520f56d53b21ba6ed0c"><td class="memItemLeft" align="right" valign="top"><a id="a5fdd2e31f1031520f56d53b21ba6ed0c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ParserReference</b> (ParseTreeNode node)</td></tr>
 <tr class="separator:a5fdd2e31f1031520f56d53b21ba6ed0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,20 +103,14 @@ Public Member Functions</h2></td></tr>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
 <tr class="separator:aa4125418b3eb02b89989d0f0072b1301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ac0b23b5c063507755734cd7af0808431"><td class="memItemLeft" align="right" valign="top"><a id="ac0b23b5c063507755734cd7af0808431"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxRangeHeight</b> = 1048576</td></tr>
-<tr class="separator:ac0b23b5c063507755734cd7af0808431"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04a078f56b883caf65d9e152df69b227"><td class="memItemLeft" align="right" valign="top"><a id="a04a078f56b883caf65d9e152df69b227"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxRangeWidth</b> = 16384</td></tr>
-<tr class="separator:a04a078f56b883caf65d9e152df69b227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a4cb88a33e89f4ca02e1d9ad8d3d6d831"><td class="memItemLeft" align="right" valign="top"><a id="a4cb88a33e89f4ca02e1d9ad8d3d6d831"></a>
 ReferenceType&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceType</b><code> [get, set]</code></td></tr>
 <tr class="separator:a4cb88a33e89f4ca02e1d9ad8d3d6d831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab900aba1667d7668625156d7cebb5d81"><td class="memItemLeft" align="right" valign="top"><a id="ab900aba1667d7668625156d7cebb5d81"></a>
+ParseTreeNode&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceNode</b><code> [get, set]</code></td></tr>
+<tr class="separator:ab900aba1667d7668625156d7cebb5d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a138f009e68a75c8a3215df6b7ed602cf"><td class="memItemLeft" align="right" valign="top"><a id="a138f009e68a75c8a3215df6b7ed602cf"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>LocationString</b><code> [get, set]</code></td></tr>
 <tr class="separator:a138f009e68a75c8a3215df6b7ed602cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,7 +127,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FilePath</b><code> 
 string&#160;</td><td class="memItemRight" valign="bottom"><b>FileName</b><code> [get, set]</code></td></tr>
 <tr class="separator:aacc1f9044ed6c379b9b0cabb1815dde5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0b24180f0319484ee44eb0154e6c957"><td class="memItemLeft" align="right" valign="top"><a id="aa0b24180f0319484ee44eb0154e6c957"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get]</code></td></tr>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get, set]</code></td></tr>
 <tr class="separator:aa0b24180f0319484ee44eb0154e6c957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7bf819bf4f7117090c9329e69acfaca"><td class="memItemLeft" align="right" valign="top"><a id="ae7bf819bf4f7117090c9329e69acfaca"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>MinLocation</b><code> [get, set]</code></td></tr>
