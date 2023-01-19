@@ -142,14 +142,16 @@ namespace XLParser
         // If we ever parse R1C1 references, make sure to include them here
         // TODO: Add all function names here
 
-        private const string NameInvalidWordsRegex =
+        private const string NamedRangeCombinationRegex =
               "((TRUE|FALSE)" + NameValidCharacterRegex + "+)"
             // \w is equivalent to [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Nd}\p{Pc}], we want the decimal left out here because otherwise "A11" would be a combination token
             + "|(" + CellTokenRegex + @"[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Lm}\p{Pc}\\_\.\?]" + NameValidCharacterRegex + "*)"
+            // allow large cell references (e.g. A1048577) as named range
+            + "|(" + ColumnPattern + @"(104857[7-9]|10485[89][0-9]|1048[6-9][0-9]{2}|1049[0-9]{3}|10[5-9][0-9]{4}|1[1-9][0-9]{5}|[2-9][0-9]{6}|d{8,})" + NameValidCharacterRegex + "*)"
             ;
 
         // To prevent e.g. "A1A1" being parsed as 2 cell tokens
-        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NameInvalidWordsRegex,
+        public Terminal NamedRangeCombinationToken { get; } = new RegexBasedTerminal(GrammarNames.TokenNamedRangeCombination, NamedRangeCombinationRegex,
                 ColumnPrefix.Concat(new[] { "T", "F" }).ToArray())
         { Priority = TerminalPriority.NamedRangeCombination };
 
