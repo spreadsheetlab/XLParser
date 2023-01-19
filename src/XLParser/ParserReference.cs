@@ -16,38 +16,19 @@ namespace XLParser
 
     public class ParserReference
     {
-        public const int MaxRangeHeight = 1048576;
-        public const int MaxRangeWidth = 16384;
-
         public ReferenceType ReferenceType { get; set; }
+        public ParseTreeNode ReferenceNode { get; set; }
         public string LocationString { get; set; }
         public string Worksheet { get; set; }
         public string LastWorksheet { get; set; }
         public string FilePath { get; set; }
         public string FileName { get; set; }
-        public string Name { get; private set; }
-        public string MinLocation { get; set; } //Location as appearing in the formula, eg $A$1
+        public string Name { get; set; }
+        public string MinLocation { get; set; }
         public string MaxLocation { get; set; }
         public string[] TableSpecifiers { get; set; }
         public string[] TableColumns { get; set; }
-
-        public ParserReference(ReferenceType referenceType, string locationString = null, string worksheet = null, string lastWorksheet = null,
-            string filePath = null, string fileName = null, string name = null, string minLocation = null, string maxLocation = null,
-            string[] tableSpecifiers = null, string[] tableColumns = null)
-        {
-            ReferenceType = referenceType;
-            LocationString = locationString;
-            Worksheet = worksheet;
-            LastWorksheet = lastWorksheet;
-            FilePath = filePath;
-            FileName = fileName;
-            Name = name;
-            MinLocation = minLocation;
-            MaxLocation = maxLocation != null ? maxLocation : minLocation;
-            TableColumns = tableColumns;
-            TableSpecifiers = tableSpecifiers;
-        }
-
+        
         public ParserReference(ParseTreeNode node)
         {
             InitializeReference(node);
@@ -123,6 +104,7 @@ namespace XLParser
                     break;
             }
 
+            ReferenceNode = node;
             LocationString = node.Print();
         }
 
@@ -131,24 +113,9 @@ namespace XLParser
             return System.Text.RegularExpressions.Regex.Replace(value, $"{escapeCharacter}(?!{escapeCharacter})", "");
         }
 
-        /// <summary>
-        ///     Converts the column number to an Excel column string representation.
-        /// </summary>
-        /// <param name="columnNumber">The zero-based column number.</param>
-        private  string ConvertColumnToStr(int columnNumber)
-        {
-            var sb = new System.Text.StringBuilder();
-            while (columnNumber >= 0)
-            {
-                sb.Insert(0, (char)(65 + columnNumber % 26));
-                columnNumber = columnNumber / 26 - 1;
-            }
-            return sb.ToString();
-        }
-
         public override string ToString()
         {
-            return ReferenceType == ReferenceType.Cell ? MinLocation.ToString() : string.Format("{0}:{1}", MinLocation, MaxLocation);
+            return LocationString;
         }
     }
 }

@@ -432,6 +432,7 @@ namespace XLParser
                             ParserReference range = rangeStart.First();
                             range.MaxLocation = rangeEnd.First().MinLocation;
                             range.ReferenceType = ReferenceType.CellRange;
+                            range.ReferenceNode = node;
                             range.LocationString = node.Print();
                             list.Add(range);
                         }
@@ -440,6 +441,8 @@ namespace XLParser
                             ParserReference range = rangeStart.First();
                             range.TableColumns = rangeStart.First().TableColumns.Concat(rangeEnd.First().TableColumns).ToArray();
                             range.TableSpecifiers = rangeStart.First().TableSpecifiers.SequenceEqual(rangeEnd.First().TableSpecifiers) ? range.TableSpecifiers : new string[0];
+                            range.ReferenceNode = node;
+                            range.LocationString = node.Print();
                             list.Add(range);
                         }
                         else
