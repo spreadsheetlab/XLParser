@@ -346,7 +346,7 @@ namespace XLParser.Tests
         [TestMethod]
         public void LongCellReference()
         {
-            Test("Sheet2!A1234567");
+            Test("Sheet2!A123456");
         }
 
         [TestMethod]
