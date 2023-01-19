@@ -6,13 +6,12 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.6.2.0</AssemblyVersion>
-    <FileVersion>1.6.2.0</FileVersion>
-    <Version>1.6.2.0</Version>
+    <AssemblyVersion>1.6.3.0</AssemblyVersion>
+    <FileVersion>1.6.3.0</FileVersion>
+    <Version>1.6.3.0</Version>
     <PackageReleaseNotes>
-- Performance improvement: add prefixes to regex terminals (#161)
-- Performance improvement: new terminal for Excel functions (#163)
-- Fix: can't parse cell-like named range (#165)
+- Fix: restrict row numbers in cell address (#167)
+- Improve parser references, add parse tree node
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
