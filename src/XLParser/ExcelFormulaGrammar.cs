@@ -106,14 +106,15 @@ namespace XLParser
         #region References and names
 
         private const string ColumnPattern = @"(?:[A-W][A-Z]{1,2}|X[A-E][A-Z]|XF[A-D]|[A-Z]{1,2})";
+        private const string RowPattern = @"(?:104857[0-6]|10485[0-6][0-9]|1048[0-4][0-9]{2}|104[0-7][0-9]{3}|10[0-3][0-9]{4}|[1-9][0-9]{1,5}|[1-9])";
 
         private static readonly string[] ColumnPrefix = Enumerable.Range('A', 'Z' - 'A' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
         private static readonly string[] RowPrefix = Enumerable.Range('1', '9' - '1' + 1).Select(c => char.ToString((char)c)).Concat(new[] { "$" }).ToArray();
 
         public Terminal VRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenVRange, "[$]?" + ColumnPattern + ":[$]?" + ColumnPattern, ColumnPrefix);
-        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?[1-9][0-9]*:[$]?[1-9][0-9]*", RowPrefix);
+        public Terminal HRangeToken { get; } = new RegexBasedTerminal(GrammarNames.TokenHRange, "[$]?" + RowPattern + ":[$]?" + RowPattern, RowPrefix);
 
-        private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?[1-9][0-9]*";
+        private const string CellTokenRegex = "[$]?" + ColumnPattern + "[$]?" + RowPattern;
         public Terminal CellToken { get; } = new RegexBasedTerminal(GrammarNames.TokenCell, CellTokenRegex, ColumnPrefix)
         { Priority = TerminalPriority.CellToken };
 
