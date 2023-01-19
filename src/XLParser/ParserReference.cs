@@ -148,7 +148,7 @@ namespace XLParser
 
         public override string ToString()
         {
-            return ReferenceType == ReferenceType.Cell ? MinLocation.ToString() : string.Format("{0}:{1}", MinLocation, MaxLocation);
+            return LocationString;
         }
     }
 }
