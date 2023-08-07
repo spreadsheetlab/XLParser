@@ -430,6 +430,7 @@ namespace XLParser
 
             StructuredReferenceSpecifier.Rule =
                   SRSpecifierToken
+                | at
                 | OpenSquareParen + SRSpecifierToken + CloseSquareParen;
 
             StructuredReferenceColumn.Rule =
