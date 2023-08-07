@@ -490,6 +490,25 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void StructuredTableReferenceWithSheetReference()
+        {
+            // See https://github.com/spreadsheetlab/XLParser/issues/170
+            List<ParserReference> references = new FormulaAnalyzer("=VLOOKUP([@ProductNumber],Sheet2!A:B,1,FALSE)").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
+            Assert.AreEqual(null, references[0].Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references[0].TableSpecifiers);
+            CollectionAssert.AreEqual(new[] {"ProductNumber"}, references[0].TableColumns);
+
+            Assert.AreEqual(ReferenceType.VerticalRange, references[1].ReferenceType);
+            Assert.AreEqual("Sheet2", references[1].Worksheet);
+            Assert.AreEqual("A", references[1].MinLocation);
+            Assert.AreEqual("B", references[1].MaxLocation);
+        }
+
+        [TestMethod]
         public void SheetWithUnderscore()
         {
             ParseTree parseResult = ExcelFormulaParser.ParseToTree("aap_noot!B12");
