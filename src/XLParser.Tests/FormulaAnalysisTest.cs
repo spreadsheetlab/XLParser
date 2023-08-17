@@ -281,6 +281,19 @@ namespace XLParser.Tests
             CollectionAssert.AreEqual(new[] {"Region"}, references.First().TableColumns);
         }
 
+        // See https://github.com/spreadsheetlab/XLParser/issues/173
+        [TestMethod]
+        public void StructuredTableReferenceWholeRow()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("=INDEX(Table1[@],2)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Table, references.First().ReferenceType);
+            Assert.AreEqual("Table1", references.First().Name);
+            CollectionAssert.AreEqual(new[] {"@"}, references.First().TableSpecifiers);
+            CollectionAssert.AreEqual(new string[] {}, references.First().TableColumns);
+        }
+
         [TestMethod]
         public void StructuredTableReferenceColumns()
         {
