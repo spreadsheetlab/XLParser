@@ -190,11 +190,11 @@ namespace XLParser
         public Terminal MultipleSheetsQuotedToken = new RegexBasedTerminal(GrammarNames.TokenMultipleSheetsQuoted, multiSheetQuotedRegex)
         { Priority = TerminalPriority.MultipleSheetsToken };
 
-        private const string fileNameNumericRegex = @"\[[0-9]+\](?=[^\[\]]*!)";
+        private const string fileNameNumericRegex = @"\[[0-9]+\](?!,)(?=.*!)";
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex, "[")
         { Priority = TerminalPriority.FileNameNumericToken };
 
-        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?=[^\[\]]*!)";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?!,)(?=.*!)";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex, "[")
         { Priority = TerminalPriority.FileName };
 
