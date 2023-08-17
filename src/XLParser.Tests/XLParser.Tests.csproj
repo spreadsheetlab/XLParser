@@ -10,8 +10,8 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <DefineConstants>$(DefineConstants);_NETCORE_</DefineConstants>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6'">
+    <DefineConstants>$(DefineConstants);_NET6_</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
