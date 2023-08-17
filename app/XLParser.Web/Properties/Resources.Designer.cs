@@ -843,5 +843,70 @@ namespace XLParser.Web.Properties {
                 return ResourceManager.GetString("ExcelBuiltinFunctionList_v163", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ABS
+        ///ACCRINT
+        ///ACCRINTM
+        ///ACOS
+        ///ACOSH
+        ///ACOT
+        ///ACOTH
+        ///ADDRESS
+        ///AGGREGATE
+        ///AMORDEGRC
+        ///AMORLINC
+        ///AND
+        ///ARABIC
+        ///AREAS
+        ///ARRAYTOTEXT
+        ///ASC
+        ///ASIN
+        ///ASINH
+        ///ATAN
+        ///ATAN2
+        ///ATANH
+        ///AVEDEV
+        ///AVERAGE
+        ///AVERAGEA
+        ///AVERAGEIF
+        ///AVERAGEIFS
+        ///BAHTTEXT
+        ///BASE
+        ///BESSELI
+        ///BESSELJ
+        ///BESSELK
+        ///BESSELY
+        ///BETA.DIST
+        ///BETA.INV
+        ///BETADIST
+        ///BETAINV
+        ///BIN2DEC
+        ///BIN2HEX
+        ///BIN2OCT
+        ///BINOM.DIST
+        ///BINOM.DIST.RANGE
+        ///BINOM.INV
+        ///BINOMDIST
+        ///BITAND
+        ///BITLSHIFT
+        ///BITOR
+        ///BITRSHIFT
+        ///BITXOR
+        ///CALL
+        ///CEILING
+        ///CEILING.MATH
+        ///CEILING.PRECISE
+        ///CELL
+        ///CHAR
+        ///CHIDIST
+        ///CHIINV
+        ///CHISQ.DIS [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExcelBuiltinFunctionList_v170 {
+            get {
+                return ResourceManager.GetString("ExcelBuiltinFunctionList_v170", resourceCulture);
+            }
+        }
     }
 }
