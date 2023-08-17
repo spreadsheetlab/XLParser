@@ -6,12 +6,13 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.6.3.0</AssemblyVersion>
-    <FileVersion>1.6.3.0</FileVersion>
-    <Version>1.6.3.0</Version>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <FileVersion>1.7.0.0</FileVersion>
+    <Version>1.7.0.0</Version>
     <PackageReleaseNotes>
-- Fix: restrict row numbers in cell address (#167)
-- Improve parser references, add parse tree node
+- Target netstandard2.0 (#178)
+- Fix: cannot parse table reference to whole row (#177)
+- Fix: cannot parse table reference followed by sheet reference (#179)
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
