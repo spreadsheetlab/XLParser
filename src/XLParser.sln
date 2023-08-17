@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser", "XLParser\XLParser.csproj", "{FB048D20-29FD-4D2C-A336-59F93F9A68F3}"
 EndProject
@@ -9,33 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XLParser.Tests", "XLParser.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Build|Any CPU = Build|Any CPU
 		Debug|Any CPU = Debug|Any CPU
-		Production|Any CPU = Production|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Staging|Any CPU = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Build|Any CPU.ActiveCfg = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Build|Any CPU.Build.0 = Release|Any CPU
 		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Production|Any CPU.Build.0 = Release|Any CPU
 		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Staging|Any CPU.ActiveCfg = Release|Any CPU
-		{FB048D20-29FD-4D2C-A336-59F93F9A68F3}.Staging|Any CPU.Build.0 = Release|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Build|Any CPU.ActiveCfg = Release|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Build|Any CPU.Build.0 = Release|Any CPU
 		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Production|Any CPU.Build.0 = Release|Any CPU
 		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Staging|Any CPU.ActiveCfg = Release|Any CPU
-		{699A456A-7028-41EA-9CD0-96D1ED4DDF75}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
