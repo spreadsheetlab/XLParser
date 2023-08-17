@@ -17,9 +17,11 @@
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/spreadsheetlab/XLParser</RepositoryUrl>
     <Copyright>Mozilla Public License, version 2.0</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\signing.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
     <DefineConstants>$(DefineConstants);_NET462_</DefineConstants>
