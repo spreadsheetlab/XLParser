@@ -475,7 +475,7 @@ namespace XLParser
         /// </summary>
         public static bool IsRange(this ParseTreeNode input)
         {
-            return input.IsBinaryReferenceOperation() && input.ChildNodes[1].Is(":");
+            return input.IsBinaryReferenceOperation() && input.ChildNodes[1].Is(":") && input.ChildNodes[0].ChildNodes.Last().Type() == input.ChildNodes[2].ChildNodes.Last().Type();
         }
 
         /// <summary>
