@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Irony.Parsing;
 
 namespace XLParser
@@ -425,49 +424,33 @@ namespace XLParser
                 default:
                     if (node.IsRange())
                     {
-                        var rangeStart = GetParserReferences(node.ChildNodes[0].SkipToRelevant()).ToArray();
-                        var rangeEnd = GetParserReferences(node.ChildNodes[2].SkipToRelevant()).ToArray();
-                        if (IsCellReference(rangeStart) && IsCellReference(rangeEnd))
+                        var rangeStart = GetParserReferences(node.ChildNodes[0].SkipToRelevant()).First();
+                        var rangeEnd = GetParserReferences(node.ChildNodes[2].SkipToRelevant()).First();
+                        if (rangeStart.ReferenceType == ReferenceType.Cell && rangeEnd.ReferenceType == ReferenceType.Cell)
                         {
-                            ParserReference range = rangeStart.First();
-                            range.MaxLocation = rangeEnd.First().MinLocation;
+                            ParserReference range = rangeStart;
+                            range.MaxLocation = rangeEnd.MinLocation;
                             range.ReferenceType = ReferenceType.CellRange;
                             range.ReferenceNode = node;
                             range.LocationString = node.Print();
                             list.Add(range);
+                            break;
                         }
-                        else if (IsTableReference(rangeStart) && IsTableReference(rangeEnd) && rangeStart.First().Name == rangeEnd.First().Name && rangeStart.First().TableColumns.Length == 1 && rangeEnd.First().TableColumns.Length == 1)
+                        if (rangeStart.ReferenceType == ReferenceType.Table && rangeEnd.ReferenceType == ReferenceType.Table && rangeStart.Name == rangeEnd.Name && rangeStart.TableColumns.Length == 1 && rangeEnd.TableColumns.Length == 1)
                         {
-                            ParserReference range = rangeStart.First();
-                            range.TableColumns = rangeStart.First().TableColumns.Concat(rangeEnd.First().TableColumns).ToArray();
-                            range.TableSpecifiers = rangeStart.First().TableSpecifiers.SequenceEqual(rangeEnd.First().TableSpecifiers) ? range.TableSpecifiers : new string[0];
+                            ParserReference range = rangeStart;
+                            range.TableColumns = rangeStart.TableColumns.Concat(rangeEnd.TableColumns).ToArray();
+                            range.TableSpecifiers = rangeStart.TableSpecifiers.SequenceEqual(rangeEnd.TableSpecifiers) ? range.TableSpecifiers : new string[0];
                             range.ReferenceNode = node;
                             range.LocationString = node.Print();
                             list.Add(range);
-                        }
-                        else
-                        {
-                            list.AddRange(rangeStart);
-                            list.AddRange(rangeEnd);
+                            break;
                         }
                     }
-                    else
-                    {
-                        list.AddRange(node.GetReferenceNodes().SelectMany(x => x.GetParserReferences()));
-                    }
+                    list.AddRange(node.GetReferenceNodes().SelectMany(x => x.GetParserReferences()));
                     break;
             }
             return list;
-        }
-
-        private static bool IsCellReference(IList<ParserReference> references)
-        {
-            return references.Count == 1 && references.First().ReferenceType == ReferenceType.Cell;
-        }
-
-        private static bool IsTableReference(IList<ParserReference> references)
-        {
-            return references.Count == 1 && references.First().ReferenceType == ReferenceType.Table;
         }
 
         /// <summary>
