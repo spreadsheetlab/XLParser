@@ -1224,7 +1224,18 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void RangeWithReferenceFunction()
+        public void RangeWithReferenceInFunction()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("SUM(F13:OFFSET(E13,0,12))").ParserReferences().ToList();
+
+            //no reference for the range with the offset function
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual("F13", references.First().LocationString);
+            Assert.AreEqual("E13", references.Last().LocationString);
+        }
+
+        [TestMethod]
+        public void RangeWithReferencesInFunction()
         {
             List<ParserReference> references = new FormulaAnalyzer("SUM(A1:INDEX(A:A,1,1:1))").ParserReferences().ToList();
 
@@ -1275,7 +1286,6 @@ namespace XLParser.Tests
             Assert.AreEqual("Sheet1!$A$1", references[0].LocationString);
             Assert.AreEqual("Sheet1!$B$2", references[1].LocationString);
         }
-
         #endregion
 
         #region Depth() and ConditionalComplexity()
