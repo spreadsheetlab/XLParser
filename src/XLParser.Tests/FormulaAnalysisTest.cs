@@ -1286,6 +1286,22 @@ namespace XLParser.Tests
             Assert.AreEqual("Sheet1!$A$1", references[0].LocationString);
             Assert.AreEqual("Sheet1!$B$2", references[1].LocationString);
         }
+
+        [TestMethod]
+        public void UserDefinedFunction()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='C:\AddIns\Something.xlam'!fT_Value(A1)").ParserReferences().ToList();
+            Assert.AreEqual(2, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedFunction, references[0].ReferenceType);
+            Assert.AreEqual(@"C:\AddIns\", references[0].FilePath);
+            Assert.AreEqual("Something.xlam", references[0].FileName);
+            Assert.AreEqual("fT_Value", references[0].Name);
+            Assert.AreEqual(@"'C:\AddIns\Something.xlam'!fT_Value", references[0].LocationString);
+
+            Assert.AreEqual(ReferenceType.Cell, references[1].ReferenceType);
+            Assert.AreEqual("A1", references[1].LocationString);
+        }
         #endregion
 
         #region Depth() and ConditionalComplexity()

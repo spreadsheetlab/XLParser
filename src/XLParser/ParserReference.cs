@@ -11,7 +11,8 @@ namespace XLParser
         HorizontalRange,
         VerticalRange,
         RefError,
-        Table
+        Table,
+        UserDefinedFunction
     }
 
     public class ParserReference
@@ -102,10 +103,19 @@ namespace XLParser
                 case GrammarNames.RefError:
                     ReferenceType = ReferenceType.RefError;
                     break;
+                case GrammarNames.UDFunctionCall:
+                    ReferenceType = ReferenceType.UserDefinedFunction;
+                    Name = node.ChildNodes[0].ChildNodes[0].Token.ValueString.TrimEnd('(');
+                    break;
             }
 
             ReferenceNode = node;
             LocationString = node.Print();
+
+            if (ReferenceType == ReferenceType.UserDefinedFunction && Name != null)
+            {
+                LocationString = LocationString.Substring(0, LocationString.IndexOf('(', LocationString.LastIndexOf(Name, System.StringComparison.Ordinal)));
+            }
         }
 
         private string UnEscape(string value, string escapeCharacter)
