@@ -44,7 +44,6 @@
                         <option value="150">1.5.0</option>
                         <option value="142">1.4.2</option>
                         <option value="141">1.4.1</option>
-                        <option value="1310">1.3.10</option>
                         <option value="139">1.3.9</option>
                         <option value="120">1.2.0</option>
                         <option value="114">1.1.4</option>

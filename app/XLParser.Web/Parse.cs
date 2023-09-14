@@ -190,11 +190,6 @@ namespace XLParser.Web
                     _print = XLParserVersions.v139.ExcelFormulaParser.Print;
                     _grammar = typeof(XLParserVersions.v139.ExcelFormulaGrammar);
                     break;
-                case "1310":
-                    _parse = XLParserVersions.v1310.ExcelFormulaParser.Parse;
-                    _print = XLParserVersions.v1310.ExcelFormulaParser.Print;
-                    _grammar = typeof(XLParserVersions.v1310.ExcelFormulaGrammar);
-                    break;
                 case "141":
                     _parse = XLParserVersions.v141.ExcelFormulaParser.Parse;
                     _print = XLParserVersions.v141.ExcelFormulaParser.Print;
