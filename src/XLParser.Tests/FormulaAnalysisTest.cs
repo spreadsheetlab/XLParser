@@ -1213,6 +1213,44 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void RefError()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("#REF!").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.RefError, references.First().ReferenceType);
+            Assert.AreEqual("#REF!", references.First().LocationString);
+        }
+
+        [TestMethod]
+        public void RefErrorRange()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("#REF!:#REF!").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual("#REF!", references.First().LocationString);
+            Assert.AreEqual("#REF!", references.Last().LocationString);
+        }
+
+        [TestMethod]
+        public void RefErrorCellRange()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("A1:#REF!").ParserReferences().ToList();
+
+            Assert.AreEqual(2, references.Count);
+            Assert.AreEqual("A1", references.First().LocationString);
+            Assert.AreEqual("#REF!", references.Last().LocationString);
+        }
+
+        [TestMethod]
+        public void IndirectFunctionRange()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"INDIRECT(""A3""):INDIRECT(""A20000"")").ParserReferences().ToList();
+
+            Assert.AreEqual(0, references.Count);
+        }
+
+        [TestMethod]
         public void ReferenceFunctionAsArgument()
         {
             List<ParserReference> references = new FormulaAnalyzer("ROUND(INDEX(A:A,1,1:1),1)").ParserReferences().ToList();
