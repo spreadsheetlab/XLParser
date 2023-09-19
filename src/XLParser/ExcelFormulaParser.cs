@@ -425,9 +425,9 @@ namespace XLParser
                 default:
                     if (node.IsRange())
                     {
-                        var rangeStart = GetParserReferences(node.ChildNodes[0].SkipToRelevant()).First();
-                        var rangeEnd = GetParserReferences(node.ChildNodes[2].SkipToRelevant()).First();
-                        if (rangeStart.ReferenceType == ReferenceType.Cell && rangeEnd.ReferenceType == ReferenceType.Cell)
+                        var rangeStart = GetParserReferences(node.ChildNodes[0]).FirstOrDefault();
+                        var rangeEnd = GetParserReferences(node.ChildNodes[2]).FirstOrDefault();
+                        if (rangeStart?.ReferenceType == ReferenceType.Cell && rangeEnd?.ReferenceType == ReferenceType.Cell)
                         {
                             ParserReference range = rangeStart;
                             range.MaxLocation = rangeEnd.MinLocation;
@@ -437,7 +437,7 @@ namespace XLParser
                             list.Add(range);
                             break;
                         }
-                        if (rangeStart.ReferenceType == ReferenceType.Table && rangeEnd.ReferenceType == ReferenceType.Table && rangeStart.Name == rangeEnd.Name && rangeStart.TableColumns.Length == 1 && rangeEnd.TableColumns.Length == 1)
+                        if (rangeStart?.ReferenceType == ReferenceType.Table && rangeEnd?.ReferenceType == ReferenceType.Table && rangeStart.Name == rangeEnd.Name && rangeStart.TableColumns.Length == 1 && rangeEnd.TableColumns.Length == 1)
                         {
                             ParserReference range = rangeStart;
                             range.TableColumns = rangeStart.TableColumns.Concat(rangeEnd.TableColumns).ToArray();
