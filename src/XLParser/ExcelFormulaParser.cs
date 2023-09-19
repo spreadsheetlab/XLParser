@@ -415,6 +415,7 @@ namespace XLParser
                 case GrammarNames.HorizontalRange:
                 case GrammarNames.VerticalRange:
                 case GrammarNames.StructuredReference:
+                case GrammarNames.RefError:
                     list.Add(new ParserReference(node));
                     break;
                 case GrammarNames.Reference:
