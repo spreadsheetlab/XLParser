@@ -245,6 +245,11 @@ namespace XLParser.Web
                     _print = XLParserVersions.v171.ExcelFormulaParser.Print;
                     _grammar = typeof(XLParserVersions.v171.ExcelFormulaGrammar);
                     break;
+                case "172":
+                    _parse = XLParserVersions.v172.ExcelFormulaParser.Parse;
+                    _print = XLParserVersions.v172.ExcelFormulaParser.Print;
+                    _grammar = typeof(XLParserVersions.v172.ExcelFormulaGrammar);
+                    break;
                 default:
                     throw new ArgumentException($"Version {version} doesn't exist");
             }
