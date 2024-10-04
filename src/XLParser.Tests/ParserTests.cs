@@ -128,7 +128,13 @@ namespace XLParser.Tests
             Test("false");
         }
 
-
+        [TestMethod]
+        public void Number()
+        {
+            Test("123");
+            Test("0.95");
+            Test(".95");
+        }
 
         [TestMethod]
         public void Range()

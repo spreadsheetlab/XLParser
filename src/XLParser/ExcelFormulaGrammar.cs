@@ -61,7 +61,7 @@ namespace XLParser
             Priority = TerminalPriority.Bool
         };
 
-        public Terminal NumberToken { get; } = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.None)
+        public Terminal NumberToken { get; } = new NumberLiteral(GrammarNames.TokenNumber, NumberOptions.AllowStartEndDot)
         {
             DefaultIntTypes = new[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt }
         };
