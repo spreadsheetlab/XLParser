@@ -205,7 +205,7 @@ namespace XLParser
 
         // Source: http://stackoverflow.com/a/6416209/572635
         private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ @]+)\\(([^<>\"" /\|?*\\']|( |''))*\\)*";
-        private const string urlPathRegex = @"http(s?)\:\/\/\p{L}([-.\w]*[\p{L}])*(:[0-9]*)*[/]([\p{L}0-9\-\.\?\,\'+&%\$#_ ()]*[/])*";
+        private const string urlPathRegex = @"http(s?)\:\/\/[\p{L}\p{M}]([-.\w]*[\p{L}\p{M}])*(:[0-9]*)*[/]([\p{L}\p{M}0-9\-\.\?\,\'+&%\$#_ ()]*[/])*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)
         { Priority = TerminalPriority.FileNamePath };
