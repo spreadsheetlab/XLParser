@@ -648,13 +648,37 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void ExternalWorkbookUrlPathHttpWithPortNUmberInPath()
+        public void ExternalWorkbookUrlPathHttpWithPortNumberInPath()
         {
             // See [#194](https://github.com/spreadsheetlab/XLParser/issues/194)
             List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com:1234/test/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(@"http://example.com:1234/test/", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithSpecialLetters()
+        {
+            // See [#192](https://github.com/spreadsheetlab/XLParser/issues/192)
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/tëst/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://example.com/tëst/", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithEscapedSingleQuote()
+        {
+            // See [#193](https://github.com/spreadsheetlab/XLParser/issues/193)
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/test''/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://example.com/test'/", references.First().FilePath);
             Assert.AreEqual("Book1.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
