@@ -59,7 +59,7 @@ namespace XLParser
 
                     if (prefix.HasFilePath)
                     {
-                        FilePath = prefix.FilePath;
+                        FilePath = prefix.FilePath.Replace("''", "'");
                     }
 
                     if (prefix.HasFileNumber)
