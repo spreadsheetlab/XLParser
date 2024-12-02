@@ -32,6 +32,6 @@
     <EmbeddedResource Include="Resources\ExcelBuiltinFunctionList.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.2.0" />
+    <PackageReference Include="Irony" Version="1.5.3" />
   </ItemGroup>
 </Project>
