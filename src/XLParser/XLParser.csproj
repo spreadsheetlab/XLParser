@@ -22,12 +22,6 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
-    <DefineConstants>$(DefineConstants);_NET462_</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExcelBuiltinFunctionList.txt" />
   </ItemGroup>
