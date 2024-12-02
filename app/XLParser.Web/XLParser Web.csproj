@@ -93,6 +93,7 @@
     <None Include="Resources\ExcelBuiltinFunctionList-v170.txt" />
     <None Include="Resources\ExcelBuiltinFunctionList-v171.txt" />
     <None Include="Resources\ExcelBuiltinFunctionList-v172.txt" />
+    <None Include="Resources\ExcelBuiltinFunctionList-v173.txt" />
     <Content Include="Web.config" />
     <Content Include="xlparser-web.css" />
   </ItemGroup>
@@ -175,6 +176,11 @@
     <Compile Include="XLParserVersions\v172\ParserReference.cs" />
     <Compile Include="XLParserVersions\v172\PrefixInfo.cs" />
     <Compile Include="XLParserVersions\v172\WordsTerminal.cs" />
+    <Compile Include="XLParserVersions\v173\ExcelFormulaGrammar.cs" />
+    <Compile Include="XLParserVersions\v173\ExcelFormulaParser.cs" />
+    <Compile Include="XLParserVersions\v173\ParserReference.cs" />
+    <Compile Include="XLParserVersions\v173\PrefixInfo.cs" />
+    <Compile Include="XLParserVersions\v173\WordsTerminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
