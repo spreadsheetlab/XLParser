@@ -1,24 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net6</TargetFrameworks>
+    <TargetFrameworks>net462;net8.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\signing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6'">
-    <DefineConstants>$(DefineConstants);_NET6_</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="Irony" Version="1.5.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
   </ItemGroup>
 
   <ItemGroup>

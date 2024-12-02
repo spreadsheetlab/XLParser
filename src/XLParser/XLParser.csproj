@@ -22,16 +22,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
-    <DefineConstants>$(DefineConstants);_NET462_</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExcelBuiltinFunctionList.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.2.0" />
+    <PackageReference Include="Irony" Version="1.5.3" />
   </ItemGroup>
 </Project>
