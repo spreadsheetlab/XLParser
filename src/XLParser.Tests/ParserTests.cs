@@ -833,6 +833,18 @@ namespace XLParser.Tests
             Test("=[Book1.xlsx]!Salary");
         }
 
+
+        [TestMethod]
+        public void TestTableRefAndSheetRef()
+        {
+            Test("=[row1]*Sheet1!A1");
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookWithoutPathAndMultiSheetRef()
+        {
+            Test("=[Book1]Sheet1:Sheet2!A1");
+        }
         [TestMethod]
         public void ExternalWorkbookWithoutPathAndExtension()
         {
