@@ -336,7 +336,7 @@ namespace XLParser
             Argument.Rule = Formula | EmptyArgument;
 
             PrefixOp.Rule =
-                ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
+                  ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
                 | ImplyPrecedenceHere(Precedence.UnaryPreFix) + minop
                 | ImplyPrecedenceHere(Precedence.UnaryPreFix) + at;
             MarkTransient(PrefixOp);
