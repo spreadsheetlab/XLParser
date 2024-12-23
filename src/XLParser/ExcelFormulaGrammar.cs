@@ -199,7 +199,7 @@ namespace XLParser
         { Priority = TerminalPriority.FileName };
 
         // Source: https://stackoverflow.com/a/14632579
-        private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
+        private const string fileNameRegex = @"[^\.\\\[\]]+\.[a-zA-z]{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
         { Priority = TerminalPriority.FileName };
 

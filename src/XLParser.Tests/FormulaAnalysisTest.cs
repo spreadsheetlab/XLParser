@@ -1002,6 +1002,15 @@ namespace XLParser.Tests
             Assert.AreEqual("Articles.xlsx", references[0].FileName);
         }
 
+        [TestMethod]
+        public void ExternalWorkbookWithXlsExtension()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"C:\path\test.xls!name").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("test.xls", references[0].FileName);
+        }
 
         [TestMethod]
         public void ExternalWorkbookQuotesInPath()
