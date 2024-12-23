@@ -377,6 +377,7 @@ namespace XLParser
                 | OpenParen + Union + CloseParen
                 | RefFunctionName + Arguments + CloseParen
                 | Reference + hash
+                | exclamationMark + Reference
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
@@ -479,6 +480,7 @@ namespace XLParser
             RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop);
             RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop, hash);
             RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, at);
+            RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, exclamationMark);
             RegisterOperators(Precedence.Union, Associativity.Left, comma);
             RegisterOperators(Precedence.Intersection, Associativity.Left, intersectop);
             RegisterOperators(Precedence.Range, Associativity.Left, colon);
