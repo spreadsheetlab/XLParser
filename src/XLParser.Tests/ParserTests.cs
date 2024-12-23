@@ -87,9 +87,11 @@ namespace XLParser.Tests
         [TestMethod]
         public void UnaryOperators()
         {
-            Test(new [] {"+A5", "-1", "1%"},
+            Test(new [] {"+A5", "-1", "1%", "!A1"},
             n=> n.IsUnaryOperation() && n.IsOperation());
             Test("-1", node => node.GetFunction() == "-");
+            Test("!A1", node => node.GetFunction() == "!");
+
         }
 
         [TestMethod]
@@ -996,6 +998,12 @@ namespace XLParser.Tests
             Test("='\\\\TEST-01\\Folder\\[Book1.xlsx]Sheet1'!$A$1+'\\\\TEST-01\\[Folder]\\[Book1.xlsx]Sheet1'!$A$2",
                 tree =>
                     tree.AllNodes().Count(x => x.Is(GrammarNames.Reference)) == 2);
+        }
+
+        [TestMethod]
+        public void TestTest()
+        {
+            Test("!A1");
         }
     }
 }

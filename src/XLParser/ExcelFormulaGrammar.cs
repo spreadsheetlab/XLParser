@@ -336,9 +336,10 @@ namespace XLParser
             Argument.Rule = Formula | EmptyArgument;
 
             PrefixOp.Rule =
-                  ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
+                ImplyPrecedenceHere(Precedence.UnaryPreFix) + plusop
                 | ImplyPrecedenceHere(Precedence.UnaryPreFix) + minop
-                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + at;
+                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + at
+                | ImplyPrecedenceHere(Precedence.UnaryPreFix) + exclamationMark;
             MarkTransient(PrefixOp);
 
             InfixOp.Rule =
@@ -478,7 +479,7 @@ namespace XLParser
             RegisterOperators(Precedence.Multiplication, Associativity.Left, mulop, divop);
             RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop);
             RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop, hash);
-            RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, at);
+            RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, at, exclamationMark);
             RegisterOperators(Precedence.Union, Associativity.Left, comma);
             RegisterOperators(Precedence.Intersection, Associativity.Left, intersectop);
             RegisterOperators(Precedence.Range, Associativity.Left, colon);
