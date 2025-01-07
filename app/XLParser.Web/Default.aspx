@@ -34,7 +34,8 @@
                 </td>
                 <td>
                     <select id="parserversionselected">
-                        <option value="173" selected>1.7.3</option>
+                        <option value="174" selected>1.7.4</option>
+                        <option value="173">1.7.3</option>
                         <option value="172">1.7.2</option>
                         <option value="171">1.7.1</option>
                         <option value="170">1.7.0</option>
