@@ -1049,6 +1049,14 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void RelativeSheetReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("!A1").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual("A1", references.First().MinLocation);
+        }
+
+        [TestMethod]
         public void FileReference()
         {
             List<ParserReference> references = new FormulaAnalyzer("[2]Sheet1!X1").ParserReferences().ToList();
