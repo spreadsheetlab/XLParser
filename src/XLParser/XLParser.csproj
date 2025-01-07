@@ -6,11 +6,13 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.7.2.0</AssemblyVersion>
-    <FileVersion>1.7.2.0</FileVersion>
-    <Version>1.7.2.0</Version>
+    <AssemblyVersion>1.7.3.0</AssemblyVersion>
+    <FileVersion>1.7.3.0</FileVersion>
+    <Version>1.7.3.0</Version>
     <PackageReleaseNotes>
-- Fix: exception for parser references of special ranges (#184)
+- Allow numbers that start with decimal point (#191)
+- Fixed issues related to external workbook url path (#195)
+- Update packages to latest version (#196)
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
@@ -22,16 +24,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
-    <DefineConstants>$(DefineConstants);_NET462_</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);_NETSTANDARD_</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExcelBuiltinFunctionList.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Irony" Version="1.2.0" />
+    <PackageReference Include="Irony" Version="1.5.3" />
   </ItemGroup>
 </Project>

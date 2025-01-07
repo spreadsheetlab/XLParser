@@ -602,17 +602,6 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void ExternalWorkbookNetworkPath()
-        {
-            List<ParserReference> references = new FormulaAnalyzer(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
-
-            Assert.AreEqual(1, references.Count);
-            Assert.AreEqual(@"\\TEST-01\Folder\", references.First().FilePath);
-            Assert.AreEqual("Book1.xlsx", references.First().FileName);
-            Assert.AreEqual("Sheet1", references.First().Worksheet);
-        }
-
-        [TestMethod]
         public void ExternalWorkbookUrlPathHttp()
         {
             List<ParserReference> references = new FormulaAnalyzer(@"='http://example.com/test/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
@@ -707,6 +696,29 @@ namespace XLParser.Tests
             Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
+        [TestMethod]
+        public void ExternalWorkbookNetworkPath()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\TEST-01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"\\TEST-01\Folder\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookNetworkPathWithTilde()
+        {
+            //See [#205] (https://github.com/spreadsheetlab/XLParser/issues/205)
+            List<ParserReference> references = new FormulaAnalyzer(@"='\\TEST-~01\Folder\[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"\\TEST-~01\Folder\", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+        
         [TestMethod]
         public void ExternalWorkbookNetworkPathWithSpace()
         {
@@ -1026,6 +1038,15 @@ namespace XLParser.Tests
             Assert.AreEqual("Articles.xlsx", references[0].FileName);
         }
 
+        [TestMethod]
+        public void ExternalWorkbookWithXlsExtension()
+        {
+            List<ParserReference> references = new FormulaAnalyzer(@"C:\path\test.xls!name").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+
+            Assert.AreEqual(ReferenceType.UserDefinedName, references[0].ReferenceType);
+            Assert.AreEqual("test.xls", references[0].FileName);
+        }
 
         [TestMethod]
         public void ExternalWorkbookQuotesInPath()
@@ -1070,6 +1091,14 @@ namespace XLParser.Tests
             Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
             Assert.AreEqual("X1", references.First().MinLocation);
+        }
+
+        [TestMethod]
+        public void RelativeSheetReference()
+        {
+            List<ParserReference> references = new FormulaAnalyzer("!A1").ParserReferences().ToList();
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual("A1", references.First().MinLocation);
         }
 
         [TestMethod]

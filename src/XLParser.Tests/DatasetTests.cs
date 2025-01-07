@@ -65,9 +65,7 @@ namespace XLParser.Tests
                     {
                         lock (lockObj)
                         {
-#if !_NET6_
                             TestContext.WriteLine($"Failed parsing line {lineNumber} <<{formula}>>");
-#endif
                             parseErrors++;
                         }
                     }

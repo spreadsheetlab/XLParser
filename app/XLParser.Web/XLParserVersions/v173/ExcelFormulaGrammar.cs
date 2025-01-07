@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace XLParser
+namespace XLParser.Web.XLParserVersions.v173
 {
     /// <summary>
     /// Contains the XLParser grammar
@@ -194,18 +194,18 @@ namespace XLParser
         public Terminal FileNameNumericToken = new RegexBasedTerminal(GrammarNames.TokenFileNameNumeric, fileNameNumericRegex, "[")
         { Priority = TerminalPriority.FileNameNumericToken };
 
-        private static readonly string fileNameInBracketsRegex = @"\[[^\[\]]+\]" + $"(?={normalSheetName}|{quotedSheetName}'|!)";
+        private const string fileNameInBracketsRegex = @"\[[^\[\]]+\](?!,)(?=.*!)";
         public Terminal FileNameEnclosedInBracketsToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFileNameEnclosedInBrackets, fileNameInBracketsRegex, "[")
         { Priority = TerminalPriority.FileName };
 
         // Source: https://stackoverflow.com/a/14632579
-        private const string fileNameRegex = @"[^\.\\\[\]]+\.[a-zA-z]{1,4}";
+        private const string fileNameRegex = @"[^\.\\\[\]]+\..{1,4}";
         public Terminal FileName { get; } = new RegexBasedTerminal(GrammarNames.TokenFileName, fileNameRegex)
         { Priority = TerminalPriority.FileName };
 
         // Source: http://stackoverflow.com/a/6416209/572635
-        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ @~]+)\\(([^<>\"" /\|?*\\']|( |''))*\\)*";
-        private const string urlPathRegex = @"https?\:(//|\\\\)[\p{L}\p{N}\-_.]+(:[0-9]+)?(/|\\)([\p{L}\p{N}\-_.?,'+&%\$# ()~]*(/|\\))*";
+        private const string windowsFilePathRegex = @"(?:[a-zA-Z]:|\\?\\?[\w\-.$ @]+)\\(([^<>\"" /\|?*\\']|( |''))*\\)*";
+        private const string urlPathRegex = @"http(s?)\://([\p{L}\p{N}-_]+\.[\p{L}\p{N}-_]*)+(:[0-9]+)?/([\p{L}\p{N}\-\.\?\,\'+&%\$#_ ()]*/)*";
         private const string filePathRegex = @"(" + windowsFilePathRegex + @"|" + urlPathRegex + @")";
         public Terminal FilePathToken { get; } = new RegexBasedTerminal(GrammarNames.TokenFilePath, filePathRegex)
         { Priority = TerminalPriority.FileNamePath };
@@ -377,7 +377,6 @@ namespace XLParser
                 | OpenParen + Union + CloseParen
                 | RefFunctionName + Arguments + CloseParen
                 | Reference + hash
-                | exclamationMark + Reference
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
@@ -480,7 +479,6 @@ namespace XLParser
             RegisterOperators(Precedence.Exponentiation, Associativity.Left, expop);
             RegisterOperators(Precedence.UnaryPostFix, Associativity.Left, percentop, hash);
             RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, at);
-            RegisterOperators(Precedence.UnaryPreFix, Associativity.Left, exclamationMark);
             RegisterOperators(Precedence.Union, Associativity.Left, comma);
             RegisterOperators(Precedence.Intersection, Associativity.Left, intersectop);
             RegisterOperators(Precedence.Range, Associativity.Left, colon);
@@ -552,9 +550,8 @@ namespace XLParser
         private static string[] excelFunctionList => GetExcelFunctionList();
         private static string[] GetExcelFunctionList()
         {
-            var assembly = typeof(ExcelFormulaGrammar).GetTypeInfo().Assembly;
-            var resource = assembly.GetManifestResourceStream("XLParser.Resources.ExcelBuiltinFunctionList.txt");
-            using (var sr = new StreamReader(resource))
+            var resource = Properties.Resources.ExcelBuiltinFunctionList_v173;
+            using (var sr = new StringReader(resource))
                 return sr.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
