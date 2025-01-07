@@ -647,7 +647,6 @@ namespace XLParser.Tests
             Assert.AreEqual("Sheet1", references.First().Worksheet);
         }
 
-
         [TestMethod]
         public void ExternalWorkbookUrlPathHttpWithTildeInPath()
         {
@@ -656,6 +655,18 @@ namespace XLParser.Tests
 
             Assert.AreEqual(1, references.Count);
             Assert.AreEqual(@"http://example.com/~testfolder/", references.First().FilePath);
+            Assert.AreEqual("Book1.xlsx", references.First().FileName);
+            Assert.AreEqual("Sheet1", references.First().Worksheet);
+        }
+
+        [TestMethod]
+        public void ExternalWorkbookUrlPathHttpWithoutDot()
+        {
+            // See [#194](https://github.com/spreadsheetlab/XLParser/issues/194)
+            List<ParserReference> references = new FormulaAnalyzer(@"='http://localhost/testfolder/[Book1.xlsx]Sheet1'!$A$1").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(@"http://localhost/testfolder/", references.First().FilePath);
             Assert.AreEqual("Book1.xlsx", references.First().FileName);
             Assert.AreEqual("Sheet1", references.First().Worksheet);
         }

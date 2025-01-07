@@ -380,7 +380,7 @@ namespace XLParser
                 ;
 
             RefFunctionName.Rule = ExcelRefFunctionToken | ExcelConditionalRefFunctionToken;
-           
+
             Union.Rule = MakePlusRule(Union, comma, Reference);
 
             ReferenceItem.Rule =
