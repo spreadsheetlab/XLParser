@@ -626,6 +626,11 @@ namespace XLParser.Tests
             Test("'[2]Sheet1'!X1");
         }
 
+        [TestMethod]
+        public void TableReferenceWithSheetReference()
+        {
+            Test("=[row1]*Sheet1!A1");
+        }
 
         [TestMethod]
         public void SheetReferenceRange()
