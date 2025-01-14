@@ -531,7 +531,7 @@ namespace XLParser.Tests
 
             Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
             Assert.AreEqual("Table1", references[0].Name);
-            CollectionAssert.AreEqual(new[] { "Column" }, references[0].TableColumns);
+            CollectionAssert.AreEqual(new[] { " Column " }, references[0].TableColumns);
         }
 
         [TestMethod]

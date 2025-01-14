@@ -130,24 +130,24 @@ namespace XLParser
             return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);
         }
 
-        internal static void FixQuotedSheetNodeForWhitespace(ParseTreeNode quotedSheetNode, string sourceText)
+        internal static void FixPrecedingWhiteSpaces(ParseTreeNode parseTreeNode, string sourceText)
         {
-            var newPosition = GetSheetNamePositionFromSourceText(quotedSheetNode, sourceText);
-            SourceLocation currentLocation = quotedSheetNode.Span.Location;
+            var newPosition = GetNodePositionFromSourceText(parseTreeNode, sourceText);
+            SourceLocation currentLocation = parseTreeNode.Span.Location;
             if (newPosition == currentLocation.Position)
             {
                 return;
             }
 
             var newLocation = new SourceLocation(newPosition, currentLocation.Line, currentLocation.Column + currentLocation.Position - newPosition);
-            quotedSheetNode.Span = new SourceSpan(newLocation, quotedSheetNode.Span.EndPosition - newPosition);
+            parseTreeNode.Span = new SourceSpan(newLocation, parseTreeNode.Span.EndPosition - newPosition);
 
-            // Cannot directly assign to quotedSheetNode.Token.Text; it is read-only. Falling back on reflection.
+            // Cannot directly assign to parseTreeNode.Token.Text; it is read-only. Falling back on reflection.
             typeof(Token).GetField("Text", BindingFlags.Instance | BindingFlags.Public)
-                ?.SetValue(quotedSheetNode.Token, sourceText.Substring(newPosition, quotedSheetNode.Span.Length));
+                ?.SetValue(parseTreeNode.Token, sourceText.Substring(newPosition, parseTreeNode.Span.Length));
         }
 
-        private static int GetSheetNamePositionFromSourceText(ParseTreeNode nodeSheetQuoted, string sourceText)
+        private static int GetNodePositionFromSourceText(ParseTreeNode nodeSheetQuoted, string sourceText)
         {
             var startIndex = nodeSheetQuoted.Span.Location.Position;
 

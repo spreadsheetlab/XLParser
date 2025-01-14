@@ -75,27 +75,27 @@ namespace XLParser
                     break;
                 case GrammarNames.Cell:
                     ReferenceType = ReferenceType.Cell;
-                    MinLocation = node.ChildNodes[0].Token.ValueString;
+                    MinLocation = node.ChildNodes[0].Token.Text;
                     MaxLocation = MinLocation;
                     break;
                 case GrammarNames.NamedRange:
                     ReferenceType = ReferenceType.UserDefinedName;
-                    Name = node.ChildNodes[0].Token.ValueString;
+                    Name = node.ChildNodes[0].Token.Text;
                     break;
                 case GrammarNames.StructuredReference:
                     ReferenceType = ReferenceType.Table;
-                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceQualifier)?.ChildNodes[0].Token.ValueString;
-                    TableSpecifiers = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRSpecifier) || x.Is("@")).Select(x => UnEscape(x.Token.ValueString, "'")).ToArray();
-                    TableColumns = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRColumn)).Select(x => UnEscape(x.Token.ValueString, "'")).ToArray();
+                    Name = node.ChildNodes.FirstOrDefault(x => x.Type() == GrammarNames.StructuredReferenceQualifier)?.ChildNodes[0].Token.Text;
+                    TableSpecifiers = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRSpecifier) || x.Is("@")).Select(x => UnEscape(x.Token.Text, "'")).ToArray();
+                    TableColumns = node.AllNodes().Where(x => x.Is(GrammarNames.TokenSRColumn)).Select(x => UnEscape(x.Token.Text, "'")).ToArray();
                     break;
                 case GrammarNames.HorizontalRange:
-                    string[] horizontalLimits = node.ChildNodes[0].Token.ValueString.Split(':');
+                    string[] horizontalLimits = node.ChildNodes[0].Token.Text.Split(':');
                     ReferenceType = ReferenceType.HorizontalRange;
                     MinLocation = horizontalLimits[0];
                     MaxLocation = horizontalLimits[1];
                     break;
                 case GrammarNames.VerticalRange:
-                    string[] verticalLimits = node.ChildNodes[0].Token.ValueString.Split(':');
+                    string[] verticalLimits = node.ChildNodes[0].Token.Text.Split(':');
                     ReferenceType = ReferenceType.VerticalRange;
                     MinLocation = verticalLimits[0];
                     MaxLocation = verticalLimits[1];
@@ -105,7 +105,7 @@ namespace XLParser
                     break;
                 case GrammarNames.UDFunctionCall:
                     ReferenceType = ReferenceType.UserDefinedFunction;
-                    Name = node.ChildNodes[0].ChildNodes[0].Token.ValueString.TrimEnd('(');
+                    Name = node.ChildNodes[0].ChildNodes[0].Token.Text.TrimEnd('(');
                     break;
             }
 
