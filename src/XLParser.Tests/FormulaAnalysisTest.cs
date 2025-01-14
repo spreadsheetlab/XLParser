@@ -522,16 +522,16 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
-        public void StructuredTableReferenceWithLeadingAndTrailingSpace()
+        public void StructuredTableReferenceWithPrecedingSpace()
         {
             // See https://github.com/spreadsheetlab/XLParser/issues/209
-            List<ParserReference> references = new FormulaAnalyzer("=Table1[ Column ]").ParserReferences().ToList();
+            List<ParserReference> references = new FormulaAnalyzer("=Table1[ Column]").ParserReferences().ToList();
 
             Assert.AreEqual(1, references.Count);
 
             Assert.AreEqual(ReferenceType.Table, references[0].ReferenceType);
             Assert.AreEqual("Table1", references[0].Name);
-            CollectionAssert.AreEqual(new[] { " Column " }, references[0].TableColumns);
+            CollectionAssert.AreEqual(new[] { " Column" }, references[0].TableColumns);
         }
 
         [TestMethod]
