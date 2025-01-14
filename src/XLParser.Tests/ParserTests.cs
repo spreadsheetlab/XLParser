@@ -629,7 +629,7 @@ namespace XLParser.Tests
         [TestMethod]
         public void TableReferenceWithSheetReference()
         {
-            Test("=[row1]*Sheet1!A1");
+            Test("=SUM([Column1],' Sheet1'!A1)");
         }
 
         [TestMethod]
