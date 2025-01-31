@@ -59,11 +59,12 @@ namespace XLParser
                 intersect.Span = new SourceSpan(newLocation, 1);
             }
 
-            var quotedSheetNodes = tree.Root.AllNodes().Where(node => node.Is(GrammarNames.TokenSheetQuoted));
+            //Quoted sheets and SR Columns require the preceding whitespaces skipped by Irony as they are needed for unique sheet and column names
+            var precedingWhiteSpaceNodes = tree.Root.AllNodes().Where(node => node.Is(GrammarNames.TokenSheetQuoted) | node.Is(GrammarNames.TokenSRColumn));
 
-            foreach (ParseTreeNode quotedSheetNode in quotedSheetNodes)
+            foreach (ParseTreeNode precedingWhiteSpaceNode in precedingWhiteSpaceNodes)
             {
-                PrefixInfo.FixQuotedSheetNodeForWhitespace(quotedSheetNode, input);
+                PrefixInfo.FixPrecedingWhiteSpaces(precedingWhiteSpaceNode, input);
             }
 
             return tree;
