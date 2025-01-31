@@ -629,7 +629,11 @@ namespace XLParser.Tests
         [TestMethod]
         public void TableReferenceWithSheetReference()
         {
+            //See [#198] (https://github.com/spreadsheetlab/XLParser/issues/198)
             Test("=SUM([Column1],' Sheet1'!A1)");
+            Test("[Column1] + Sheet1!A1");
+            Test("=SUM([Column1],' Sheet1:Sheet2'!A1)");
+            Test("=[Column1] + Sheet1:Sheet2!A1");
         }
 
         [TestMethod]
