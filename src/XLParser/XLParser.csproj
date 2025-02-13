@@ -6,15 +6,13 @@
     <PackageId>XLParser</PackageId>
     <Description>A parser for Excel formulas</Description>
     <PackageTags>parser excel formula</PackageTags>
-    <AssemblyVersion>1.7.4.0</AssemblyVersion>
-    <FileVersion>1.7.4.0</FileVersion>
-    <Version>1.7.4.0</Version>
+    <AssemblyVersion>1.7.5.0</AssemblyVersion>
+    <FileVersion>1.7.5.0</FileVersion>
+    <Version>1.7.5.0</Version>
     <PackageReleaseNotes>
-- Fix structured reference confused for filename (#199)
-- Fix exclamation mark not recognized as unary operator (#203)
-- Fix unable to parse .xls extension in file path (#204)
-- Fix tilde in external workbook network path (#206)
-- Fixed issues related to external workbook url path (#207)
+- Fix ignored start/end spaces in structured reference column name (#210)
+- Fix parse errors for structured references confused with filenames (#211)
+- Support quoted multiple sheet reference in parser references (#213)
     </PackageReleaseNotes>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://spreadsheetlab.github.io/XLParser</PackageProjectUrl>
