@@ -121,10 +121,16 @@ namespace XLParser
                     sheetName = " ";
                 }
             }
-            // Check if multiple sheets
+            // Check for multiple sheets
             else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenMultipleSheets))
             {
                 multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 1);
+            }
+            // Check for multiple sheets (quoted)
+            else if (prefix.ChildNodes[cur].Is(GrammarNames.TokenMultipleSheetsQuoted))
+            {
+                // remove quote and !
+                multipleSheets = Substr(prefix.ChildNodes[cur].Print(), 2);
             }
 
             return new PrefixInfo(sheetName, fileNumber, fileName, filePath, multipleSheets, isQuoted);

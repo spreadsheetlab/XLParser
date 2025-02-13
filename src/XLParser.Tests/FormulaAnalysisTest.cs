@@ -1232,6 +1232,27 @@ namespace XLParser.Tests
         }
 
         [TestMethod]
+        public void MultipleSheetsReferenceQuoted()
+        {
+            // See [#212](https://github.com/spreadsheetlab/XLParser/issues/212)
+            List<ParserReference> references = new FormulaAnalyzer("SUM('Sheet2>:End'!A10)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet2>", references.First().Worksheet);
+            Assert.AreEqual("End", references.First().LastWorksheet);
+            Assert.AreEqual("A10", references.First().MinLocation);
+
+            references = new FormulaAnalyzer("SUM('Sheet2:<End'!A10)").ParserReferences().ToList();
+
+            Assert.AreEqual(1, references.Count);
+            Assert.AreEqual(ReferenceType.Cell, references.First().ReferenceType);
+            Assert.AreEqual("Sheet2", references.First().Worksheet);
+            Assert.AreEqual("<End", references.First().LastWorksheet);
+            Assert.AreEqual("A10", references.First().MinLocation);
+        }
+
+        [TestMethod]
         public void RangeWithPrefixedRightLimitReference()
         {
             List<ParserReference> references = new FormulaAnalyzer("SUM(Deals!F9:Deals!F16)").ParserReferences().ToList();
